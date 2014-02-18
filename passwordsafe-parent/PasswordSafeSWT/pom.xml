@@ -84,7 +84,6 @@
       <version>3.8.2.v20130124-134944</version>
     </dependency-->
 
-
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -93,6 +92,15 @@
     </dependency>
 
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+  
   <profiles>
     <profile>
       <id>linux64</id>

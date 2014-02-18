@@ -3,6 +3,7 @@ package org.pwsafe.lib.file;
 import java.io.File;
 import java.util.Vector;
 
+import org.junit.Ignore;
 import junit.framework.TestCase;
 
 import org.bouncycastle.util.Arrays;
@@ -26,6 +27,7 @@ import com.amazonaws.s3.S3Bucket;
  * @author roxon
  * 
  */
+@Ignore
 public class S3FileTest extends TestCase {
 
 	private static final String PASSPHRASE = "test";

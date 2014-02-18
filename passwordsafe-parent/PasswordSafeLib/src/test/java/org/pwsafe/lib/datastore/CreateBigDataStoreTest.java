@@ -16,11 +16,12 @@ import junit.framework.TestCase;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-//import org.junit.Ignore;
+import org.junit.Ignore;
 import org.pwsafe.lib.file.PwsFileFactory;
 import org.pwsafe.lib.file.PwsFileStorage;
 import org.pwsafe.lib.file.PwsFileV3;
 
+@Ignore
 public class CreateBigDataStoreTest extends TestCase {
 
 	SimpleDateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss.SSS");
@@ -58,7 +59,7 @@ public class CreateBigDataStoreTest extends TestCase {
 		file.delete();
 	}
 
-	//	@Ignore
+	@Ignore
 	public void notestCreateManyEntries() throws Exception {
 
 		final int groups = 10;
