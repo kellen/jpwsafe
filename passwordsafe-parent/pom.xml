@@ -1,0 +1,63 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.pwsafe</groupId>
+  <artifactId>jpwsafe-parent</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0.0-SNAPSHOT</version>
+  <name>JpwSafe Parent</name>
+
+  <inceptionYear>2006</inceptionYear>
+  <url>http://jpwsafe.sourceforge.net/</url>
+
+  <modules>
+    <module>PasswordSafeLib</module>
+    <module>PasswordSafeSWT</module>
+  </modules>
+
+  <scm>
+    <url>https://sourceforge.net/p/jpwsafe/code/HEAD/tree/trunk/</url>
+    <connection>svn+ssh://svn.code.sf.net/p/jpwsafe/code/trunk/jpwsafe-parent</connection>
+    <developerConnection>svn+ssh://svn.code.sf.net/p/jpwsafe/code/trunk/jpwsafe-parent</developerConnection>
+  </scm>
+
+  <issueManagement>
+    <url>https://sourceforge.net/p/jpwsafe/bugs/</url>
+  </issueManagement>
+
+  <repositories>
+    <repository>
+      <id>swt-repo</id>
+      <url>https://swt-repo.googlecode.com/svn/repo/</url>
+    </repository>
+    <repository>
+      <id>project</id>
+      <url>file://${project.basedir}/repo</url>
+    </repository>
+    <!-- repository>
+      <id>thirdparty-releases</id>
+      <name>JBoss Thirdparty Releases</name>
+      <url>https://repository.jboss.org/nexus/content/repositories/thirdparty-releases</url>
+    </repository-->
+  </repositories>
+
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.1</version>
+          <configuration>
+            <source>1.6</source>
+            <target>1.6</target>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+</project>
