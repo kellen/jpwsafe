@@ -14,8 +14,8 @@
   <url>http://jpwsafe.sourceforge.net/</url>
 
   <modules>
-    <module>PasswordSafeLib</module>
-    <module>PasswordSafeSWT</module>
+    <module>passwordsafe-lib</module>
+    <module>passwordsafe-swt</module>
   </modules>
 
   <scm>
