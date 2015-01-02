@@ -7,7 +7,7 @@
     <artifactId>jpwsafe-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>PasswordSafeLib</artifactId>
+  <artifactId>passwordsafe-lib</artifactId>
   <packaging>jar</packaging>
 
   <name>JpwSafe Lib</name>

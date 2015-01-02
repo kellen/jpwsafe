@@ -16,6 +16,7 @@
   <modules>
     <module>passwordsafe-lib</module>
     <module>passwordsafe-swt</module>
+    <module>passwordsafe-build</module>
   </modules>
 
   <scm>
@@ -28,6 +29,10 @@
     <url>https://sourceforge.net/p/jpwsafe/bugs/</url>
   </issueManagement>
 
+  <properties>
+    <swt.version>3.7.2</swt.version>
+  </properties>
+  
   <repositories>
     <repository>
       <id>swt-repo</id>
@@ -43,7 +48,6 @@
       <url>https://repository.jboss.org/nexus/content/repositories/thirdparty-releases</url>
     </repository-->
   </repositories>
-
 
   <build>
     <pluginManagement>
@@ -65,7 +69,8 @@
         <plugin>
           <artifactId>maven-assembly-plugin</artifactId>
           <version>2.4</version>
-          <executions>
+          <!-- builds a project in each submodule -->
+           <!-- executions>
             <execution>
               <id>create-project-bundle</id>
               <phase>package</phase>
@@ -78,7 +83,7 @@
                 </descriptorRefs>
               </configuration>
             </execution>
-          </executions>
+          </executions-->
         </plugin>
       </plugins>
       

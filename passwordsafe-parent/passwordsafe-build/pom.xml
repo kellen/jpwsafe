@@ -7,87 +7,48 @@
     <artifactId>jpwsafe-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>passwordsafe-swt</artifactId>
-  <packaging>jar</packaging>
+  <artifactId>passwordsafe-build</artifactId>
+  <packaging>pom</packaging>
 
-  <name>JpwSafe SWT</name>
+  <name>JpwSafe Build</name>
+
+  <properties>
+    <swt.version>3.7.2</swt.version>
+  </properties>
 
   <dependencies>
 
     <dependency>
       <groupId>org.pwsafe</groupId>
-      <artifactId>passwordsafe-lib</artifactId>
+      <artifactId>passwordsafe-swt</artifactId>
       <version>${project.version}</version>
     </dependency>
 
-    <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
-      <version>1.1.3</version>
-    </dependency>
-    <dependency>
-      <groupId>net.sf.opencsv</groupId>
-      <artifactId>opencsv</artifactId>
-      <version>1.7</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.eclipse.swt</groupId>
-      <artifactId>${swt.artifactId}</artifactId>
-      <version>${swt.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jface</groupId>
-      <artifactId>org.eclipse.jface</artifactId>
-      <version>3.8.0.v20120521-2329</version>
-    </dependency>
-    <dependency><!-- correct version would be 3.8.2 -->
-      <groupId>org.eclipse.osgi</groupId>
-      <artifactId>org.eclipse.osgi</artifactId>
-      <version>3.8.0.v20120529-1548</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.core</groupId>
-      <artifactId>org.eclipse.core.commands</artifactId>
-      <version>3.6.1.v20120521-2329</version>
-    </dependency>
-    
-    <!-- local repo -->
-    <dependency>
-      <groupId>org.eclipse.core</groupId>
-      <artifactId>runtime</artifactId>
-      <version>3.8.0.v20120521-2346</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.equinox</groupId>
-      <artifactId>org.eclipse.equinox.common</artifactId>
-      <version>3.6.100.v20120522-1841</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.equinox</groupId>
-      <artifactId>preferences</artifactId>
-      <version>3.5.1.v20121031-182809</version>
-    </dependency>
-    
-    <!-- dependency>
-      <groupId>org.eclipse</groupId>
-      <artifactId>jface</artifactId>
-      <version>3.8.0.v20120912-135020</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse</groupId>
-      <artifactId>osgi</artifactId>
-      <version>3.8.2.v20130124-134944</version>
-    </dependency-->
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.11</version>
-      <scope>test</scope>
-    </dependency>
-
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>assemble</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+
+            <configuration>
+              <descriptors>
+                <descriptor>src/assembly/linux-x86.xml</descriptor>
+              </descriptors>
+          
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
   
   <profiles>
     <profile>
