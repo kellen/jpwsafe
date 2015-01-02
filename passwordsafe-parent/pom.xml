@@ -16,6 +16,7 @@
   <modules>
     <module>passwordsafe-lib</module>
     <module>passwordsafe-swt</module>
+    <module>passwordsafe-jfx</module>
     <module>passwordsafe-build</module>
   </modules>
 
