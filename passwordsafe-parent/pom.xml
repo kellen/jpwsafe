@@ -7,7 +7,7 @@
   <groupId>org.pwsafe</groupId>
   <artifactId>jpwsafe-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>0.9.0-SNAPSHOT</version>
   <name>JpwSafe Parent</name>
 
   <inceptionYear>2006</inceptionYear>

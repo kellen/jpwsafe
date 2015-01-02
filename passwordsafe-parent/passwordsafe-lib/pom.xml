@@ -5,13 +5,20 @@
   <parent>
     <groupId>org.pwsafe</groupId>
     <artifactId>jpwsafe-parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>0.9.0-SNAPSHOT</version>
   </parent>
   <artifactId>passwordsafe-lib</artifactId>
   <packaging>jar</packaging>
 
   <name>JpwSafe Lib</name>
 
+  <repositories>
+      <repository>
+      <id>project</id>
+      <url>file://${project.basedir}/../repo</url>
+    </repository>
+  </repositories>
+  
   <dependencies>
     <dependency>
       <groupId>commons-logging</groupId>
