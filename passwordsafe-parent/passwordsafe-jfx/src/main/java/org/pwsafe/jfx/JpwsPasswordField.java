@@ -102,7 +102,6 @@ public class JpwsPasswordField extends TextFlow {
             @Override
             public void handle(MouseEvent event) {
                 if(focusedProperty().get() == false){
-                    System.out.println("" + event.getSource());
                     ((JpwsPasswordField)event.getSource()).requestFocus();
                 }
             }

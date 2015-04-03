@@ -102,7 +102,6 @@ public class ListController {
             if (event.isControlDown() && event.getCode() == KeyCode.O) {
                 action = 2;
             }
-            System.out.println("action = " + action);
             if(action > 0){
                 PwsEntryBean pwsEntryBean = entryTable.getSelectionModel().selectedItemProperty().get();
                 PwsEntryBean newBean = pwsEntryStore.getEntry(pwsEntryBean.getStoreIndex());
