@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.embed.swing.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="org.pwsafe.jfx.SafeOpeningController">
+  <children>
+    <VBox layoutX="0.0" layoutY="0.0" prefHeight="200.0" prefWidth="100.0">
+      <children>
+        <Button fx:id="selectFileButton" mnemonicParsing="false" onAction="#selectFile" text="Datei Auswählen" />
+        <VBox fx:id="jPasswordFieldBox" />
+        <Button mnemonicParsing="false" onAction="#openSafe" text="Open" />
+      </children>
+    </VBox>
+  </children>
+</AnchorPane>

@@ -27,6 +27,14 @@
       <version>${project.version}</version>
     </dependency>
 
+    <!-- use afterburner to get a simple dependency injection -->
+    <!--
+    <dependency>
+      <groupId>com.airhacks</groupId>
+      <artifactId>afterburner.fx</artifactId>
+      <version>1.6.0</version>
+    </dependency>
+    -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

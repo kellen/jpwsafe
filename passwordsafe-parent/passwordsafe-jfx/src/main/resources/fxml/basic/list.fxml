@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.pwsafe.jfx.basic.ListController">
+    <children>
+        <VBox layoutX="0.0" layoutY="0.0" prefHeight="320.0" prefWidth="240.0">
+         <children>
+            <TextField id="filterTextField" fx:id="filterTextField"/>
+            <TableView id="entryTable" fx:id="entryTable" prefHeight="200.0" prefWidth="200.0" styleClass="entryTable">
+              <columns>
+                <TableColumn id="titleColumn" fx:id="titleColumn" prefWidth="240.0" styleClass="titleColumn" text="Title" />
+              </columns>
+            </TableView>
+         </children>
+        </VBox>
+    </children>
+</AnchorPane>
