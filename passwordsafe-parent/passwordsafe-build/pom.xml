@@ -12,18 +12,63 @@
 
   <name>JpwSafe Build</name>
 
-  <properties>
-    <swt.version>3.7.2</swt.version>
-  </properties>
-
+  <repositories>
+      <repository>
+      <id>project</id>
+      <url>file://${project.basedir}/../repo</url>
+    </repository>
+  </repositories>
+  
   <dependencies>
-
     <dependency>
       <groupId>org.pwsafe</groupId>
       <artifactId>passwordsafe-swt</artifactId>
       <version>${project.version}</version>
     </dependency>
+    
+    <!-- native SWT jars -->
+    <dependency>
+      <groupId>${swt.groupId}</groupId>
+      <artifactId>org.eclipse.swt.gtk.linux.x86</artifactId>
+      <version>${swt.version}</version>
+      <scope>provided</scope>
+    </dependency>
 
+    <dependency>
+      <groupId>${swt.groupId}</groupId>
+      <artifactId>org.eclipse.swt.gtk.linux.x86_64</artifactId>
+      <version>${swt.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>${swt.groupId}</groupId>
+      <artifactId>org.eclipse.swt.win32.win32.x86</artifactId>
+      <version>${swt.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>${swt.groupId}</groupId>
+      <artifactId>org.eclipse.swt.win32.win32.x86_64</artifactId>
+      <version>${swt.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>${swt.groupId}</groupId>
+      <artifactId>org.eclipse.swt.cocoa.macosx</artifactId>
+      <version>${swt.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>${swt.groupId}</groupId>
+      <artifactId>org.eclipse.swt.cocoa.macosx.x86_64</artifactId>
+      <version>${swt.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    
   </dependencies>
 
   <build>
@@ -50,7 +95,7 @@
     </plugins>
   </build>
   
-  <profiles>
+  <profiles><!-- used to exclude swt coming with the same properties in jpwsafe-swt -->
     <profile>
       <id>linux64</id>
       <activation>
@@ -88,7 +133,6 @@
       <properties>
         <swt.groupId>org.eclipse.swt</swt.groupId>
         <swt.artifactId>org.eclipse.swt.cocoa.macosx</swt.artifactId>
-        <!-- swt.artifactId>org.eclipse.swt.carbon.macosx</swt.artifactId-->
       </properties>
     </profile>
         <profile>
@@ -132,4 +176,5 @@
       </properties>
     </profile>
   </profiles>
+        <!-- swt.artifactId>org.eclipse.swt.carbon.macosx</swt.artifactId-->
 </project>
