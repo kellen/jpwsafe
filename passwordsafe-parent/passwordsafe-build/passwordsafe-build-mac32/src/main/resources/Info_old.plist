@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-/Apple Computer/DTD PLIST 1.0/EN"
+                       "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>CFBundleName</key>
+    <string>PasswordSafeSWT</string>
+    <key>CFBundleShortVersionString</key>
+    <string>0.8.1</string>
+    <key>CFBundleGetInfoString</key>
+    <string>PasswordSafeSWT, (c) 2008,2009, 2010</string>
+    <key>CFBundleAllowMixedLocalizations</key>
+    <string>false</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundleExecutable</key>
+    <string>JavaApplicationStub</string>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>English</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleSignature</key>
+    <string>????</string>
+    <key>CFBundleIconFile</key>
+    <string>PasswordSafe.icns</string>
+    <key>Java</key>
+    <dict>
+      <key>MainClass</key>
+      <string>org.pwsafe.passwordsafeswt.PasswordSafeMacOSX</string>
+      <key>JVMVersion</key>
+      <string>1.5+</string>
+      <key>StartOnMainThread</key><true/> <key>JVMArchs</key><string>i386</string> <key>ClassPath</key>
+      <array>
+        <string>$JAVAROOT/PasswordSafeSWT.jar</string>
+        <string>$JAVAROOT/bcprov-jdk15-145.jar</string>
+        <string>$JAVAROOT/bfj241.jar</string>
+        <string>$JAVAROOT/commons-logging-1.1.1.jar</string>
+        <string>$JAVAROOT/junit.jar</string>
+        <string>$JAVAROOT/opencsv-1.1.jar</string>
+        <string>$JAVAROOT/org.eclipse.core.commands_3.6.0.I20100512-1500.jar</string>
+        <string>$JAVAROOT/org.eclipse.core.runtime_3.6.0.v20100505.jar</string>
+        <string>$JAVAROOT/org.eclipse.equinox.common_3.6.0.v20100503.jar</string>
+        <string>$JAVAROOT/org.eclipse.equinox.preferences_3.3.0.v20100503.jar</string>
+        <string>$JAVAROOT/org.eclipse.jface_3.6.1.M20100825-0800.jar</string>
+        <string>$JAVAROOT/org.eclipse.osgi_3.6.1.R36x_v20100806.jar</string>
+        <string>$JAVAROOT/passwordsafe-lib.jar</string>
+        <string>$JAVAROOT/xercesImpl.jar</string>
+        <string>$JAVAROOT/org.eclipse.core.filesystem.macosx_1.3.0.v20100505.jar</string>
+        <string>$JAVAROOT/swt.jar</string>
+      </array>
+    </dict>
+  </dict>
+</plist>

@@ -25,6 +25,7 @@
 
   <properties>
     <swt.version>3.7.2</swt.version>
+    <swt.groupId>org.eclipse.swt</swt.groupId>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly>
+  <!-- simply set correct profile / os? -->
+  <id>linux-x86_64</id>
+  <formats>
+    <format>tar.bz2</format>
+  </formats>
+  
+  <fileSets>
+    <fileSet>
+      <directory>src/platform</directory>
+      <outputDirectory>lib</outputDirectory>
+      <includes>
+        <include>*.jar</include>
+      </includes>
+      <useDefaultExcludes>true</useDefaultExcludes>
+      <fileMode>0640</fileMode>
+      <directoryMode>0755</directoryMode>
+    </fileSet>
+    <fileSet>
+      <directory>src/platform</directory>
+      <outputDirectory>/</outputDirectory>
+      <excludes>
+        <exclude>*.jar</exclude>
+        <exclude>*.sh</exclude>
+        <exclude>*.zip</exclude>
+      </excludes>
+      <useDefaultExcludes>true</useDefaultExcludes>
+      <fileMode>0644</fileMode>
+      <directoryMode>0755</directoryMode>
+    </fileSet>
+    <fileSet>
+      <directory>src/platform</directory>
+      <outputDirectory>/</outputDirectory>
+      <includes>
+        <include>*.sh</include>
+      </includes>
+      <useDefaultExcludes>true</useDefaultExcludes>
+      <fileMode>0644</fileMode>
+      <directoryMode>0755</directoryMode>
+    </fileSet>
+    <fileSet>
+      <directory>src/main/resources</directory>
+      <outputDirectory>/</outputDirectory>
+      <useDefaultExcludes>true</useDefaultExcludes>
+      <fileMode>0644</fileMode>
+      <directoryMode>0755</directoryMode>
+    </fileSet>
+  </fileSets>
+  <dependencySets>
+    <dependencySet>
+      <!--excludes>
+        <exclude>${swt.groupId}:${swt.artifactId}+</exclude>
+      </excludes-->
+      <outputDirectory>lib</outputDirectory>
+      <outputFileNameMapping>
+        ${artifact.artifactId}.${artifact.extension}
+      </outputFileNameMapping>
+      <useProjectArtifact>false</useProjectArtifact>
+      <!-- useStrictFiltering>true</useStrictFiltering-->
+      <useTransitiveFiltering>true</useTransitiveFiltering>
+    </dependencySet>
+    <!--dependencySet>
+      <includes>
+        <include>${swt.groupId}:org.eclipse.swt.gtk.linux.x86_64:${swt.version}</include>
+      </includes>
+      <outputDirectory>lib</outputDirectory>
+      <useProjectArtifact>false</useProjectArtifact>
+    </dependencySet-->
+  </dependencySets>
+</assembly>
