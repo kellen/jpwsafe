@@ -10,6 +10,8 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.pwsafe.lib.datastore.PwsEntryStore;
 import org.pwsafe.lib.file.PwsFileFactory;
 import org.pwsafe.util.UserPreferences;
@@ -24,7 +26,7 @@ import java.util.List;
  */
 public class SafeOpeningController {
 
-    // TODO logger
+    private static Log log = LogFactory.getLog(SafeOpeningController.class);
 
     // TODO add to mru erst nach erfolgreichem öffnen
 
@@ -114,7 +116,6 @@ public class SafeOpeningController {
         try {
             String selectedValue = selectFileChoices.get(newValue.intValue());
             UserPreferences userPreferences = JfxMain.getApplication().getUserPreferences();
-            System.out.println(selectedValue);
             if (openOtherOption.equals(selectedValue)) {
                 selectFile();
                 File selectedFile = JfxMain.getApplication().getPasswordSafeFile();
@@ -135,7 +136,9 @@ public class SafeOpeningController {
             }
         }
         catch (IOException ioe){
-            // TODO logger
+            if(log.isDebugEnabled()){
+                log.debug(ioe);
+            }
         }
     }
 
@@ -145,8 +148,9 @@ public class SafeOpeningController {
             openFile(passwordSafeFile, jpwsPasswordField.getPassword(), true);
         }
         catch(Exception e){
-            // TODO exception handling
-            e.printStackTrace();
+            if (log.isDebugEnabled()){
+                log.debug(e);
+            }
         }
         finally{
             jpwsPasswordField.erasePassword();
@@ -189,12 +193,13 @@ public class SafeOpeningController {
             JfxMain.getApplication().setPwsEntryStore(pwsEntryStore);
         }
         catch(Exception e){
-            // TODO exception handling - make it better
-            e.printStackTrace();
+            if (log.isDebugEnabled()){
+                log.debug(e);
+            }
         }
         if (pwsEntryStore != null){
-            //JfxMain.getApplication().setScene("/fxml/basic/list.fxml", JfxMain.DEFAULT_WIDTH, JfxMain.DEFAULT_HEIGHT);
-            JfxMain.getApplication().setScene("/fxml/basic/table.fxml", 440, 600);
+            JfxMain.getApplication().setScene("/fxml/basic/list.fxml", JfxMain.DEFAULT_WIDTH, JfxMain.DEFAULT_HEIGHT);
+            //JfxMain.getApplication().setScene("/fxml/basic/table.fxml", 440, 600);
         }
 
     }
