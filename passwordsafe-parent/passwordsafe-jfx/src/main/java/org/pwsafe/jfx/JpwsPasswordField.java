@@ -23,9 +23,9 @@ import java.util.List;
  */
 public class JpwsPasswordField extends TextFlow {
 
-    private static final String NON_FOCUSED_STYLE = "-fx-border-color: blue; -fx-padding: 5px; -fx-min-height: 20px;";
-    private static final String FOCUSED_STYLE = "-fx-border-color: red; -fx-padding: 5px; -fx-background-color: white; -fx-min-height: 20px;";
-    private static final String MASK_STRING = "*".intern();
+    private static final String NON_FOCUSED_STYLE = "-fx-border-color: blue; -fx-padding: 5px; -fx-min-height: 30px;";
+    private static final String FOCUSED_STYLE = "-fx-border-color: red; -fx-padding: 5px; -fx-background-color: white; -fx-min-height: 30px;";
+    private static final String MASK_STRING = "*";
     private static final Text[] texts = new Text[256]; // können wir uns tatsächlich auf die beschränken?
 
     public final BooleanProperty showPasswordProperty = new SimpleBooleanProperty(false);
@@ -94,7 +94,8 @@ public class JpwsPasswordField extends TextFlow {
                 else{
                     PasswordCharacter passwordCharacter = new PasswordCharacter(charString.charAt(0));
                     passwordCharacters.add(passwordCharacter);
-                    outputPassword();
+                    getChildren().add(new Text(MASK_STRING));
+                    //outputPassword();
                 }
             }
         });

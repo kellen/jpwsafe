@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.embed.swing.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="org.pwsafe.jfx.SafeOpeningController">
-  <children>
-    <VBox layoutX="0.0" layoutY="0.0" prefHeight="200.0" prefWidth="100.0">
-      <children>
-        <Button fx:id="selectFileButton" mnemonicParsing="false" onAction="#selectFile" text="Datei Auswählen" />
-        <VBox fx:id="jPasswordFieldBox" />
-        <Button mnemonicParsing="false" onAction="#openSafe" text="Open" />
-      </children>
-    </VBox>
-  </children>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.pwsafe.jfx.SafeOpeningController">
+    <children>
+        <VBox layoutX="0.0" layoutY="0.0" prefHeight="320.0" prefWidth="240.0" maxWidth="Infinity">
+            <children>
+                <ImageView fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../img/psafetxtNew.gif" />
+                    </image>
+                </ImageView>
+                <ChoiceBox fx:id="selectFileChoice" prefWidth="240.0" />
+                <!--
+                <Button fx:id="selectFileButton" mnemonicParsing="false" onAction="#selectFile" prefHeight="25.0" prefWidth="240.0" text="Datei Auswählen" />
+                -->
+                <VBox fx:id="jPasswordFieldBox" />
+                <Button fx:id="openSafeButton" mnemonicParsing="false" onAction="#openSafe" text="Open" />
+            </children>
+        </VBox>
+    </children>
 </AnchorPane>

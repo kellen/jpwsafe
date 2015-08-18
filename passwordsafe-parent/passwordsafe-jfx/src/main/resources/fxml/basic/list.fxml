@@ -5,15 +5,25 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.pwsafe.jfx.basic.ListController">
     <children>
-        <VBox layoutX="0.0" layoutY="0.0" prefHeight="320.0" prefWidth="240.0">
+        <VBox
+              AnchorPane.topAnchor="0.0"
+              AnchorPane.bottomAnchor="0.0"
+              AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0" >
          <children>
             <TextField id="filterTextField" fx:id="filterTextField"/>
-            <TableView id="entryTable" fx:id="entryTable" prefHeight="200.0" prefWidth="200.0" styleClass="entryTable">
+            <TableView id="entryTable" fx:id="entryTable" styleClass="entryTable" VBox.vgrow="ALWAYS">
               <columns>
-                <TableColumn id="titleColumn" fx:id="titleColumn" prefWidth="240.0" styleClass="titleColumn" text="Title" />
+                <!-- noch nicht möglich, tablecolumn auf 100% zu ziehen, VGROW.ALWAYS läßt Text unsichtbar werden -->
+                <TableColumn id="titleColumn" fx:id="titleColumn"
+                             styleClass="titleColumn"
+                             text="Titel"
+                             maxWidth="Infinity"
+                        />
               </columns>
             </TableView>
          </children>
         </VBox>
+        <!-- </ScrollPane> -->
     </children>
 </AnchorPane>

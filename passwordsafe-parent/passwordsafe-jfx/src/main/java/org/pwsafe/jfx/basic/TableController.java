@@ -23,12 +23,8 @@ import org.pwsafe.lib.datastore.PwsEntryStore;
 import org.pwsafe.lib.file.PwsRecord;
 
 /**
- *  Shows the titles of the entries of a password safe as list. As soon as you type in a character, the list
- *  is filtered to the titles containing the text of the filter field on top of the screen. When you go to the
- *  table and select an item, you can copy the password into the clipboard typing CTRL+C and when you type
- *  CTRL+O you password is copied and the URL of the password entry is opened in the system's default web browser.
  */
-public class ListController {
+public class TableController {
 
     @FXML
     private TextField filterTextField;
@@ -37,7 +33,15 @@ public class ListController {
     private TableView<PwsEntryBean> entryTable;
 
     @FXML
+    private TableColumn<PwsEntryBean, String> groupColumn;
+    @FXML
     private TableColumn<PwsEntryBean, String> titleColumn;
+    @FXML
+    private TableColumn<PwsEntryBean, String> usernameColumn;
+    @FXML
+    private TableColumn<PwsEntryBean, String> descriptionColumn;
+    @FXML
+    private TableColumn<PwsEntryBean, String> changeColumn;
 
     private ObservableList<PwsEntryBean> pwEntries;
 
@@ -47,7 +51,11 @@ public class ListController {
         pwEntries = FXCollections.observableArrayList((pwsEntryStore.getSparseEntries()));
 
         // 0. Initialize the columns.
-        titleColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getTitle()));
+        groupColumn.setCellValueFactory(cellData    ->     new ReadOnlyObjectWrapper(cellData.getValue().getGroup()));
+        titleColumn.setCellValueFactory(cellData    ->     new ReadOnlyObjectWrapper(cellData.getValue().getTitle()));
+        usernameColumn.setCellValueFactory(cellData ->     new ReadOnlyObjectWrapper(cellData.getValue().getUsername()));
+        descriptionColumn.setCellValueFactory(cellData ->  new ReadOnlyObjectWrapper(cellData.getValue().getNotes()));
+        changeColumn.setCellValueFactory(cellData ->       new ReadOnlyObjectWrapper(cellData.getValue().getLastChange()));
 
         // 1. Wrap the ObservableList in a FilteredList (initially display all data).
         FilteredList<PwsEntryBean> filteredData = new FilteredList<>(pwEntries, p -> true);
@@ -125,6 +133,7 @@ public class ListController {
             }
         });
 
+        /* i don't like it, by now i will stay to use TAB to go to list and then use CTRL+C or CTRL+O */
         filterTextField.setOnKeyReleased(event -> {
             if (event.getCode() == KeyCode.ENTER){
                 if (entryTable.getItems().size() == 1) {

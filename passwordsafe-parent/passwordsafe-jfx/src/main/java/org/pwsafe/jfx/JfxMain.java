@@ -4,18 +4,15 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-import org.pwsafe.lib.datastore.PwsEntryBean;
 import org.pwsafe.lib.datastore.PwsEntryStore;
+import org.pwsafe.util.UserPreferences;
 
 /**
  * The JavaFx Main Window and Application.
@@ -31,10 +28,14 @@ public class JfxMain extends Application {
     private File passwordSafeFile;
     private PwsEntryStore pwsEntryStore;
 
+    private UserPreferences userPreferences;
+
     @Override
     public void start(Stage initialStage) throws Exception {
         this.stage = initialStage;
         stage.setTitle("JPwSafe");
+        Image icon = new Image("/img/clogo.gif");
+        stage.getIcons().add(icon);
         setScene("/fxml/basic/openSafe.fxml", DEFAULT_WIDTH, DEFAULT_HEIGHT);
         stage.show();
     }
@@ -52,12 +53,16 @@ public class JfxMain extends Application {
     public PwsEntryStore getPwsEntryStore(){ return this.pwsEntryStore; }
     public void setPwsEntryStore(PwsEntryStore pwsEntryStore){ this.pwsEntryStore = pwsEntryStore; }
 
+    public UserPreferences getUserPreferences() { return this.userPreferences; }
+    public void setUserPreferences(UserPreferences userPreferences){ this.userPreferences = userPreferences; }
+
     public static final JfxMain getApplication(){
         return application;
     }
 
     public static void main(String[] args){
         application = new JfxMain();
+        application.setUserPreferences(UserPreferences.getInstance());
         launch(args);
     }
 

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.pwsafe.jfx.basic.TableController">
+    <children>
+        <VBox              AnchorPane.topAnchor="0.0"
+                           AnchorPane.bottomAnchor="0.0"
+                           AnchorPane.leftAnchor="0.0"
+                           AnchorPane.rightAnchor="0.0"
+
+        prefHeight="600.0" prefWidth="440.0">
+            <children>
+                <TextField id="filterTextField" fx:id="filterTextField"/>
+                <TableView id="entryTable" fx:id="entryTable" prefHeight="-1" prefWidth="440.0" styleClass="entryTable">
+                    <columns>
+                        <TableColumn id="groupColumn" fx:id="groupColumn" prefWidth="80.0" styleClass="titleColumn" text="Gruppe" />
+                        <TableColumn id="titleColumn" fx:id="titleColumn" prefWidth="80.0" styleClass="titleColumn" text="Titel" />
+                        <TableColumn id="usernameColumn" fx:id="usernameColumn" prefWidth="80.0" styleClass="titleColumn" text="Benutzername" />
+                        <TableColumn id="descriptionColumn" fx:id="descriptionColumn" prefWidth="160.0" styleClass="titleColumn" text="Bemerkung" />
+                        <TableColumn id="changeColumn" fx:id="changeColumn" prefWidth="160.0" styleClass="titleColumn" text="Änderung" />
+                    </columns>
+                </TableView>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
