@@ -22,7 +22,7 @@ public class StringEraser {
 
     /** Overwrites the content of a string with blanks in order to erase all
      * traces of the former value and then makes it a empty string. */
-    public void erase(String stringToErase){
+    public static void erase(String stringToErase){
         Field valueProperty = null;
         try{
             valueProperty = String.class.getDeclaredField("value");

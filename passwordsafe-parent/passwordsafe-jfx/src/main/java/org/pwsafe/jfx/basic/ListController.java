@@ -17,10 +17,13 @@ import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.KeyCode;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.pwsafe.jfx.JfxMain;
 import org.pwsafe.lib.datastore.PwsEntryBean;
 import org.pwsafe.lib.datastore.PwsEntryStore;
 import org.pwsafe.lib.file.PwsRecord;
+import org.pwsafe.util.StringEraser;
 
 /**
  *  Shows the titles of the entries of a password safe as list. As soon as you type in a character, the list
@@ -29,6 +32,8 @@ import org.pwsafe.lib.file.PwsRecord;
  *  CTRL+O you password is copied and the URL of the password entry is opened in the system's default web browser.
  */
 public class ListController {
+
+    private static Log log = LogFactory.getLog(ListController.class);
 
     @FXML
     private TextField filterTextField;
@@ -88,9 +93,13 @@ public class ListController {
         entryTable.getItems().addListener(new InvalidationListener() {
             @Override
             public void invalidated(Observable observable) {
-                System.out.println("list invalidated");
+                if (log.isDebugEnabled()){
+                    log.debug("list is invalidated");
+                }
                 if(entryTable.getItems().size() == 1){
-                    System.out.println("now a list with 1 items");
+                    if (log.isDebugEnabled()){
+                        log.debug("now a list with 1 items");
+                    }
                     /* open question, how to style selected row like focused row
                     entryTable.getSelectionModel().selectFirst();
                     ObservableList<TablePosition> selectedCells = null;
@@ -106,7 +115,9 @@ public class ListController {
                 }
                 else{
                     entryTable.getSelectionModel().clearSelection();
-                    System.out.println("now a list with " + entryTable.getItems().size() + " entries");
+                    if (log.isDebugEnabled()){
+                        log.debug("now a list with " + entryTable.getItems().size() + " entries");
+                    }
                 }
             }
         });
@@ -158,8 +169,8 @@ public class ListController {
         String password = entry.getPassword().toString();
         ClipboardContent clipboardContent = new ClipboardContent();
         clipboardContent.put(DataFormat.PLAIN_TEXT, password);
+        StringEraser.erase(password); // clear password immediatedly after pasting into clipboard
         boolean success = Clipboard.getSystemClipboard().setContent(clipboardContent);
-        System.out.println("Copied password to clipboard");
     }
 
     private void openBrowser(PwsEntryBean entry){
