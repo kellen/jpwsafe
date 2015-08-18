@@ -169,8 +169,9 @@ public class ListController {
         String password = entry.getPassword().toString();
         ClipboardContent clipboardContent = new ClipboardContent();
         clipboardContent.put(DataFormat.PLAIN_TEXT, password);
-        StringEraser.erase(password); // clear password immediatedly after pasting into clipboard
         boolean success = Clipboard.getSystemClipboard().setContent(clipboardContent);
+        // erases from clipboard too, so commented out here
+        //StringEraser.erase(password); // clear password immediatedly after pasting into clipboard
     }
 
     private void openBrowser(PwsEntryBean entry){
