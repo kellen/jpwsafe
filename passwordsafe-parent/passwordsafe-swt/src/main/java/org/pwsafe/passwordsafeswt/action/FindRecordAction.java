@@ -21,9 +21,10 @@ import org.eclipse.swt.events.KeyListener;
 import org.pwsafe.lib.datastore.PwsEntryBean;
 import org.pwsafe.passwordsafeswt.PasswordSafeJFace;
 import org.pwsafe.passwordsafeswt.dialog.FindRecordDialog;
-import org.pwsafe.passwordsafeswt.model.comparator.EqualsIgnoreCaseComparator;
 import org.pwsafe.passwordsafeswt.model.comparator.FindMatcher;
 import org.pwsafe.passwordsafeswt.model.comparator.FullTextSubStringMatcher;
+import org.pwsafe.passwordsafeswt.model.comparator.PwsEntryBeanGroupTitleComparator;
+import org.pwsafe.passwordsafeswt.model.comparator.PwsEntryBeanTitleComparator;
 import org.pwsafe.passwordsafeswt.model.comparator.TitleSubStringMatcher;
 
 /**
@@ -33,10 +34,10 @@ import org.pwsafe.passwordsafeswt.model.comparator.TitleSubStringMatcher;
  */
 public class FindRecordAction extends Action {
 
-	static final Log log = LogFactory.getLog(FindRecordAction.class);
+	static final Log LOG = LogFactory.getLog(FindRecordAction.class);
 
 	private final SearchState searchState = new SearchState();
-	public EqualsIgnoreCaseComparator resultsSorter = new EqualsIgnoreCaseComparator();
+	public Comparator<PwsEntryBean> resultsSorter;
 
 	private FindRecordDialog findDialog;
 	public static final FindMatcher titleSubStringMatcher = new TitleSubStringMatcher();
@@ -107,17 +108,27 @@ public class FindRecordAction extends Action {
 	 */
 	@Override
 	public void run() {
-		log.debug("running find action");
+		LOG.debug("running find action");
 		final PasswordSafeJFace app = PasswordSafeJFace.getApp();
+		if (app.isTreeViewShowing()) {
+			resultsSorter = new PwsEntryBeanGroupTitleComparator();
+		} else {
+			resultsSorter = new PwsEntryBeanTitleComparator();
+		}
 		// app.getShell().addKeyListener( new FindKeyListener() );
 		// app.getShell().getDisplay().addListener(SWT.KeyDown, (Listener)new
 		// FindKeyListener()); causes class cast ex
-		findDialog = new FindRecordDialog(app.getShell(), Messages.getString("FindAction.Label"),
+		findDialog = new FindRecordDialog(app.getShell(), Messages.getString("FindAction.Dialog.Title"),
 				Messages.getString("FindAction.Message"), searchState.getSearchString(), null);
 		// todo refactor to remove this overly-tight coupling? Comments or
 		// opinions gratefully received.
 		findDialog.setCallingAction(this);
-		findDialog.open();
+		app.getLockStatus().addObserver(findDialog);
+		try {
+			findDialog.open();
+		} finally {
+			app.getLockStatus().deleteObserver(findDialog);
+		}
 	}
 
 	/**
@@ -137,7 +148,7 @@ public class FindRecordAction extends Action {
 	 */
 	public void performSearch(final String newSearchString, final boolean previous,
 			final FindMatcher equality) {
-		log.debug("performSearch called");
+		LOG.debug("performSearch called");
 		final PasswordSafeJFace app = PasswordSafeJFace.getApp();
 
 		if (!newSearchString.equals(searchState.getSearchString())) {
@@ -147,7 +158,7 @@ public class FindRecordAction extends Action {
 
 			if (searchState.getResultCount() > 0) {
 				sortResults(searchState.getResults(), resultsSorter);
-				searchState.setCurrentEntry(searchState.getResults().get(0));
+				searchState.setCurrentEntry(searchState.getResults().getFirst());
 			} else {
 				findDialog.setErrorMessage(Messages.getString("FindAction.NoResults"));
 			}
@@ -158,7 +169,7 @@ public class FindRecordAction extends Action {
 
 			if (searchState.getResultCount() == 1) {
 				findDialog.setErrorMessage(Messages.getString("FindAction.NoMoreResults"));
-			} else if (index == searchState.getResultCount() - 1 && !previous) {
+			} else if (index == (searchState.getResultCount() -1) && !previous) {
 				findDialog.setErrorMessage(Messages.getString("FindAction.BackToBeginning"));
 				index = 0;
 			} else if (index == 0 && previous) {
@@ -189,7 +200,7 @@ public class FindRecordAction extends Action {
 		return searchState.getResults();
 	}
 
-	private void sortResults(final LinkedList<PwsEntryBean> results, final Comparator resultsSorter) {
+	private void sortResults(final LinkedList<PwsEntryBean> results, final Comparator<PwsEntryBean> resultsSorter) {
 		Collections.sort(results, resultsSorter);
 		// Collections.sort( searchState.getResults(),
 		// PasswordSafeJFace.getApp().getSorter() );
