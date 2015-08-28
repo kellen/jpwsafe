@@ -11,13 +11,14 @@ package org.pwsafe.lib.file;
 import java.io.File;
 import java.io.IOException;
 import java.util.ConcurrentModificationException;
-
-import junit.framework.TestCase;
+import java.util.EnumSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pwsafe.lib.datastore.PwsEntryStore;
 import org.pwsafe.lib.exception.InvalidPassphraseException;
+
+import junit.framework.TestCase;
 
 public class PwsFileFactoryTest extends TestCase {
 
@@ -61,6 +62,49 @@ public class PwsFileFactoryTest extends TestCase {
 		}
 
 	}
+
+	public void testLoadStore() throws Exception {
+		PwsEntryStore theStore = PwsFileFactory.loadStore(testV2Filename, new StringBuilder(PASSPHRASE));
+
+		final PwsFile theFile = theStore.getPwsFile();
+		assertTrue(theFile instanceof PwsFileV2);
+
+		assertEquals(1, theFile.getRecordCount());
+
+		assertNotNull(theStore);
+		assertEquals(1, theStore.getSparseEntries().size());
+
+		try {
+			theStore = PwsFileFactory
+					.loadStore(testV2Filename, new StringBuilder("wrong passphrase"));
+			fail("Wrong passphrase should lead to an InvalidPassphraseException");
+		} catch (final InvalidPassphraseException e) {
+			// ok
+			LOGGER.info(e.toString());
+		}
+	}
+
+	public void testLoadStoreWithSparse() throws Exception {
+		PwsEntryStore theStore = PwsFileFactory.loadStore(testV2Filename, new StringBuilder(PASSPHRASE), EnumSet.of(PwsFieldTypeV2.TITLE, PwsFieldTypeV2.USERNAME));
+
+		final PwsFile theFile = theStore.getPwsFile();
+		assertTrue(theFile instanceof PwsFileV2);
+
+		assertEquals(1, theFile.getRecordCount());
+
+		assertNotNull(theStore);
+		assertEquals(1, theStore.getSparseEntries().size());
+
+		try {
+			theStore = PwsFileFactory
+					.loadStore(testV2Filename, new StringBuilder("wrong passphrase"));
+			fail("Wrong passphrase should lead to an InvalidPassphraseException");
+		} catch (final InvalidPassphraseException e) {
+			// ok
+			LOGGER.info(e.toString());
+		}
+	}
+
 
 	public void testReadOnly() throws Exception {
 		final PwsFile pwsFile = PwsFileFactory.loadFile(testV2Filename, new StringBuilder(

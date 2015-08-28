@@ -68,11 +68,11 @@ public class PwsEntryStoreImpl implements PwsEntryStore, PwsLoadListener {
 		}
 	}
 
-	public PwsEntryStoreImpl(final PwsFile aPwsFile, final Set<PwsFieldType> someSparseFields) {
+	public PwsEntryStoreImpl(final PwsFile aPwsFile, final Set<? extends PwsFieldType> someSparseFields) {
 		this(aPwsFile, someSparseFields, false);
 	}
 
-	public PwsEntryStoreImpl(final PwsFile aPwsFile, final Set<PwsFieldType> someSparseFields, final boolean isListenerAdded) {
+	public PwsEntryStoreImpl(final PwsFile aPwsFile, final Set<? extends PwsFieldType> someSparseFields, final boolean isListenerAdded) {
 		super();
 		pwsFile = aPwsFile;
 		sparseFields = someSparseFields;
@@ -123,7 +123,7 @@ public class PwsEntryStoreImpl implements PwsEntryStore, PwsLoadListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.pwsafe.lib.datastore.PwsEntryStore#addEntry(org.pwsafe.lib.datastore
 	 * .PwsEntryBean)
@@ -154,7 +154,7 @@ public class PwsEntryStoreImpl implements PwsEntryStore, PwsLoadListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.pwsafe.lib.datastore.PwsEntryStore#clear()
 	 */
 	public void clear() {
@@ -164,7 +164,7 @@ public class PwsEntryStoreImpl implements PwsEntryStore, PwsLoadListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.pwsafe.lib.datastore.PwsEntryStore#getEntry(int)
 	 */
 	public PwsEntryBean getEntry(final int anIndex) {
@@ -188,7 +188,7 @@ public class PwsEntryStoreImpl implements PwsEntryStore, PwsLoadListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.pwsafe.lib.datastore.PwsEntryStore#getSparseEntries()
 	 */
 	public List<PwsEntryBean> getSparseEntries() {
@@ -207,7 +207,7 @@ public class PwsEntryStoreImpl implements PwsEntryStore, PwsLoadListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.pwsafe.lib.datastore.PwsEntryStore#setSparseFields(java.util.Set)
 	 */
@@ -226,7 +226,7 @@ public class PwsEntryStoreImpl implements PwsEntryStore, PwsLoadListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.pwsafe.lib.datastore.PwsEntryStore#updateEntry(org.pwsafe.lib.datastore
 	 * .PwsEntryBean)

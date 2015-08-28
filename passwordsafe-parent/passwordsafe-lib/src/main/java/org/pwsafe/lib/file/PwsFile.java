@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2008-2014 David Muller <roxon@users.sourceforge.net>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
@@ -123,7 +123,7 @@ public abstract class PwsFile {
 
 	/**
 	 * Flag indicating whether the storage may be changed or saved.
-	 * 
+	 *
 	 */
 	protected boolean readOnly = false;
 
@@ -146,16 +146,16 @@ public abstract class PwsFile {
 
 	/**
 	 * Construct the PasswordSafe file by reading it from the file.
-	 * 
+	 *
 	 * @param aStorage the storage of the database to open.
 	 * @param aPassphrase the passphrase for the database.
-	 * 
+	 *
 	 * @throws EndOfFileException
 	 * @throws IOException
 	 * @throws UnsupportedFileVersionException
 	 * @throws NoSuchAlgorithmException if no SHA-1 implementation is found.
 	 */
-	protected PwsFile(final PwsStorage aStorage, final String aPassphrase) throws EndOfFileException,
+	protected PwsFile(final PwsStorage aStorage, final StringBuilder aPassphrase) throws EndOfFileException,
 	IOException, UnsupportedFileVersionException, NoSuchAlgorithmException {
 		LOG.enterMethod("PwsFile.PwsFile( String )");
 		storage = aStorage;
@@ -164,11 +164,17 @@ public abstract class PwsFile {
 		LOG.leaveMethod("PwsFile.PwsFile( String )");
 	}
 
+	@Deprecated
+	protected PwsFile(final PwsStorage aStorage, final String aPassphrase) throws EndOfFileException,
+	IOException, UnsupportedFileVersionException, NoSuchAlgorithmException {
+		this (aStorage, new StringBuilder(aPassphrase));
+	}
+
 	/**
 	 * Adds a record to the file.
-	 * 
+	 *
 	 * @param rec the record to be added.
-	 * 
+	 *
 	 * @throws PasswordSafeException if the record has already been added to
 	 *         another file.
 	 */
@@ -203,9 +209,9 @@ public abstract class PwsFile {
 	/**
 	 * Allocates a byte array at least <code>length</code> bytes in length and
 	 * which is an integer multiple of <code>BLOCK_LENGTH</code>.
-	 * 
+	 *
 	 * @param length the number of bytes the array must hold.
-	 * 
+	 *
 	 * @return A byte array of the correct length.
 	 */
 	static final byte[] allocateBuffer(final int length) {
@@ -224,12 +230,12 @@ public abstract class PwsFile {
 	 * Calculates the next integer multiple of <code>BLOCK_LENGTH</code> &gt;=
 	 * <code>length</code>. If <code>length</code> is zero, however, then
 	 * <code>BLOCK_LENGTH</code> is returned as the calculated block length.
-	 * 
+	 *
 	 * @param length the minimum block length
-	 * 
+	 *
 	 * @return <code>length</code> rounded up to the next multiple of
 	 *         <code>BLOCK_LENGTH</code>.
-	 * 
+	 *
 	 * @throws IllegalArgumentException if length &lt; zero.
 	 */
 	static final int calcBlockLength(final int length) {
@@ -254,7 +260,7 @@ public abstract class PwsFile {
 
 	/**
 	 * Attempts to close the file.
-	 * 
+	 *
 	 * @throws IOException If the attempt fails.
 	 */
 	void close() throws IOException {
@@ -334,7 +340,7 @@ public abstract class PwsFile {
 
 	/**
 	 * Allow the storage implementation associated with this file to be set.
-	 * 
+	 *
 	 * @param storage An implementation of the PwsStorage interface.
 	 */
 	public void setStorage(final PwsStorage storage) {
@@ -343,14 +349,14 @@ public abstract class PwsFile {
 
 	/**
 	 * Returns the major version number for the file.
-	 * 
+	 *
 	 * @return The major version number for the file.
 	 */
 	public abstract int getFileVersionMajor();
 
 	/**
 	 * Returns the passphrase used to open the file.
-	 * 
+	 *
 	 * @return The file's passphrase.
 	 */
 	public String getPassphrase() {
@@ -369,7 +375,7 @@ public abstract class PwsFile {
 
 	/**
 	 * Returns the number of records in the file.
-	 * 
+	 *
 	 * @return The number of records in the file.
 	 */
 	public int getRecordCount() {
@@ -385,7 +391,7 @@ public abstract class PwsFile {
 	/**
 	 * Returns an iterator over the records. Records may be deleted from the
 	 * file by calling the <code>remove()</code> method on the iterator.
-	 * 
+	 *
 	 * @return An <code>Iterator</code> over the records.
 	 */
 	public Iterator<? extends PwsRecord> getRecords() {
@@ -394,7 +400,7 @@ public abstract class PwsFile {
 
 	/**
 	 * Returns a record.
-	 * 
+	 *
 	 * @return the PwsRecord at that index
 	 */
 	public PwsRecord getRecord(final int index) {
@@ -417,7 +423,7 @@ public abstract class PwsFile {
 	/**
 	 * Returns an flag as to whether this file or any of its records have been
 	 * modified.
-	 * 
+	 *
 	 * @return <code>true</code> if the file has been modified,
 	 *         <code>false</code> if it hasn't.
 	 */
@@ -427,7 +433,7 @@ public abstract class PwsFile {
 
 	/**
 	 * Allocates a new, empty record unowned by any file.
-	 * 
+	 *
 	 * @return A new empty record
 	 */
 	public abstract PwsRecord newRecord();
@@ -435,7 +441,7 @@ public abstract class PwsFile {
 	/**
 	 * Updates a Record. Important to use this method as soon as getRecord will
 	 * return copies made from encrypted records.
-	 * 
+	 *
 	 * @param index
 	 * @param aRecord
 	 */
@@ -457,20 +463,34 @@ public abstract class PwsFile {
 
 	/**
 	 * Opens the database.
-	 * 
+	 *
 	 * @param aPassphrase the passphrase for the file.
-	 * 
+	 *
 	 * @throws EndOfFileException
 	 * @throws IOException
 	 * @throws UnsupportedFileVersionException
 	 * @throws NoSuchAlgorithmException if no SHA-1 implementation is found.
 	 */
+	@Deprecated
 	protected abstract void open(final String aPassphrase) throws EndOfFileException, IOException,
 	UnsupportedFileVersionException, NoSuchAlgorithmException;
 
 	/**
+	 * Opens the database.
+	 *
+	 * @param aPassphrase the passphrase for the file.
+	 *
+	 * @throws EndOfFileException
+	 * @throws IOException
+	 * @throws UnsupportedFileVersionException
+	 * @throws NoSuchAlgorithmException if no SHA-1 implementation is found.
+	 */
+	protected abstract void open(final StringBuilder aPassphrase) throws EndOfFileException, IOException,
+	UnsupportedFileVersionException, NoSuchAlgorithmException;
+
+	/**
 	 * Reads all records from the file.
-	 * 
+	 *
 	 * @throws IOException If an error occurs reading from the file.
 	 * @throws UnsupportedFileVersionException If the file is an unsupported
 	 *         version
@@ -496,9 +516,9 @@ public abstract class PwsFile {
 	/**
 	 * Allocates a block of <code>BLOCK_LENGTH</code> bytes then reads and
 	 * decrypts this many bytes from the file.
-	 * 
+	 *
 	 * @return A byte array containing the decrypted data.
-	 * 
+	 *
 	 * @throws EndOfFileException If end of file occurs whilst reading the data.
 	 * @throws IOException If an error occurs whilst reading the file.
 	 */
@@ -514,9 +534,9 @@ public abstract class PwsFile {
 	/**
 	 * Reads raw (undecrypted) bytes from the file. The method attepts to read
 	 * <code>bytes.length</code> bytes from the file.
-	 * 
+	 *
 	 * @param bytes the array to be filled from the file.
-	 * 
+	 *
 	 * @throws EndOfFileException If end of file occurs whilst reading the data.
 	 * @throws IOException If an error occurs whilst reading the file.
 	 */
@@ -540,9 +560,9 @@ public abstract class PwsFile {
 	 * Reads bytes from the file and decryps them. <code>buff</code> may be any
 	 * length provided that is a multiple of <code>getBlockSize()</code> bytes
 	 * in length.
-	 * 
+	 *
 	 * @param buff the buffer to read the bytes into.
-	 * 
+	 *
 	 * @throws EndOfFileException If end of file has been reached.
 	 * @throws IOException If a read error occurs.
 	 * @throws IllegalArgumentException If <code>buff.length</code> is not an
@@ -553,9 +573,9 @@ public abstract class PwsFile {
 	/**
 	 * Reads any additional header from the file. Subclasses should override
 	 * this a necessary as the default implementation does nothing.
-	 * 
+	 *
 	 * @param file the {@link PwsFile} instance to read the header from.
-	 * 
+	 *
 	 * @throws EndOfFileException If end of file is reached.
 	 * @throws IOException If an error occurs while reading the file.
 	 * @throws UnsupportedFileVersionException If the file's version is
@@ -568,9 +588,9 @@ public abstract class PwsFile {
 	/**
 	 * Reads a single record from the file. The correct subclass of PwsRecord is
 	 * returned depending on the version of the file.
-	 * 
+	 *
 	 * @return The record read from the file.
-	 * 
+	 *
 	 * @throws EndOfFileException When end-of-file is reached.
 	 * @throws IOException
 	 * @throws UnsupportedFileVersionException If this version of the file
@@ -588,7 +608,7 @@ public abstract class PwsFile {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param index
 	 * @return true if a record was removed
 	 */
@@ -603,7 +623,7 @@ public abstract class PwsFile {
 	/**
 	 * Writes this file back to the filesystem. If successful the modified flag
 	 * is also reset on the file and all records.
-	 * 
+	 *
 	 * @throws IOException if the attempt fails.
 	 * @throws NoSuchAlgorithmException if no SHA-1 implementation is found.
 	 * @throws ConcurrentModificationException if the underlying store was
@@ -624,7 +644,7 @@ public abstract class PwsFile {
 	/**
 	 * Sets the passphrase that will be used to encrypt the file when it is
 	 * saved.
-	 * 
+	 *
 	 * @deprecated
 	 * @param pass
 	 */
@@ -637,7 +657,7 @@ public abstract class PwsFile {
 	/**
 	 * Sets the passphrase that will be used to encrypt the file when it is
 	 * saved. The passphrase will be cleared.
-	 * 
+	 *
 	 * @param pass
 	 */
 	public void setPassphrase(final StringBuilder pass) {
@@ -655,9 +675,9 @@ public abstract class PwsFile {
 
 	/**
 	 * Writes unencrypted bytes to the file.
-	 * 
+	 *
 	 * @param buffer the data to be written.
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	public void writeBytes(final byte[] buffer) throws IOException {
@@ -667,9 +687,9 @@ public abstract class PwsFile {
 
 	/**
 	 * Encrypts then writes the contents of <code>buff</code> to the file.
-	 * 
+	 *
 	 * @param buff the data to be written.
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	public abstract void writeEncryptedBytes(final byte[] buff) throws IOException;
@@ -677,9 +697,9 @@ public abstract class PwsFile {
 	/**
 	 * Writes any additional header. This default implementation does nothing.
 	 * Subclasses should override this as necessary.
-	 * 
+	 *
 	 * @param file
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	protected void writeExtraHeader(final PwsFile file) throws IOException {
@@ -687,14 +707,14 @@ public abstract class PwsFile {
 
 	/**
 	 * Returns the size of blocks in this file type.
-	 * 
+	 *
 	 * @return the size of blocks in this file type as an int
 	 */
 	abstract int getBlockSize();
 
 	/**
 	 * May this file be changed?
-	 * 
+	 *
 	 * @return the readOnly
 	 */
 	public boolean isReadOnly() {
@@ -703,7 +723,7 @@ public abstract class PwsFile {
 
 	/**
 	 * Sets whether this file may be changed.
-	 * 
+	 *
 	 * @param readOnly the readOnly to set
 	 */
 	public void setReadOnly(final boolean readOnly) {
@@ -727,7 +747,7 @@ public abstract class PwsFile {
 		/**
 		 * Construct the <code>Iterator</code> linking it to the given
 		 * PasswordSafe file.
-		 * 
+		 *
 		 * @param file the file this iterator is linked to.
 		 * @param iter the <code>Iterator</code> over the records.
 		 */
@@ -745,9 +765,9 @@ public abstract class PwsFile {
 		 * Returns <code>true</code> if the iteration has more elements. (In
 		 * other words, returns <code>true</code> if next would return an
 		 * element rather than throwing an exception.)
-		 * 
+		 *
 		 * @return <code>true</code> if the iterator has more elements.
-		 * 
+		 *
 		 * @see java.util.Iterator#hasNext()
 		 */
 		public final boolean hasNext() {
@@ -757,9 +777,9 @@ public abstract class PwsFile {
 		/**
 		 * Returns the next PasswordSafe record in the iteration. The object
 		 * returned will be a subclass of {@link PwsRecord}
-		 * 
+		 *
 		 * @return the next element in the iteration.
-		 * 
+		 *
 		 * @see java.util.Iterator#next()
 		 */
 		public final Object next() {
@@ -786,7 +806,7 @@ public abstract class PwsFile {
 		 * Removes the last record returned by
 		 * {@link PwsFile.FileIterator#next()} from the PasswordSafe file and
 		 * marks the file as modified.
-		 * 
+		 *
 		 * @see java.util.Iterator#remove()
 		 */
 		public final void remove() {

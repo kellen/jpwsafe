@@ -1,6 +1,6 @@
 /*
  * $Id:$
- * 
+ *
  * Copyright (c) 2008-2014 David Muller <roxon@users.sourceforge.net>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
@@ -28,9 +28,9 @@ import com.amazonaws.s3.S3Object;
 /**
  * This is an implementation of the storage interface that uses S3 as the
  * backend.
- * 
+ *
  * @author mtiller
- * 
+ *
  */
 public class PwsS3Storage implements PwsStorage {
 	private static final Log LOG = Log.getInstance(PwsS3Storage.class.getPackage().getName());
@@ -44,13 +44,13 @@ public class PwsS3Storage implements PwsStorage {
 	/**
 	 * A helper class to hold the Amazon S3 credentials. This will probably be
 	 * refactored as the handling of this information is improved.
-	 * 
+	 *
 	 * Note that this class "scrambles" the bucket name. This is not security
 	 * related but rather to avoid name clashes since all buckets across all of
 	 * S3 are in a single namespace (or at least so it would appear).
-	 * 
+	 *
 	 * @author mtiller
-	 * 
+	 *
 	 */
 	public static class AccountDetails {
 		/** The plain unhashed bucket name */
@@ -59,7 +59,7 @@ public class PwsS3Storage implements PwsStorage {
 		String secretKey;
 		private final String hashedBucket;
 
-		public AccountDetails(String bucket, String id, String secret) {
+		public AccountDetails(final String bucket, final String id, final String secret) {
 			final SHA1 sha1 = new SHA1();
 			bucketTitle = bucket;
 			keyId = id;
@@ -87,7 +87,7 @@ public class PwsS3Storage implements PwsStorage {
 
 		/**
 		 * Get a hashed form of the bucket name.
-		 * 
+		 *
 		 * @return The hashed form.
 		 */
 		public String getHashedName() {
@@ -127,7 +127,7 @@ public class PwsS3Storage implements PwsStorage {
 	/**
 	 * Constructs an instance of an Amazon S3 storage provider. FIXME: does too
 	 * much, split up in a create new and open existing.
-	 * 
+	 *
 	 * @param bucket The bucket name
 	 * @param aFilename The filename the account information is stored in (if it
 	 *        exists) or the file to write it to if the storage is initialized.
@@ -135,7 +135,7 @@ public class PwsS3Storage implements PwsStorage {
 	 *        These are only required if a new storage area is being
 	 *        initialized. Otherwise, they are read from the specified file.
 	 */
-	public PwsS3Storage(String aFilename, AccountDetails acc, String passphrase) throws IOException {
+	public PwsS3Storage(final String aFilename, final AccountDetails acc, final StringBuilder passphrase) throws IOException {
 		filename = aFilename;
 
 		final File theFile = new File(aFilename);
@@ -177,7 +177,7 @@ public class PwsS3Storage implements PwsStorage {
 				theAccountRecord.setField(new PwsStringUnicodeField(PwsRecordV3.TITLE,
 						acc.bucketTitle));
 				theAccountRecord
-						.setField(new PwsStringUnicodeField(PwsRecordV3.USERNAME, acc.keyId));
+				.setField(new PwsStringUnicodeField(PwsRecordV3.USERNAME, acc.keyId));
 				theAccountRecord.setField(new PwsStringUnicodeField(PwsRecordV3.PASSWORD,
 						acc.secretKey));
 				localFile.add(theAccountRecord);
@@ -222,10 +222,15 @@ public class PwsS3Storage implements PwsStorage {
 		}
 	}
 
+	@Deprecated
+	public PwsS3Storage(final String aFilename, final AccountDetails acc, final String passphrase) throws IOException {
+		this(aFilename, acc, new StringBuilder(passphrase));
+	}
+
 	/**
 	 * This method grabs the data from S3 (in one shot) and then constructs a
 	 * ByteArrayInputStream for use at the PwsFile level.
-	 * 
+	 *
 	 */
 	public byte[] load() throws IOException {
 		try {
@@ -245,7 +250,7 @@ public class PwsS3Storage implements PwsStorage {
 	/**
 	 * This method saves all the data back to S3 (in one shot).
 	 */
-	public boolean save(byte[] bytes) {
+	public boolean save(final byte[] bytes) {
 		/* Turn the bytes into a String for S3 */
 		final String data = Base64.encodeBytes(bytes);
 		try {
@@ -260,7 +265,7 @@ public class PwsS3Storage implements PwsStorage {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.pwsafe.lib.file.PwsStorage#getIdentifier()
 	 */
 	public String getIdentifier() {
@@ -269,9 +274,9 @@ public class PwsS3Storage implements PwsStorage {
 
 	/**
 	 * S3 does not provide last modified information.
-	 * 
+	 *
 	 * @see org.pwsafe.lib.file.PwsStorage#getModifiedDate()
-	 * 
+	 *
 	 * @return null
 	 */
 	public Date getModifiedDate() {
@@ -282,7 +287,7 @@ public class PwsS3Storage implements PwsStorage {
 
 	/**
 	 * Tries to delete the password safe on S3 and the bucket containung it.
-	 * 
+	 *
 	 * @return true on successful deletion
 	 * @return false if nothing was deleted
 	 * @throws IOException if there is other data in the bucket
@@ -309,7 +314,7 @@ public class PwsS3Storage implements PwsStorage {
 	/**
 	 * Tries to delete the bucket, but throws an exception if there is any data,
 	 * including a password safe, stored in it.
-	 * 
+	 *
 	 * @return true on successful deletion
 	 * @return false if nothing was deleted
 	 * @throws IOException if data is in the store

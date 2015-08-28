@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2008-2014 David Muller <roxon@users.sourceforge.net>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
@@ -16,7 +16,7 @@ import org.pwsafe.lib.crypto.SHA256Pws;
 
 /**
  * This class exposes various utilty methods.
- * 
+ *
  * @author Kevin Preece
  */
 public final class Util {
@@ -35,22 +35,22 @@ public final class Util {
 
 	/**
 	 * Adds more seed values to the internal {@link SecureRandom} generator.
-	 * 
+	 *
 	 * @param seeds
 	 */
-	public static void addSeedBytes(byte[] seeds) {
+	public static void addSeedBytes(final byte[] seeds) {
 		randGen.setSeed(seeds);
 	}
 
 	/**
 	 * Allocates a byte array with a length of <code>length</code> and fills it
 	 * with random data.
-	 * 
+	 *
 	 * @param length the length of the array.
-	 * 
+	 *
 	 * @return A byte array initialised with random data.
 	 */
-	public static byte[] allocateByteArray(int length) {
+	public static byte[] allocateByteArray(final int length) {
 		final byte array[] = new byte[length];
 		newRandBytes(array);
 		return array;
@@ -59,25 +59,25 @@ public final class Util {
 	/**
 	 * Compares two byte arrays returning <code>true</code> if they're equal in
 	 * length and content <code>false</code> if they're not.
-	 * 
+	 *
 	 * @param b1 the first byte array.
 	 * @param b2 the second byte array.
-	 * 
+	 *
 	 * @return <code>true</code> if the arrays are equal, <code>false</code> if
 	 *         they are not.
 	 */
-	public static boolean bytesAreEqual(byte[] b1, byte[] b2) {
+	public static boolean bytesAreEqual(final byte[] b1, final byte[] b2) {
 		return Arrays.equals(b1, b2);
 	}
 
 	/**
 	 * Join two arrays to form a single array.
-	 * 
+	 *
 	 * @param a first array
 	 * @param b second array
 	 * @return first array appended with second array
 	 */
-	public static byte[] mergeBytes(byte[] a, byte[] b) {
+	public static byte[] mergeBytes(final byte[] a, final byte[] b) {
 		final byte[] p = new byte[a.length + b.length];
 		for (int i = 0; i < a.length; i++) {
 			p[i] = a[i];
@@ -90,14 +90,14 @@ public final class Util {
 
 	/**
 	 * Extracts a subset of a byte array as a new byte array.
-	 * 
+	 *
 	 * @param src the byte array to trim
 	 * @param offset the offset to start at
 	 * @param length the number of bytes to include
-	 * 
+	 *
 	 * @return a byte array containing the specified subset
 	 */
-	public static byte[] getBytes(byte[] src, int offset, int length) {
+	public static byte[] getBytes(final byte[] src, final int offset, final int length) {
 
 		final byte[] output = new byte[length];
 		System.arraycopy(src, offset, output, 0, length);
@@ -106,23 +106,23 @@ public final class Util {
 
 	/**
 	 * Copies the contents of src into target.
-	 * 
+	 *
 	 * @param src first array
 	 * @param target second array
 	 */
-	public static void copyBytes(byte[] src, byte[] target) {
+	public static void copyBytes(final byte[] src, final byte[] target) {
 		System.arraycopy(src, 0, target, 0, src.length);
 	}
 
 	/**
 	 * Converts a byte to its unsigned hexadecimal equivalent. For example a
 	 * value of -92 converts to "a4".
-	 * 
+	 *
 	 * @param b the byte to convert
-	 * 
+	 *
 	 * @return A <code>String</code> representation of the value in hexadecimal
 	 */
-	public static String byteToHex(byte b) {
+	public static String byteToHex(final byte b) {
 		LOG.enterMethod("Util.byteToHex(byte)");
 
 		final String str = new StringBuffer().append(HEX_CHARS[(b >>> 4) & 0x0f])
@@ -135,12 +135,12 @@ public final class Util {
 
 	/**
 	 * Converts a byte array to a hexadecimal string.
-	 * 
+	 *
 	 * @param b the byte array to be converted to a hex string.
-	 * 
+	 *
 	 * @return The hexadecimal representation of the byte array contents.
 	 */
-	public static String bytesToHex(byte[] b) {
+	public static String bytesToHex(final byte[] b) {
 		LOG.enterMethod("Util.bytesToHex(byte[])");
 
 		final String str = bytesToHex(b, 0, b.length);
@@ -153,18 +153,18 @@ public final class Util {
 	/**
 	 * Converts a byte array to a hexadecimal string. Conversion starts at byte
 	 * <code>offset</code> and continues for <code>length</code> bytes.
-	 * 
+	 *
 	 * @param b the array to be converted.
 	 * @param offset the start offset within <code>b</code>.
 	 * @param length the number of bytes to convert.
-	 * 
+	 *
 	 * @return A string representation of the byte array.
-	 * 
+	 *
 	 * @throws IllegalArgumentException if <code>length</code> is negative.
 	 * @throws ArrayIndexOutOfBoundsException if
 	 *         <code>(offest + length) &gt; b.length</code>.
 	 */
-	public static String bytesToHex(byte[] b, int offset, int length) {
+	public static String bytesToHex(final byte[] b, final int offset, final int length) {
 		LOG.enterMethod("Util.bytesToHex(byte[],int,int)");
 
 		if (LOG.isDebug2Enabled()) {
@@ -197,12 +197,12 @@ public final class Util {
 
 	/**
 	 * Produces a string prepresentation of the byte array.
-	 * 
+	 *
 	 * @param b the array to be processed.
-	 * 
+	 *
 	 * @return A string representation of the byte array.
 	 */
-	public static String bytesToString(byte[] b) {
+	public static String bytesToString(final byte[] b) {
 		StringBuffer sb;
 
 		sb = new StringBuffer();
@@ -222,13 +222,13 @@ public final class Util {
 	/**
 	 * Converts an array from the native big-endian order to the little-endian
 	 * order used by PasswordSafe. The array is transformed in-place.
-	 * 
+	 *
 	 * @param src the array to be byte-swapped.
-	 * 
+	 *
 	 * @throws IllegalArgumentException if the array length is zero or not a
 	 *         multiple of four bytes.
 	 */
-	public static void bytesToLittleEndian(byte[] src) {
+	public static void bytesToLittleEndian(final byte[] src) {
 		LOG.enterMethod("Util.bytesToLittleEndian(byte[])");
 
 		byte temp;
@@ -268,7 +268,7 @@ public final class Util {
 	/**
 	 * Clears a StringBuilder by overwriting it's content and setting it to
 	 * length 0. After this a toString will return "".
-	 * 
+	 *
 	 * @param someChars
 	 */
 	public static void clear(final StringBuilder someChars) {
@@ -281,13 +281,13 @@ public final class Util {
 
 	/**
 	 * Creates a clone of the given byte array.
-	 * 
+	 *
 	 * @param src the array to be cloned.
-	 * 
+	 *
 	 * @return An array of bytes equal in length and content to <code>src</code>
 	 *         .
 	 */
-	public static byte[] cloneByteArray(byte[] src) {
+	public static byte[] cloneByteArray(final byte[] src) {
 		LOG.enterMethod("Util.cloneByteArray(byte[])");
 
 		final byte[] dst = new byte[src.length];
@@ -305,13 +305,13 @@ public final class Util {
 	 * <code>src</code> truncated at <code>length</code> bytes. If length is
 	 * greater than <code>src.length</code> then the new array is a copy of
 	 * <code>src</code> with the excess bytes set to zero.
-	 * 
+	 *
 	 * @param src the array to be cloned.
 	 * @param length the size of the new array.
-	 * 
+	 *
 	 * @return The new array.
 	 */
-	public static byte[] cloneByteArray(byte[] src, int length) {
+	public static byte[] cloneByteArray(final byte[] src, final int length) {
 		LOG.enterMethod("Util.cloneByteArray(byte[],int)");
 
 		final int max = (length < src.length) ? length : src.length;
@@ -327,16 +327,16 @@ public final class Util {
 	/**
 	 * Extracts an int from a byte array. The value is four bytes in
 	 * little-endian order starting at <code>offset</code>.
-	 * 
+	 *
 	 * @param buff the array to extract the int from.
 	 * @param offset the offset to start reading from.
-	 * 
+	 *
 	 * @return The value extracted.
-	 * 
+	 *
 	 * @throws IndexOutOfBoundsException if offset is negative or
 	 *         <code>buff.length</code> &lt; <code>offset + 4</code>.
 	 */
-	public static int getIntFromByteArray(byte[] buff, int offset) {
+	public static int getIntFromByteArray(final byte[] buff, final int offset) {
 		LOG.enterMethod("Util.cloneByteArray(byte[],int)");
 
 		int result;
@@ -351,7 +351,7 @@ public final class Util {
 
 	/**
 	 * Returns a random byte in the range -128 to +127.
-	 * 
+	 *
 	 * @return A random byte.
 	 */
 	public static byte newRand() {
@@ -363,14 +363,14 @@ public final class Util {
 	/**
 	 * fills <code>bytes[]</code> with random bytes using newRand()
 	 */
-	public static void newRandBytes(byte[] bytes) {
+	public static void newRandBytes(final byte[] bytes) {
 		randGen.nextBytes(bytes);
 	}
 
 	/**
 	 * Returns a random positive integer in the range 0 to
 	 * <code>Integer.MAX_VALUE</code>.
-	 * 
+	 *
 	 * @return A random integer in the range 0 to <code>Integer.MAX_VALUE</code>
 	 *         .
 	 */
@@ -381,12 +381,12 @@ public final class Util {
 	/**
 	 * Stores an integer in little endian order into <code>buff</code> starting
 	 * at offset <code>offset</code>.
-	 * 
+	 *
 	 * @param buff the buffer to store the integer into.
 	 * @param value the integer value to store.
 	 * @param offset the offset at which to store the value.
 	 */
-	public static void putIntToByteArray(byte[] buff, int value, int offset) {
+	public static void putIntToByteArray(final byte[] buff, final int value, final int offset) {
 		LOG.enterMethod("Util.putIntToByteArray");
 
 		buff[offset + 0] = (byte) (value & 0xff);
@@ -399,11 +399,11 @@ public final class Util {
 
 	/**
 	 * Convert an unsigned set of bytes to a signed set.
-	 * 
+	 *
 	 * @param ints an array of signed bytes
 	 * @return an array of unsigned bytes
 	 */
-	public static byte[] unsignedToSigned(int[] ints) {
+	public static byte[] unsignedToSigned(final int[] ints) {
 		final byte[] result = new byte[ints.length];
 		for (int i = 0; i < ints.length; i++) {
 			result[i] = (byte) (ints[i] & 0xFF);
@@ -414,16 +414,16 @@ public final class Util {
 	/**
 	 * Extracts an milliseconds from seconds strored in a byte array. The value
 	 * is four bytes in little-endian order starting at <code>offset</code>.
-	 * 
+	 *
 	 * @param buff the array to extract the millis from.
 	 * @param offset the offset to start reading from.
-	 * 
+	 *
 	 * @return The value extracted.
-	 * 
+	 *
 	 * @throws IndexOutOfBoundsException if offset is negative or
 	 *         <code>buff.length</code> &lt; <code>offset + 4</code>.
 	 */
-	public static long getMillisFromByteArray(byte[] buff, int offset) {
+	public static long getMillisFromByteArray(final byte[] buff, final int offset) {
 
 		long result;
 
@@ -438,12 +438,12 @@ public final class Util {
 	/**
 	 * Stores a long milliseconds as seconds in a byte array. The value is four
 	 * bytes in little-endian order starting at <code>offset</code>.
-	 * 
+	 *
 	 * @param buff the buffer to store the seconds into.
 	 * @param value the millis long value to store.
 	 * @param offset the offset at which to store the value.
 	 */
-	public static void putMillisToByteArray(byte[] buff, long value, int offset) {
+	public static void putMillisToByteArray(final byte[] buff, long value, final int offset) {
 		value /= 1000L; // convert from millis to seconds
 
 		buff[offset + 0] = (byte) (value & 0xff);
@@ -455,16 +455,16 @@ public final class Util {
 
 	/**
 	 * Calculate stretched key.
-	 * 
+	 *
 	 * http://www.schneier.com/paper-low-entropy.pdf (Section 4.1), with SHA-256
 	 * as the hash function, and ITER iterations (at least 2048, i.e., t = 11).
-	 * 
+	 *
 	 * @param passphrase the user entered passphrase
 	 * @param salt the salt from the file
 	 * @param iter the number of iters from the file
 	 * @return the stretched user key for comparison
 	 */
-	public static byte[] stretchPassphrase(byte[] passphrase, byte[] salt, int iter) {
+	public static byte[] stretchPassphrase(final byte[] passphrase, final byte[] salt, final int iter) {
 		final SHA256Pws hasher = new SHA256Pws();
 		final byte[] p = mergeBytes(passphrase, salt);
 		byte[] hash = hasher.digest(p);
@@ -473,5 +473,18 @@ public final class Util {
 		}
 		return hash;
 
+	}
+
+	/**
+	 * Nullsafe equals, copied from Java 7 Objects.equals in order
+	 * to continue to be Java 6 compatible.
+	 *
+	 * @param a
+	 * @param b
+	 * @return {@code true} if the arguments are equal to each other
+	 * and {@code false} otherwise
+	 */
+	public static boolean equals(final Object a, final Object b) {
+		return (a == b) || (a != null && a.equals(b));
 	}
 }

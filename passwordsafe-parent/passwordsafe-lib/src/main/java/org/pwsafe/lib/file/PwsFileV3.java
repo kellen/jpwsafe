@@ -1,6 +1,6 @@
 /*
  * $Id: PwsFileV2.java 944 2006-09-08 03:25:19 +0000 (Fri, 08 Sep 2006) glen_a_smith $
- * 
+ *
  * Copyright (c) 2008-2014 David Muller <roxon@users.sourceforge.net>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
@@ -35,7 +35,7 @@ import org.pwsafe.lib.exception.UnsupportedFileVersionException;
 
 /**
  * Encapsulates version 3 PasswordSafe files.
- * 
+ *
  * @author Glen Smith (based on Kevin Preece's v2 implementation).
  */
 public final class PwsFileV3 extends PwsFile {
@@ -96,15 +96,21 @@ public final class PwsFileV3 extends PwsFile {
 	 * <b>N.B. </b>this constructor's visibility may be reduced in future
 	 * releases.
 	 * </p>
-	 * 
+	 *
 	 * @param storage the underlying storage to use to open the database.
 	 * @param aPassphrase the passphrase for the database.
-	 * 
+	 *
 	 * @throws EndOfFileException
 	 * @throws IOException
 	 * @throws UnsupportedFileVersionException
 	 * @throws NoSuchAlgorithmException
 	 */
+	public PwsFileV3(final PwsStorage storage, final StringBuilder aPassphrase) throws EndOfFileException,
+	IOException, UnsupportedFileVersionException, NoSuchAlgorithmException {
+		super(storage, aPassphrase);
+	}
+
+	@Deprecated
 	public PwsFileV3(final PwsStorage storage, final String aPassphrase) throws EndOfFileException,
 	IOException, UnsupportedFileVersionException, NoSuchAlgorithmException {
 		super(storage, aPassphrase);
@@ -112,7 +118,7 @@ public final class PwsFileV3 extends PwsFile {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.pwsafe.lib.file.PwsFile#dispose()
 	 */
 	@Override
@@ -132,6 +138,12 @@ public final class PwsFileV3 extends PwsFile {
 	@Override
 	protected void open(final String aPassphrase) throws EndOfFileException, IOException,
 	UnsupportedFileVersionException {
+		this.open(new StringBuilder(aPassphrase));
+	}
+
+	@Override
+	protected void open(final StringBuilder aPassphrase) throws EndOfFileException, IOException,
+	UnsupportedFileVersionException {
 		LOG.enterMethod("PwsFileV3.init");
 
 		setPassphrase(new StringBuilder(aPassphrase));
@@ -147,7 +159,8 @@ public final class PwsFileV3 extends PwsFile {
 		final int iter = theHeaderV3.getIter();
 		LOG.debug1("Using iterations: [" + iter + "]");
 		final SHA256Pws shaHasher = new SHA256Pws();
-		stretchedPassword = Util.stretchPassphrase(aPassphrase.getBytes(), theHeaderV3.getSalt(),
+		// TODO: Change to avoid to STILL build a String.
+		stretchedPassword = Util.stretchPassphrase(aPassphrase.toString().getBytes(), theHeaderV3.getSalt(),
 				iter);
 
 		if (!Util.bytesAreEqual(theHeaderV3.getPassword(), shaHasher.digest(stretchedPassword))) {
@@ -187,7 +200,7 @@ public final class PwsFileV3 extends PwsFile {
 	/**
 	 * Writes this file back to the filesystem. If successful the modified flag
 	 * is also reset on the file and all records.
-	 * 
+	 *
 	 * @throws IOException if the attempt fails.
 	 */
 	@Override
@@ -254,7 +267,7 @@ public final class PwsFileV3 extends PwsFile {
 
 	/**
 	 * Returns the major version number for the file.
-	 * 
+	 *
 	 * @return The major version number for the file.
 	 */
 	@Override
@@ -265,9 +278,9 @@ public final class PwsFileV3 extends PwsFile {
 	/**
 	 * Allocates a new, empty record unowned by any file. The record type is
 	 * {@link PwsRecordV3}.
-	 * 
+	 *
 	 * @return A new empty record
-	 * 
+	 *
 	 * @see org.pwsafe.lib.file.PwsFile#newRecord()
 	 */
 	@Override
@@ -277,9 +290,9 @@ public final class PwsFileV3 extends PwsFile {
 
 	/**
 	 * Reads the extra header present in version 3 files.
-	 * 
+	 *
 	 * @param file the file to read the header from.
-	 * 
+	 *
 	 * @throws EndOfFileException If end of file is reached.
 	 * @throws IOException If an error occurs whilst reading.
 	 * @throws UnsupportedFileVersionException If the header is not a valid V2
@@ -294,9 +307,9 @@ public final class PwsFileV3 extends PwsFile {
 
 	/**
 	 * Writes the extra version 3 header.
-	 * 
+	 *
 	 * @param file the file to write the header to.
-	 * 
+	 *
 	 * @throws IOException if an error occurs whilst writing the header.
 	 */
 	@Override
@@ -308,9 +321,9 @@ public final class PwsFileV3 extends PwsFile {
 	 * Reads bytes from the file and decrypts them. <code>buff</code> may be any
 	 * length provided that is a multiple of <code>BLOCK_LENGTH</code> bytes in
 	 * length.
-	 * 
+	 *
 	 * @param buff the buffer to read the bytes into.
-	 * 
+	 *
 	 * @throws EndOfFileException If end of file has been reached.
 	 * @throws IOException If a read error occurs.
 	 * @throws IllegalArgumentException If <code>buff.length</code> is not an
@@ -339,9 +352,9 @@ public final class PwsFileV3 extends PwsFile {
 
 	/**
 	 * Encrypts then writes the contents of <code>buff</code> to the file.
-	 * 
+	 *
 	 * @param buff the data to be written.
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	@Override
