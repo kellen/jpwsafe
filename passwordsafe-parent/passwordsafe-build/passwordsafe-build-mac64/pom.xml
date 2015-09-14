@@ -40,8 +40,8 @@
           <mainClass>org.pwsafe.passwordsafeswt.PasswordSafeJFace</mainClass>
           <iconFile>PasswordSafe.icns</iconFile>
           <bundleName>PasswordSafeSWT OSX 64bit</bundleName>
-          <!-- plist adding buggy in multimodule, skip for now -->
-          <!-- dictionaryFile>PasswordSafeSWT.plist</dictionaryFile-->
+          <!-- plist adding: mvn package must be called in submodule   -->
+          <dictionaryFile>PasswordSafeSWT.plist</dictionaryFile>
         </configuration>
         <executions>
           <execution>

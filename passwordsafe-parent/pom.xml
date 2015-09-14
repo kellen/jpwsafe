@@ -32,6 +32,10 @@
   <repositories>
     <repository>
       <id>swt-repo</id>
+      <url>https://swt-repo.googlecode.com/svn/repo/</url>
+    </repository>
+    <repository>
+      <id>swt-repo-new</id>
       <url>https://raw.githubusercontent.com/maven-eclipse/swt-repo/master/</url>
     </repository>
     <repository>
