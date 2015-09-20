@@ -6,14 +6,12 @@
 <AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.pwsafe.jfx.basic.TableController">
     <children>
         <VBox              AnchorPane.topAnchor="0.0"
-                           AnchorPane.bottomAnchor="0.0"
-                           AnchorPane.leftAnchor="0.0"
-                           AnchorPane.rightAnchor="0.0"
-
-        prefHeight="600.0" prefWidth="440.0">
+              AnchorPane.bottomAnchor="0.0"
+              AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0" >
             <children>
                 <TextField id="filterTextField" fx:id="filterTextField"/>
-                <TableView id="entryTable" fx:id="entryTable" prefHeight="-1" prefWidth="440.0" styleClass="entryTable">
+                <TableView id="entryTable" fx:id="entryTable" styleClass="entryTable" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn id="groupColumn" fx:id="groupColumn" prefWidth="80.0" styleClass="titleColumn" text="Gruppe" />
                         <TableColumn id="titleColumn" fx:id="titleColumn" prefWidth="80.0" styleClass="titleColumn" text="Titel" />

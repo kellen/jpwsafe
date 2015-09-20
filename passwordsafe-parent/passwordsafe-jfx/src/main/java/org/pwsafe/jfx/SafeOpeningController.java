@@ -88,6 +88,7 @@ public class SafeOpeningController {
                 openSafe();
             }
         });
+        jpwsPasswordField.requestFocus();
     }
 
     private void initSelectFileChoices(){
@@ -107,9 +108,11 @@ public class SafeOpeningController {
         selectFileChoice.setValue(userPreferences.getMRUFile());
         File passwordSafeFile = new File(userPreferences.getMRUFile());
         JfxMain.getApplication().setPasswordSafeFile(passwordSafeFile);
+        /* jetzt default focus auf Eingabefeld
         if(selectFileChoices.size() > 2){ // wenn mehr als nur create New und openOther
             jpwsPasswordField.requestFocus();
         }
+        */
     }
 
     private void handleSelectFileChoiceChange(Number oldValue, Number newValue){
@@ -199,7 +202,7 @@ public class SafeOpeningController {
         }
         if (pwsEntryStore != null){
             JfxMain.getApplication().setScene("/fxml/basic/list.fxml", JfxMain.DEFAULT_WIDTH, JfxMain.DEFAULT_HEIGHT);
-            //JfxMain.getApplication().setScene("/fxml/basic/table.fxml", 440, 600);
+            //JfxMain.getApplication().setScene("/fxml/basic/table.fxml", 800, 600);
         }
 
     }

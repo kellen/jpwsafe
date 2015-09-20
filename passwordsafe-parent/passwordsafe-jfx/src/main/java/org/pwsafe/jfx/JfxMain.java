@@ -34,7 +34,7 @@ public class JfxMain extends Application {
     public void start(Stage initialStage) throws Exception {
         this.stage = initialStage;
         stage.setTitle("JPwSafe");
-        Image icon = new Image("/img/clogo.gif");
+        Image icon = new Image("/img/iconPwSafeJfx.png");
         stage.getIcons().add(icon);
         setScene("/fxml/basic/openSafe.fxml", DEFAULT_WIDTH, DEFAULT_HEIGHT);
         stage.show();

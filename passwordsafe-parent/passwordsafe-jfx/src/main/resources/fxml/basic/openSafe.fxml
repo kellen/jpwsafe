@@ -12,7 +12,7 @@
             <children>
                 <ImageView fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../img/psafetxtNew.gif" />
+                        <Image url="@../../img/jpsJfx_splash.png" />
                     </image>
                 </ImageView>
                 <ChoiceBox fx:id="selectFileChoice" prefWidth="240.0" />

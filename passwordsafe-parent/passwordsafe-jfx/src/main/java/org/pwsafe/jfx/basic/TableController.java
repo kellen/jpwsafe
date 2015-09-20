@@ -4,23 +4,25 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.KeyCode;
+import org.pwsafe.jfx.DateCellFactory;
 import org.pwsafe.jfx.JfxMain;
 import org.pwsafe.lib.datastore.PwsEntryBean;
 import org.pwsafe.lib.datastore.PwsEntryStore;
-import org.pwsafe.lib.file.PwsRecord;
+import org.pwsafe.lib.file.PwsFieldType;
+import org.pwsafe.lib.file.PwsFieldTypeV3;
+
+import java.util.*;
 
 /**
  */
@@ -41,22 +43,50 @@ public class TableController {
     @FXML
     private TableColumn<PwsEntryBean, String> descriptionColumn;
     @FXML
-    private TableColumn<PwsEntryBean, String> changeColumn;
+    private TableColumn<PwsEntryBean, Date> changeColumn;
 
     private ObservableList<PwsEntryBean> pwEntries;
 
     @FXML
     private void initialize(){
         PwsEntryStore pwsEntryStore = JfxMain.getApplication().getPwsEntryStore();
-        pwEntries = FXCollections.observableArrayList((pwsEntryStore.getSparseEntries()));
+        // this are the default sparse fields, but we need more
+        /*
+        EnumSet<PwsFieldTypeV3> DEFAULT_V3_SPARSE_FIELDS = EnumSet.of(
+                PwsFieldTypeV3.TITLE, PwsFieldTypeV3.GROUP, PwsFieldTypeV3.USERNAME,
+                PwsFieldTypeV3.NOTES, PwsFieldTypeV3.URL, PwsFieldTypeV3.PASSWORD_LIFETIME);
+        */
+        Set<PwsFieldType> sparseFields = new HashSet<PwsFieldType>();
+        sparseFields.add(PwsFieldTypeV3.GROUP);
+        sparseFields.add(PwsFieldTypeV3.TITLE);
+        sparseFields.add(PwsFieldTypeV3.USERNAME);
+        sparseFields.add(PwsFieldTypeV3.NOTES);
+        sparseFields.add(PwsFieldTypeV3.URL);
+        sparseFields.add(PwsFieldTypeV3.CREATION_TIME);
+        sparseFields.add(PwsFieldTypeV3.LAST_MOD_TIME);
+        sparseFields.add(PwsFieldTypeV3.LAST_ACCESS_TIME);
+        sparseFields.add(PwsFieldTypeV3.PASSWORD_MOD_TIME);
+        sparseFields.add(PwsFieldTypeV3.PASSWORD_LIFETIME);
+        pwsEntryStore.setSparseFields(sparseFields);
+        // here to fill sparsed entries with data, as only
+        // goup, title, username url and notes are filled,
+        // another solution would be to set explicitely the sparsed fields using
+        // pwsEntryStore.setSparseFields()
+        List<PwsEntryBean> pwsEntryBeanList = pwsEntryStore.getSparseEntries();
+        /*
+        for (PwsEntryBean pwsEntryBean : pwsEntryBeanList){
+            System.out.println(pwsEntryBean.toString());
+        }
+        */
+        pwEntries = FXCollections.observableArrayList((pwsEntryBeanList));
 
         // 0. Initialize the columns.
         groupColumn.setCellValueFactory(cellData    ->     new ReadOnlyObjectWrapper(cellData.getValue().getGroup()));
         titleColumn.setCellValueFactory(cellData    ->     new ReadOnlyObjectWrapper(cellData.getValue().getTitle()));
-        usernameColumn.setCellValueFactory(cellData ->     new ReadOnlyObjectWrapper(cellData.getValue().getUsername()));
-        descriptionColumn.setCellValueFactory(cellData ->  new ReadOnlyObjectWrapper(cellData.getValue().getNotes()));
-        changeColumn.setCellValueFactory(cellData ->       new ReadOnlyObjectWrapper(cellData.getValue().getLastChange()));
-
+        usernameColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getUsername()));
+        descriptionColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getNotes()));
+        changeColumn.setCellFactory(DateCellFactory.getDateCellFactory());
+        changeColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getLastChange()));
         // 1. Wrap the ObservableList in a FilteredList (initially display all data).
         FilteredList<PwsEntryBean> filteredData = new FilteredList<>(pwEntries, p -> true);
 

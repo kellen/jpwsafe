@@ -11,7 +11,7 @@
               AnchorPane.leftAnchor="0.0"
               AnchorPane.rightAnchor="0.0" >
          <children>
-            <TextField id="filterTextField" fx:id="filterTextField"/>
+            <TextField id="filterTextField" fx:id="filterTextField" promptText="type to filter"/>
             <TableView id="entryTable" fx:id="entryTable" styleClass="entryTable" VBox.vgrow="ALWAYS">
               <columns>
                 <!-- noch nicht möglich, tablecolumn auf 100% zu ziehen, VGROW.ALWAYS läßt Text unsichtbar werden -->
@@ -24,6 +24,5 @@
             </TableView>
          </children>
         </VBox>
-        <!-- </ScrollPane> -->
     </children>
 </AnchorPane>
