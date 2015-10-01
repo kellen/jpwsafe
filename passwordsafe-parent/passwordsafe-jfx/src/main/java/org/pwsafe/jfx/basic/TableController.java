@@ -73,11 +73,12 @@ public class TableController {
         // another solution would be to set explicitely the sparsed fields using
         // pwsEntryStore.setSparseFields()
         List<PwsEntryBean> pwsEntryBeanList = pwsEntryStore.getSparseEntries();
+        /*
         for (PwsEntryBean pwsEntryBean : pwsEntryBeanList){
             System.out.println(pwsEntryBean.toString());
         }
         pwEntries = FXCollections.observableArrayList((pwsEntryBeanList));
-
+        */
         // 0. Initialize the columns.
         groupColumn.setCellValueFactory(cellData    ->     new ReadOnlyObjectWrapper(cellData.getValue().getGroup()));
         titleColumn.setCellValueFactory(cellData    ->     new ReadOnlyObjectWrapper(cellData.getValue().getTitle()));
@@ -124,9 +125,7 @@ public class TableController {
         entryTable.getItems().addListener(new InvalidationListener() {
             @Override
             public void invalidated(Observable observable) {
-                System.out.println("list invalidated");
                 if(entryTable.getItems().size() == 1){
-                    System.out.println("now a list with 1 items");
                     /* open question, how to style selected row like focused row
                     entryTable.getSelectionModel().selectFirst();
                     ObservableList<TablePosition> selectedCells = null;
@@ -142,7 +141,6 @@ public class TableController {
                 }
                 else{
                     entryTable.getSelectionModel().clearSelection();
-                    System.out.println("now a list with " + entryTable.getItems().size() + " entries");
                 }
             }
         });
@@ -196,7 +194,6 @@ public class TableController {
         ClipboardContent clipboardContent = new ClipboardContent();
         clipboardContent.put(DataFormat.PLAIN_TEXT, password);
         boolean success = Clipboard.getSystemClipboard().setContent(clipboardContent);
-        System.out.println("Copied password to clipboard");
     }
 
     private void openBrowser(PwsEntryBean entry){
