@@ -73,11 +73,9 @@ public class TableController {
         // another solution would be to set explicitely the sparsed fields using
         // pwsEntryStore.setSparseFields()
         List<PwsEntryBean> pwsEntryBeanList = pwsEntryStore.getSparseEntries();
-        /*
         for (PwsEntryBean pwsEntryBean : pwsEntryBeanList){
             System.out.println(pwsEntryBean.toString());
         }
-        */
         pwEntries = FXCollections.observableArrayList((pwsEntryBeanList));
 
         // 0. Initialize the columns.

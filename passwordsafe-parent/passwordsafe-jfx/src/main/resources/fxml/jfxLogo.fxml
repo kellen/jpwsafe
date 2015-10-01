@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.pwsafe.jfx.basic.ListController">
+    <children>
+        <VBox
+                AnchorPane.topAnchor="0.0"
+                AnchorPane.bottomAnchor="0.0"
+                AnchorPane.leftAnchor="0.0"
+                AnchorPane.rightAnchor="0.0" >
+            <children>
+                <TextField id="filterTextField" fx:id="filterTextField"/>
+                <TableView id="entryTable" fx:id="entryTable" styleClass="entryTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <!-- noch nicht möglich, tablecolumn auf 100% zu ziehen, VGROW.ALWAYS läßt Text unsichtbar werden -->
+                        <TableColumn id="titleColumn" fx:id="titleColumn"
+                                     styleClass="titleColumn"
+                                     text="Titel"
+                                     maxWidth="Infinity"
+                                />
+                    </columns>
+                </TableView>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

@@ -201,8 +201,8 @@ public class SafeOpeningController {
             }
         }
         if (pwsEntryStore != null){
-            JfxMain.getApplication().setScene("/fxml/basic/list.fxml", JfxMain.DEFAULT_WIDTH, JfxMain.DEFAULT_HEIGHT);
-            //JfxMain.getApplication().setScene("/fxml/basic/table.fxml", 800, 600);
+            //JfxMain.getApplication().setScene("/fxml/basic/list.fxml", JfxMain.DEFAULT_WIDTH, JfxMain.DEFAULT_HEIGHT);
+            JfxMain.getApplication().setScene("/fxml/basic/table.fxml", 800, 600);
         }
 
     }
