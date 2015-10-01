@@ -77,8 +77,8 @@ public class TableController {
         for (PwsEntryBean pwsEntryBean : pwsEntryBeanList){
             System.out.println(pwsEntryBean.toString());
         }
-        pwEntries = FXCollections.observableArrayList((pwsEntryBeanList));
         */
+        pwEntries = FXCollections.observableArrayList((pwsEntryBeanList));
         // 0. Initialize the columns.
         groupColumn.setCellValueFactory(cellData    ->     new ReadOnlyObjectWrapper(cellData.getValue().getGroup()));
         titleColumn.setCellValueFactory(cellData    ->     new ReadOnlyObjectWrapper(cellData.getValue().getTitle()));
