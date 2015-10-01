@@ -34,7 +34,7 @@ import org.pwsafe.lib.file.PwsUUIDField;
 /**
  * Convenience class for transferring password info around in a
  * version-independent manner and in java bean style.
- * 
+ *
  * @author roxon
  */
 public class PwsEntryBean implements Cloneable {
@@ -71,7 +71,7 @@ public class PwsEntryBean implements Cloneable {
 
 	/**
 	 * Default constructor.
-	 * 
+	 *
 	 */
 	public PwsEntryBean() {
 		super();
@@ -166,9 +166,9 @@ public class PwsEntryBean implements Cloneable {
 
 	/**
 	 * For backward compatibility.
-	 * 
+	 *
 	 * @param password The password to set.
-	 * 
+	 *
 	 * @deprecated don't pass around passwords as String!
 	 */
 	@Deprecated
@@ -276,7 +276,7 @@ public class PwsEntryBean implements Cloneable {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#clone()
 	 */
 	@Override
@@ -291,7 +291,7 @@ public class PwsEntryBean implements Cloneable {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -309,7 +309,7 @@ public class PwsEntryBean implements Cloneable {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -442,7 +442,7 @@ public class PwsEntryBean implements Cloneable {
 	 * TODO: only used by search, we could use a Stringbuffer here and directly
 	 * lowercase the values without field names. Then a better name would be
 	 * getNormalizedSearchText()
-	 * 
+	 *
 	 * @return
 	 */
 	public Map<String, String> getFields() {
@@ -460,7 +460,7 @@ public class PwsEntryBean implements Cloneable {
 
 	/**
 	 * A safer version of field retrieval that is null-safe.
-	 * 
+	 *
 	 * @param record the record to retrieve the field from
 	 * @param aType the type of the field
 	 * @return the value of the field or an empty string if the field is null
@@ -476,7 +476,7 @@ public class PwsEntryBean implements Cloneable {
 
 	/**
 	 * A safer version of date retrieval that is null-safe.
-	 * 
+	 *
 	 * @param v3
 	 * @param aType
 	 * @return the Field as Date
@@ -489,7 +489,7 @@ public class PwsEntryBean implements Cloneable {
 
 	/**
 	 * Only set a date into a PwsTimeField if the date != null.
-	 * 
+	 *
 	 * @param v3
 	 * @param aType
 	 * @param aDate
@@ -505,8 +505,8 @@ public class PwsEntryBean implements Cloneable {
 
 	/**
 	 * Only set a (utf8) String into a PwsTimeField if it is != null and != "".
-	 * 
-	 * 
+	 *
+	 *
 	 * @param v3
 	 * @param aType
 	 * @param aString
@@ -536,7 +536,7 @@ public class PwsEntryBean implements Cloneable {
 
 	/**
 	 * Moves the contents of the PwsEntryBean into the supplied PwsRecord.
-	 * 
+	 *
 	 * @param nextRecord the record to place the data into
 	 */
 	public void toPwsRecord(final PwsRecord nextRecord) {
@@ -707,6 +707,18 @@ public class PwsEntryBean implements Cloneable {
 					break;
 				case LAST_MOD_TIME:
 					newEntry.setLastChange(getSafeDate(v3, PwsFieldTypeV3.LAST_MOD_TIME));
+					break;
+				case PASSWORD_MOD_TIME:
+					newEntry.setLastPwChange(getSafeDate(v3, PwsFieldTypeV3.PASSWORD_MOD_TIME));
+					break;
+				case CREATION_TIME:
+					newEntry.setCreated(getSafeDate(v3, PwsFieldTypeV3.CREATION_TIME));
+					break;
+				case LAST_ACCESS_TIME:
+					newEntry.setLastChange(getSafeDate(v3, PwsFieldTypeV3.LAST_ACCESS_TIME));
+					break;
+				case AUTOTYPE:
+					newEntry.setAutotype(getSafeValue(v3, PwsFieldTypeV3.AUTOTYPE));
 					break;
 				default:
 					log.warn("Ignored Sparse field type " + theType);
