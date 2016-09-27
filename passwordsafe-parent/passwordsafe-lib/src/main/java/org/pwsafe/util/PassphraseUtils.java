@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2008-2011 David Muller <roxon@users.sourceforge.net>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
@@ -77,14 +77,14 @@ public class PassphraseUtils {
 
 	/**
 	 * Generates a new random password according to the policy supplied.
-	 * 
+	 *
 	 * @param policy the {@link PassphrasePolicy} policy
-	 * 
+	 *
 	 * @return A new random password.
-	 * 
+	 *
 	 * @throws InvalidPassphrasePolicy
 	 */
-	public static String makePassword(PassphrasePolicy policy) throws InvalidPassphrasePolicy {
+	public static String makePassword(final PassphrasePolicy policy) throws InvalidPassphrasePolicy {
 		LOG.enterMethod("makePassword");
 
 		LOG.debug2(policy.toString());
@@ -119,10 +119,6 @@ public class PassphraseUtils {
 		allChars = new char[typeCount][];
 		typesSeen = new boolean[4];
 
-		for (int ii = 0; ii < typeCount; ++ii) {
-			typesSeen[ii] = true;
-		}
-
 		if (policy.easyview) {
 			int ii = 0;
 
@@ -156,6 +152,11 @@ public class PassphraseUtils {
 		}
 
 		do {
+
+			for (int ii = 0; ii < typeCount; ++ii) {
+				typesSeen[ii] = true;
+			}
+
 			password.delete(0, password.length());
 
 			for (int ii = 0; ii < policy.length; ++ii) {
@@ -185,13 +186,13 @@ public class PassphraseUtils {
 	 * <li>At least one uppercase character.
 	 * <li>At least one digit or symbol character.
 	 * </ul>
-	 * 
+	 *
 	 * @param password the password to check.
-	 * 
+	 *
 	 * @return <code>true</code> if the password is considered to be weak,
 	 *         <code>false</code> otherwise.
 	 */
-	public static boolean isWeakPassword(String password) {
+	public static boolean isWeakPassword(final String password) {
 		boolean hasUC = false;
 		boolean hasLC = false;
 		boolean hasDigit = false;

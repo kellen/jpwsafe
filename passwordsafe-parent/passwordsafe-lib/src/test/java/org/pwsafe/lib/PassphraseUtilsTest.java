@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2008-2011 David Muller <roxon@users.sourceforge.net>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
@@ -9,11 +9,11 @@
  */
 package org.pwsafe.lib;
 
-import junit.framework.TestCase;
-
 import org.pwsafe.lib.exception.InvalidPassphrasePolicy;
 import org.pwsafe.util.PassphrasePolicy;
 import org.pwsafe.util.PassphraseUtils;
+
+import junit.framework.TestCase;
 
 /**
  * A JUnit test case that tests the public methods of {@link PassphraseUtils}
@@ -23,7 +23,9 @@ public class PassphraseUtilsTest extends TestCase {
 	 *
 	 */
 	public final void testMakePassword1() {
-		makePassword(new PassphrasePolicy());
+		for (int i = 0; i < 1024; i++) {
+			makePassword(new PassphrasePolicy());
+		}
 	}
 
 	/**
@@ -101,10 +103,10 @@ public class PassphraseUtilsTest extends TestCase {
 
 	/**
 	 * Runs a single password policy test.
-	 * 
+	 *
 	 * @param policy the password policy to use.
 	 */
-	private final void makePassword(PassphrasePolicy policy) {
+	private final void makePassword(final PassphrasePolicy policy) {
 		try {
 			boolean digitSeen;
 			boolean ucCharSeen;
