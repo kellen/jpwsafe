@@ -24,18 +24,26 @@
   </issueManagement>
 
   <properties>
-    <swt.version>3.7.2</swt.version>
+    <swt.version>3.8</swt.version>
     <swt.groupId>org.eclipse.swt</swt.groupId>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   
   <repositories>
-    <repository>
-      <id>swt-repo</id>
+    <!-- repository>
+      <id>swt-repo-gone</id>
       <url>https://swt-repo.googlecode.com/svn/repo/</url>
+    </repository-->
+    <repository>
+      <id>swt-repo-git-old</id><!--  EOL --> 
+      <url>https://github.com/maven-eclipse/swt-repo/</url>
     </repository>
     <repository>
-      <id>swt-repo-new</id>
+      <id>swt-repo-git</id><!-- new but only version 4.2+ -->
+      <url>http://maven-eclipse.github.io/maven</url>
+    </repository>
+    <repository>
+      <id>swt-repo-git-stuff</id><!-- check - still there? -->
       <url>https://raw.githubusercontent.com/maven-eclipse/swt-repo/master/</url>
     </repository>
     <repository>
