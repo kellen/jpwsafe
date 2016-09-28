@@ -35,13 +35,16 @@
       <plugin>
         <groupId>sh.tak.appbundler</groupId>
         <artifactId>appbundle-maven-plugin</artifactId>
-        <version>1.0.4</version>
         <configuration>
           <mainClass>org.pwsafe.passwordsafeswt.PasswordSafeJFace</mainClass>
-          <iconFile>PasswordSafe.icns</iconFile>
           <bundleName>PasswordSafeSWT OSX 32bit</bundleName>
+          <iconFile>src/main/resources/PasswordSafe.icns</iconFile>
           <!-- plist adding: mvn package must be called in submodule -->
-          <dictionaryFile>PasswordSafeSWT.plist</dictionaryFile>
+          <!--dictionaryFile>PasswordSafeSWT.plist</dictionaryFile-->
+          <generateDiskImageFile>true</generateDiskImageFile>
+          <jvmOptions>
+            <param>-XstartOnFirstThread</param>
+          </jvmOptions>
         </configuration>
         <executions>
           <execution>
