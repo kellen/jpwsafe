@@ -42,6 +42,7 @@
           <!-- plist adding: mvn package must be called in submodule   -->
           <!--dictionaryFile>PasswordSafeSWT.plist</dictionaryFile-->
           <generateDiskImageFile>true</generateDiskImageFile>
+          <jvmVersion>1.7+</jvmVersion>
           <jvmOptions>
             <param>-XstartOnFirstThread</param>
           </jvmOptions>

@@ -30,7 +30,7 @@ public class TableColumnSelectionAdaptor extends SelectionAdapter {
 
 	@Override
 	public void widgetSelected(SelectionEvent se) {
-		PasswordTableSorter pts = (PasswordTableSorter) tv.getSorter();
+		PasswordTableSorter pts = (PasswordTableSorter) tv.getComparator();
 		pts.sortOnColumn(columnNumber);
 		tv.refresh();
 	}

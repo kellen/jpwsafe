@@ -13,6 +13,7 @@ import java.util.Date;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.JFacePreferences;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.pwsafe.lib.datastore.PwsEntryBean;
 import org.pwsafe.passwordsafeswt.preference.JpwPreferenceConstants;
@@ -24,7 +25,7 @@ import org.pwsafe.passwordsafeswt.preference.JpwPreferenceConstants;
  * @author Glen Smith
  * 
  */
-public class PasswordTableSorter extends ViewerSorter {
+public class PasswordTableSorter extends ViewerComparator{
 
 	public int ASCENDING = 0;
 	public int DESCENDING = 1;

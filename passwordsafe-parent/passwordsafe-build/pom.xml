@@ -69,7 +69,7 @@
     <dependency>
       <groupId>org.eclipse.swt</groupId>
       <artifactId>org.eclipse.swt.cocoa.macosx</artifactId>
-      <version>${swt.version}</version>
+      <version>4.4.2</version><!-- 4.4.2 is the last version available -->
       <scope>provided</scope>
     </dependency>
     

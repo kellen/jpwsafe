@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.jface.action.IAction;
@@ -41,12 +43,7 @@ import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.JFacePreferences;
 import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.jface.viewers.ColumnViewer;
-import org.eclipse.jface.viewers.IElementComparer;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.jface.viewers.*;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -131,8 +128,6 @@ import org.pwsafe.passwordsafeswt.util.IOUtils;
 import org.pwsafe.passwordsafeswt.util.UserPreferences;
 import org.pwsafe.passwordsafeswt.xml.XMLDataParser;
 
-import au.com.bytecode.opencsv.CSVReader;
-import au.com.bytecode.opencsv.CSVWriter;
 
 /**
  * A port of PasswordSafe to JFace. This is the main class that is launched from
@@ -227,11 +222,11 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 		while (!allDone) {
 			final String result = sd.open();
-			if (result == StartupDialog.CANCEL || result == null) {
+			if (StartupDialog.CANCEL.equals(result) || result == null) {
 				// they cancelled or clicked the close button on the dialog
 				exitApplication();
 				return;
-			} else if (result == StartupDialog.OPEN_FILE) {
+			} else if (StartupDialog.OPEN_FILE.equals(result)) {
 				try {
 					openFile(sd.getFilename(), sd.getPassword());
 					this.setReadOnly(sd.getReadonly());
@@ -250,11 +245,11 @@ public class PasswordSafeJFace extends ApplicationWindow {
 							Messages.getString("PasswordSafeJFace.OpenError.Title"), Messages.getString("PasswordSafeJFace.OpenError.Message"), anEx); //$NON-NLS-1$ //$NON-NLS-2$
 					allDone = false;
 				}
-			} else if (result == StartupDialog.NEW_FILE) {
+			} else if (StartupDialog.NEW_FILE.equals(result)) {
 				newFileAction.run();
 				if (getPwsFile() != null)
 					allDone = true;
-			} else if (result == StartupDialog.OPEN_OTHER) {
+			} else if (StartupDialog.OPEN_OTHER.equals(result)) {
 				openFileAction.run();
 				allDone = true;
 			}
@@ -830,7 +825,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	/**
 	 * Sets the Application in locked mode.
 	 * 
-	 * @param sets the locked mode
+	 * @param isLocked sets the locked mode
 	 */
 	public void setLocked(final boolean isLocked) {
 		lockState.setLocked(isLocked);
@@ -852,7 +847,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	/**
 	 * Sets the Application in read only mode.
 	 * 
-	 * @param sets the read only mode testtesttest@
+	 * @param isReadOnly sets the read only mode testtesttest@
 	 */
 	public void setReadOnly(final boolean isReadOnly) {
 
@@ -965,7 +960,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		tableViewer.setContentProvider(new PasswordTableContentProvider());
 		tableViewer.setLabelProvider(new PasswordTableLabelProvider());
 		tableViewer.setInput(new Object());
-		tableViewer.setSorter(new PasswordTableSorter());
+		tableViewer.setComparator(new PasswordTableSorter());
 
 		viewer = tableViewer;
 
@@ -985,7 +980,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		addTableColumn(column, "PasswordSafeJFace.Column.LastChanged", "table/lastChange"); //$NON-NLS-1$
 
 		// Sort on first column
-		final PasswordTableSorter pts = (PasswordTableSorter) tableViewer.getSorter();
+		final PasswordTableSorter pts = (PasswordTableSorter) tableViewer.getComparator();
 		pts.sortOnColumn(1);
 
 	}
@@ -1019,7 +1014,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		treeViewer = new TreeViewer(aComposite, SWT.BORDER);
 		treeViewer.setLabelProvider(new PasswordTreeLabelProvider());
 		treeViewer.setContentProvider(new PasswordTreeContentProvider());
-		treeViewer.setSorter(new ViewerSorter());
+		treeViewer.setComparator(new ViewerComparator());
 		treeViewer.addDoubleClickListener(new ViewerDoubleClickListener());
 		final int operations = DND.DROP_COPY| DND.DROP_MOVE;
 		final Transfer[] transferTypes = new Transfer[]
@@ -1061,11 +1056,10 @@ public class PasswordSafeJFace extends ApplicationWindow {
 			addTreeColumn(column, "PasswordSafeJFace.Column.Notes", "tree/notes");//$NON-NLS-1$
 		}
 
-		final TreeColumn[] columns = tree.getColumns();
-		for (int i = 0; i < columns.length; i++) {
+		for (TreeColumn treeColumn : tree.getColumns()) {
 			// ps.getDefaultInt("bla");
 			// columns[i].setWidth(100);
-			columns[i].setMoveable(true);
+			treeColumn.setMoveable(true);
 		}
 		// treeViewer.setExpandedState(arg0, arg1)
 
@@ -1117,7 +1111,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 			final String parent = ((PasswordTreeContentProvider) treeViewer
 					.getContentProvider()).getParent(entry);
-			final List<TreeItem> allItemsList = new ArrayList<TreeItem>();
+			final List<TreeItem> allItemsList = new ArrayList<>();
 			allItemsList.addAll(Arrays.asList(tree.getItems()));
 
 			for (final String group : parent.split("\\.")) {
@@ -1205,7 +1199,6 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	 * write unit test, then get rid of pwsrecord
 	 * 
 	 * @param filename full path to output file
-	 * @throws FileNotFoundException if the password file was not found
 	 */
 	public void exportToText(final String filename) {
 		FileWriter fw = null;
@@ -1215,7 +1208,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 			final CSVWriter csvWriter = new CSVWriter(fw, '\t');
 			while (iter.hasNext()) {
 				final PwsRecord nextRecord = iter.next();
-				final List<String> nextEntry = new ArrayList<String>();
+				final List<String> nextEntry = new ArrayList<>();
 
 				if (nextRecord instanceof PwsRecordV1) {
 					nextEntry.add(V1_GROUP_PLACEHOLDER);
@@ -1373,7 +1366,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		final PwsFile pwsFile = getPwsFile();
 		if (pwsFile != null) {
 			final List<PwsEntryBean> sparseEntries = dataStore.getSparseEntries();
-			final List<PwsEntryBean> entryList = new ArrayList<PwsEntryBean>(sparseEntries.size());
+			final List<PwsEntryBean> entryList = new ArrayList<>(sparseEntries.size());
 			for (final PwsEntryBean sparseEntry : sparseEntries) {
 				final PwsEntryBean nextDTO = dataStore.getEntry(sparseEntry.getStoreIndex());
 				entryList.add(nextDTO);

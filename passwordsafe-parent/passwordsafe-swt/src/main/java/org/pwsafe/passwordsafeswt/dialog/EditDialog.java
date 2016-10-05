@@ -122,7 +122,7 @@ public class EditDialog extends Dialog implements Observer {
 	protected void createContents() {
 		shell = new Shell(getParent(), SWT.RESIZE | SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		shell.setImage(JFaceResources.getImage(PasswordSafeJFace.JPW_ICON));
-		shell.setSize(600, 603);
+		shell.setSize(600, 623);
 		shell.setText(Messages.getString("EditDialog.Title")); //$NON-NLS-1$
 		final GridLayout gridLayout_2 = new GridLayout();
 		gridLayout_2.marginWidth = 5;
@@ -336,6 +336,7 @@ public class EditDialog extends Dialog implements Observer {
 		fd_txtPasswordExpire.left = new FormAttachment(txtAutotype, 0, SWT.LEFT);
 		fd_txtPasswordExpire.right = new FormAttachment(txtAutotype, 0, SWT.RIGHT);
 		fd_txtPasswordExpire.top = new FormAttachment(txtAutotype, 10, SWT.BOTTOM);
+		//fd_txtPasswordExpire.bottom = new FormAttachment(txtAutotype, 30, SWT.BOTTOM);
 		txtPasswordExpire.setLayoutData(fd_txtPasswordExpire);
 		txtPasswordExpire.addModifyListener(new ModifyListener() {
 			Color red = null;

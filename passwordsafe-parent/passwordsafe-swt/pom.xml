@@ -31,9 +31,9 @@
       <artifactId>commons-logging</artifactId>
     </dependency>
     <dependency>
-      <groupId>net.sf.opencsv</groupId>
+      <groupId>com.opencsv</groupId>
       <artifactId>opencsv</artifactId>
-      <version>1.7</version>
+      <version>3.8</version>
     </dependency>
 
     <dependency>
@@ -42,48 +42,27 @@
       <version>${swt.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.jface</groupId>
+      <groupId>org.eclipse.scout.sdk.deps</groupId>
       <artifactId>org.eclipse.jface</artifactId>
-      <version>3.8.0.v20120521-2329</version>
+      <version>3.12.0.v20160518-1929</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.eclipse.scout.sdk.deps</groupId>
+          <artifactId>org.eclipse.swt.win32.win32.x86</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
-    <dependency><!-- correct version would be 3.8.2 -->
-      <groupId>org.eclipse.osgi</groupId>
+    <dependency>
+      <groupId>org.eclipse.scout.sdk.deps</groupId>
       <artifactId>org.eclipse.osgi</artifactId>
-      <version>3.8.0.v20120529-1548</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.core</groupId>
-      <artifactId>org.eclipse.core.commands</artifactId>
-      <version>3.6.1.v20120521-2329</version>
+      <version>3.11.0.v20160603-1336</version>
     </dependency>
     
-    <!-- local repo -->
     <dependency>
-      <groupId>org.eclipse.core</groupId>
-      <artifactId>runtime</artifactId>
-      <version>3.8.0.v20120521-2346</version>
+      <groupId>org.eclipse.scout.sdk.deps</groupId>
+      <artifactId>org.eclipse.equinox.preferences</artifactId>
+      <version>3.6.0.v20160120-1756</version>
     </dependency>
-    <dependency>
-      <groupId>org.eclipse.equinox</groupId>
-      <artifactId>org.eclipse.equinox.common</artifactId>
-      <version>3.6.100.v20120522-1841</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.equinox</groupId>
-      <artifactId>preferences</artifactId>
-      <version>3.5.1.v20121031-182809</version>
-    </dependency>
-    
-    <!-- dependency>
-      <groupId>org.eclipse</groupId>
-      <artifactId>jface</artifactId>
-      <version>3.8.0.v20120912-135020</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse</groupId>
-      <artifactId>osgi</artifactId>
-      <version>3.8.2.v20130124-134944</version>
-    </dependency-->
 
     <dependency>
       <groupId>junit</groupId>
@@ -103,7 +82,6 @@
               <classpathPrefix>lib/</classpathPrefix>
               <classpathLayoutType>custom</classpathLayoutType>
               <customClasspathLayout>$${artifact.groupId}.$${artifact.artifactId}.$${artifact.extension}</customClasspathLayout>
-              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
               <mainClass>org.pwsafe.passwordsafeswt.PasswordSafeJFace</mainClass>
             </manifest>
           </archive>
@@ -148,6 +126,7 @@
         </os>
       </activation>
       <properties>
+        <swt.version>4.4.2</swt.version><!-- last version of swt for mac os x x86 -->
         <swt.groupId>org.eclipse.swt</swt.groupId>
         <swt.artifactId>org.eclipse.swt.cocoa.macosx</swt.artifactId>
         <!-- swt.artifactId>org.eclipse.swt.carbon.macosx</swt.artifactId-->

@@ -24,7 +24,7 @@
     <dependency>
       <groupId>${swt.groupId}</groupId>
       <artifactId>org.eclipse.swt.cocoa.macosx</artifactId>
-      <version>${swt.version}</version>
+      <version>4.4.2</version><!-- last available version of swt for x86 -->
       <scope>compile</scope>
     </dependency>
  
@@ -42,6 +42,7 @@
           <!-- plist adding: mvn package must be called in submodule -->
           <!--dictionaryFile>PasswordSafeSWT.plist</dictionaryFile-->
           <generateDiskImageFile>true</generateDiskImageFile>
+          <jvmVersion>1.7+</jvmVersion>
           <jvmOptions>
             <param>-XstartOnFirstThread</param>
           </jvmOptions>
