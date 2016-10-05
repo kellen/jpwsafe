@@ -1,7 +1,13 @@
 Changes:
 
-changes in swt 0.8.1 (xx.xx.xxxx)
-- Added Drag and Drop of Passssword Records (Trac Ticket 1)
+changes in swt 0.9.0  beta 1 (05.10.2016)
+- upgrade to SWT 4.6.1
+- fixed Mac OS X Java version and icon problems (provided by Noa Resare)
+- upgrade to Java 7
+- changed project structure and build to maven 
+
+changes in swt 0.8.1 (13.03.2014)
+- Added Drag and Drop of Password Records (Trac Ticket 1)
 - Added a find function (Feature 14)
 - Speed up for password database loading 
 
