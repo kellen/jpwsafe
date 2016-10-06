@@ -48,13 +48,13 @@ public class PwsFileV2 extends PwsFileV1V2 {
 	/**
 	 * Use of this constructor to load a PasswordSafe database is STRONGLY
 	 * discouraged since it's use ties the caller to a particular file version.
-	 * Use {@link PwsFileFactory#loadFile(String, String)} instead. </p>
+	 * Use {@link PwsFileFactory#loadFile(String, StringBuilder)} instead. </p>
 	 * <p>
 	 * <b>N.B. </b>this constructor's visibility may be reduced in future
 	 * releases.
 	 * </p>
 	 *
-	 * @param filename the name of the database to open.
+	 * @param storage the database to open.
 	 * @param passphrase the passphrase for the database.
 	 *
 	 * @throws EndOfFileException
@@ -67,11 +67,6 @@ public class PwsFileV2 extends PwsFileV1V2 {
 		super(storage, passphrase);
 	}
 
-	@Deprecated
-	public PwsFileV2(final PwsStorage storage, final String passphrase) throws EndOfFileException, IOException,
-	UnsupportedFileVersionException, NoSuchAlgorithmException {
-		super(storage, passphrase);
-	}
 
 	/**
 	 * Returns the major version number for the file.

@@ -112,7 +112,7 @@ public class PwsFileHeader {
 	public void save(PwsFile file) throws IOException, NoSuchAlgorithmException {
 		LOG.enterMethod("PwsFileHeader.save");
 
-		update(file.getPassphrase());
+		update(new StringBuilder(file.getPassphrase()));
 
 		file.writeBytes(RandStuff);
 		file.writeBytes(RandHash);
@@ -128,7 +128,7 @@ public class PwsFileHeader {
 	 * @param passphrase the passphrase to be used to encrypt the database.
 	 * @throws NoSuchAlgorithmException If no SHA-1 implementation is found.
 	 */
-	private void update(String passphrase) throws NoSuchAlgorithmException {
+	private void update(StringBuilder passphrase) throws NoSuchAlgorithmException {
 		LOG.enterMethod("PwsFileHeader.update");
 
 		byte temp[];

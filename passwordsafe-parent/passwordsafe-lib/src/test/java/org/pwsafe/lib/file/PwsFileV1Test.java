@@ -62,7 +62,7 @@ public class PwsFileV1Test extends TestCase {
 	 * Tests that the library can create a version 1 database.
 	 */
 	public void testReadV1File() throws Exception {
-		final PwsFile v1File = new PwsFileV1(new PwsFileStorage(V1_FILE_NAME), PASSPHRASE);
+		final PwsFile v1File = new PwsFileV1(new PwsFileStorage(V1_FILE_NAME), new StringBuilder(PASSPHRASE));
 		v1File.readAll();
 		v1File.close();
 
@@ -74,7 +74,7 @@ public class PwsFileV1Test extends TestCase {
 	 * Tests that the library can create a version 1 database.
 	 */
 	public void testConvertV1File() throws Exception {
-		final PwsFileV1 v1File = new PwsFileV1(new PwsFileStorage(V1_FILE_NAME), PASSPHRASE);
+		final PwsFileV1 v1File = new PwsFileV1(new PwsFileStorage(V1_FILE_NAME), new StringBuilder(PASSPHRASE));
 		v1File.readAll();
 		v1File.close();
 

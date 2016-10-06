@@ -43,7 +43,7 @@ public class CryptoOutputStream extends OutputStream {
 	private byte[] salt = null;
 	private byte[] ipThing = null;
 
-	private final String passphrase;
+	private final StringBuilder passphrase;
 	private final OutputStream rawStream;
 	private BlowfishPws engine;
 
@@ -53,7 +53,19 @@ public class CryptoOutputStream extends OutputStream {
 	 * @param passphrase A passphrase used for encryption
 	 * @param stream The stream to be encrypted.
 	 */
+	@Deprecated
 	public CryptoOutputStream(String passphrase, OutputStream stream) {
+		rawStream = stream;
+		this.passphrase = new StringBuilder(passphrase);
+	}
+
+	/**
+	 * The constructor for the encrytped output stream class.
+	 *
+	 * @param passphrase A passphrase used for encryption
+	 * @param stream The stream to be encrypted.
+	 */
+	public CryptoOutputStream(StringBuilder passphrase, OutputStream stream) {
 		rawStream = stream;
 		this.passphrase = passphrase;
 	}
@@ -94,7 +106,7 @@ public class CryptoOutputStream extends OutputStream {
 		randHash = PwsFileFactory.genRandHash(passphrase, temp);
 		Util.newRandBytes(salt);
 		Util.newRandBytes(ipThing);
-		engine = makeBlowfish(passphrase.getBytes());
+		engine = makeBlowfish(passphrase.toString().getBytes()); // FIXME: avoid String
 		rawStream.write(randStuff);
 		rawStream.write(randHash);
 		rawStream.write(salt);

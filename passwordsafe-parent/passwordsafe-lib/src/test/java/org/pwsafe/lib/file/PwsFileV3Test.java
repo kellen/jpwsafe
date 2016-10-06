@@ -10,6 +10,7 @@ package org.pwsafe.lib.file;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
@@ -73,14 +74,14 @@ public class PwsFileV3Test extends TestCase {
 		pwsFile.close();
 
 		PwsFileStorage storage2 = new PwsFileStorage(filename);
-		PwsFileV3 pwsFile2 = new PwsFileV3(storage2, myPassphrase);
+		PwsFileV3 pwsFile2 = new PwsFileV3(storage2, new StringBuilder(myPassphrase));
 		assertEquals(myPassphrase, pwsFile2.getPassphrase());
 		pwsFile2.close();
 
 		// should fail with old passphrase:
 		storage2 = new PwsFileStorage(filename);
 		try {
-			pwsFile2 = new PwsFileV3(storage2, passphrase);
+			pwsFile2 = new PwsFileV3(storage2, new StringBuilder(passphrase));
 			fail("passphrase change failed !?");
 		} catch (final IOException anEx) {
 			// ok
@@ -144,7 +145,7 @@ public class PwsFileV3Test extends TestCase {
 		pwsFile.dispose();
 
 		final PwsFileStorage storage2 = new PwsFileStorage(filename);
-		final PwsFileV3 pwsFile2 = new PwsFileV3(storage2, passphrase);
+		final PwsFileV3 pwsFile2 = new PwsFileV3(storage2, new StringBuilder(passphrase));
 		pwsFile2.readAll();
 		pwsFile2.close();
 
@@ -174,7 +175,7 @@ public class PwsFileV3Test extends TestCase {
 		file.close();
 
 		final PwsFileStorage storage2 = new PwsFileStorage(filename);
-		final PwsFileV3 file2 = new PwsFileV3(storage2, passphrase.toString());
+		final PwsFileV3 file2 = new PwsFileV3(storage2, new StringBuilder(passphrase));
 		file2.readAll();
 		assertEquals(1000,file2.getRecordCount());
 	}
@@ -187,7 +188,8 @@ public class PwsFileV3Test extends TestCase {
 	 * @throws Exception
 	 */
 	public void testNewPasswordPolicyField() throws Exception {
-		final PwsFileV3 theFile = (PwsFileV3) PwsFileFactory.loadFile("new_policy_bug.psafe3",
+		URL testFile = getClass().getClassLoader().getResource("new_policy_bug.psafe3");
+		final PwsFileV3 theFile = (PwsFileV3) PwsFileFactory.loadFile(testFile.getPath(),
 				new StringBuilder("test"));
 		assertEquals(1, theFile.getRecordCount());
 		final Iterator i = theFile.getRecords();

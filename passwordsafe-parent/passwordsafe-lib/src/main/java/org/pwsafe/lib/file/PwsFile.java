@@ -297,7 +297,7 @@ public abstract class PwsFile {
 		// TODO: use BouncyCastle Provider!
 		final SecretKeySpec key = new SecretKeySpec(getKeyBytes(), "Blowfish");
 		final IvParameterSpec ivSpec = new IvParameterSpec(memoryIv);
-		Cipher cipher = null;
+		Cipher cipher;
 		try {
 			cipher = Cipher.getInstance("Blowfish/CBC/PKCS5Padding");
 		} catch (final NoSuchAlgorithmException e1) {
@@ -361,6 +361,7 @@ public abstract class PwsFile {
 	 */
 	public String getPassphrase() {
 		try {
+			// TODO: avoid String creation
 			return passphrase == null ? null : passphrase.getObject(getCipher(false)).toString();
 		} catch (final IllegalBlockSizeException e) {
 			throw new RuntimeCryptoException(e.getMessage());
@@ -460,20 +461,6 @@ public abstract class PwsFile {
 		}
 
 	}
-
-	/**
-	 * Opens the database.
-	 *
-	 * @param aPassphrase the passphrase for the file.
-	 *
-	 * @throws EndOfFileException
-	 * @throws IOException
-	 * @throws UnsupportedFileVersionException
-	 * @throws NoSuchAlgorithmException if no SHA-1 implementation is found.
-	 */
-	@Deprecated
-	protected abstract void open(final String aPassphrase) throws EndOfFileException, IOException,
-	UnsupportedFileVersionException, NoSuchAlgorithmException;
 
 	/**
 	 * Opens the database.
@@ -639,19 +626,6 @@ public abstract class PwsFile {
 	 */
 	protected void setModified() {
 		modified = true;
-	}
-
-	/**
-	 * Sets the passphrase that will be used to encrypt the file when it is
-	 * saved.
-	 *
-	 * @deprecated
-	 * @param pass
-	 */
-	@Deprecated
-	public void setPassphrase(final String pass) {
-		this.setPassphrase(new StringBuilder(pass));
-
 	}
 
 	/**

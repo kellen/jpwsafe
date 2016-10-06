@@ -91,7 +91,7 @@ public final class PwsFileV3 extends PwsFile {
 	/**
 	 * Use of this constructor to load a PasswordSafe database is STRONGLY
 	 * discouraged since it's use ties the caller to a particular file version.
-	 * Use {@link PwsFileFactory#loadFile(String, String)} instead. </p>
+	 * Use {@link PwsFileFactory#loadFile(String, StringBuilder)} instead. </p>
 	 * <p>
 	 * <b>N.B. </b>this constructor's visibility may be reduced in future
 	 * releases.
@@ -110,11 +110,6 @@ public final class PwsFileV3 extends PwsFile {
 		super(storage, aPassphrase);
 	}
 
-	@Deprecated
-	public PwsFileV3(final PwsStorage storage, final String aPassphrase) throws EndOfFileException,
-	IOException, UnsupportedFileVersionException, NoSuchAlgorithmException {
-		super(storage, aPassphrase);
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -133,12 +128,6 @@ public final class PwsFileV3 extends PwsFile {
 		if (decryptedRecordKey != null) {
 			Arrays.fill(decryptedRecordKey, (byte) 0);
 		}
-	}
-
-	@Override
-	protected void open(final String aPassphrase) throws EndOfFileException, IOException,
-	UnsupportedFileVersionException {
-		this.open(new StringBuilder(aPassphrase));
 	}
 
 	@Override

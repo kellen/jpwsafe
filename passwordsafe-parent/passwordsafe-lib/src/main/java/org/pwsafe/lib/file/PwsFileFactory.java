@@ -178,24 +178,12 @@ public class PwsFileFactory {
 		return md.getDigest();
 	}
 
-	@Deprecated
-	static final byte[] genRandHash(final String passphrase, final byte[] stuff) {
-		return genRandHash(new StringBuilder(passphrase), stuff);
-	}
-
-	@Deprecated
-	public static final PwsFile loadFile(final String filename, final String passphrase)
-			throws EndOfFileException, FileNotFoundException, InvalidPassphraseException,
-			IOException, UnsupportedFileVersionException, NoSuchAlgorithmException {
-		return loadFile(filename, new StringBuilder(passphrase));
-	}
-
 	/**
 	 * Loads a Password Safe file. It returns the appropriate subclass of
 	 * {@link PwsFile}.
 	 *
 	 * @param filename the name of the file to open
-	 * @param passphrase the passphrase for the file
+	 * @param aPassphrase the passphrase for the file
 	 *
 	 * @return The correct subclass of {@link PwsFile} for the file.
 	 *
@@ -261,7 +249,7 @@ public class PwsFileFactory {
 		// file with the
 		// title of the first record set to the value of PwsFileV2.ID_STRING!
 
-		if (rec.getField(PwsRecordV1.TITLE).equals(PwsFileV2.ID_STRING)) {
+		if (rec.getField(PwsRecordV1.TITLE).toString().equals(PwsFileV2.ID_STRING)) {
 			LOG.debug1("This is a V2 format file.");
 			file = new PwsFileV2(new PwsFileStorage(filename), aPassphrase);
 		} else {
@@ -300,7 +288,7 @@ public class PwsFileFactory {
 	 * It creates the appropriate subclass of {@link PwsFile}.
 	 *
 	 * @param filename the name of the file to open
-	 * @param passphrase the passphrase for the file
+	 * @param aPassphrase the passphrase for the file
 	 *
 	 * @return PwsEntryStore loaded with the entries from the wrapped PWsFile.
 	 *
@@ -352,8 +340,8 @@ public class PwsFileFactory {
 	 * It creates the appropriate subclass of {@link PwsFile}.
 	 *
 	 * @param filename the name of the file to open
-	 * @param passphrase the passphrase for the file
-	 * @param Set of fields to fill in the sparse entries.
+	 * @param aPassphrase the passphrase for the file
+	 * @param sparseFields Set of fields to fill in the sparse entries.
 	 *
 	 * @return PwsEntryStore loaded with the entries from the wrapped PWsFile.
 	 *

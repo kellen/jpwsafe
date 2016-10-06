@@ -67,12 +67,6 @@ public abstract class PwsFileV1V2 extends PwsFile {
 		super(storage, passphrase);
 	}
 
-	@Deprecated
-	public PwsFileV1V2(final PwsStorage storage, final String passphrase) throws EndOfFileException,
-	IOException, UnsupportedFileVersionException, NoSuchAlgorithmException {
-		super(storage, passphrase);
-	}
-
 	/*
 	 * (non-Javadoc)
 	 *
@@ -123,12 +117,6 @@ public abstract class PwsFileV1V2 extends PwsFile {
 		sha1.finalize();
 
 		return new BlowfishPws(sha1.getDigest(), header.getIpThing());
-	}
-
-	@Override
-	protected void open(final String aPassphrase) throws EndOfFileException, IOException,
-	UnsupportedFileVersionException, NoSuchAlgorithmException {
-		this.open(new StringBuilder(aPassphrase));
 	}
 
 	/**

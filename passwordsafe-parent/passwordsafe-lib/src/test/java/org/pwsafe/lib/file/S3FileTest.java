@@ -71,12 +71,12 @@ public class S3FileTest extends TestCase {
 	}
 
 	public void testStorage() throws Exception {
-		final PwsS3Storage theStore = new PwsS3Storage(TEST_FILE_NAME, s3Account, PASSPHRASE);
+		final PwsS3Storage theStore = new PwsS3Storage(TEST_FILE_NAME, s3Account, new StringBuilder(PASSPHRASE));
 		assertNotNull(theStore);
 	}
 
 	public void testSimpleIo() throws Exception {
-		final PwsS3Storage theStore = new PwsS3Storage(TEST_FILE_NAME, s3Account, PASSPHRASE);
+		final PwsS3Storage theStore = new PwsS3Storage(TEST_FILE_NAME, s3Account, new StringBuilder(PASSPHRASE));
 		theStore.save(someBytes);
 		final byte[] result = theStore.load();
 		assertTrue(Arrays.areEqual(someBytes, result));
@@ -84,15 +84,15 @@ public class S3FileTest extends TestCase {
 	}
 
 	public void testLoad() throws Exception {
-		final PwsS3Storage theStore = new PwsS3Storage(TEST_FILE_NAME, s3Account, PASSPHRASE);
+		final PwsS3Storage theStore = new PwsS3Storage(TEST_FILE_NAME, s3Account, new StringBuilder(PASSPHRASE));
 		final PwsFileV3 theFile = new PwsFileV3();
 
-		theFile.setPassphrase(PASSPHRASE);
+		theFile.setPassphrase(new StringBuilder(PASSPHRASE));
 		theFile.setStorage(theStore);
 		theFile.save();
 		theFile.close();
 
-		final PwsFileV3 theFile2 = new PwsFileV3(theStore, PASSPHRASE);
+		final PwsFileV3 theFile2 = new PwsFileV3(theStore, new StringBuilder(PASSPHRASE));
 		assertNotNull(theFile2);
 		final PwsRecord record = theFile2.newRecord();
 		record.setField(new PwsStringUnicodeField(PwsRecordV3.TITLE, "test"));
@@ -102,7 +102,7 @@ public class S3FileTest extends TestCase {
 		theFile2.save();
 		theFile2.close();
 
-		final PwsFileV3 theFile3 = new PwsFileV3(theStore, PASSPHRASE);
+		final PwsFileV3 theFile3 = new PwsFileV3(theStore, new StringBuilder(PASSPHRASE));
 		theFile3.readAll();
 		theFile3.close();
 		final PwsRecord record2 = theFile3.getRecords().next();

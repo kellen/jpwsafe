@@ -128,12 +128,12 @@ public class PwsS3Storage implements PwsStorage {
 	 * Constructs an instance of an Amazon S3 storage provider. FIXME: does too
 	 * much, split up in a create new and open existing.
 	 *
-	 * @param bucket The bucket name
 	 * @param aFilename The filename the account information is stored in (if it
 	 *        exists) or the file to write it to if the storage is initialized.
-	 * @param account The bucket name and access credentials for the S3 account.
+	 * @param acc account details: bucket name and access credentials for the S3 account.
 	 *        These are only required if a new storage area is being
 	 *        initialized. Otherwise, they are read from the specified file.
+	 * @param passphrase secret passphrase
 	 */
 	public PwsS3Storage(final String aFilename, final AccountDetails acc, final StringBuilder passphrase) throws IOException {
 		filename = aFilename;
@@ -186,7 +186,7 @@ public class PwsS3Storage implements PwsStorage {
 			}
 			if (acc != null && acc.bucketTitle != null && acc.keyId != null
 					&& acc.secretKey != null) {
-				/** Note the use of HTTPS in the connection. */
+				/* Note the use of HTTPS in the connection. */
 				s3 = new S3(S3.HTTPS_URL, account.keyId, account.secretKey);
 				final String hash = account.getHashedName();
 				S3Bucket aBucket = null;
@@ -220,11 +220,6 @@ public class PwsS3Storage implements PwsStorage {
 				throw new IOException("S3 credentials required");
 			}
 		}
-	}
-
-	@Deprecated
-	public PwsS3Storage(final String aFilename, final AccountDetails acc, final String passphrase) throws IOException {
-		this(aFilename, acc, new StringBuilder(passphrase));
 	}
 
 	/**
@@ -288,8 +283,7 @@ public class PwsS3Storage implements PwsStorage {
 	/**
 	 * Tries to delete the password safe on S3 and the bucket containung it.
 	 *
-	 * @return true on successful deletion
-	 * @return false if nothing was deleted
+	 * @return true on successful deletion, false if nothing was deleted
 	 * @throws IOException if there is other data in the bucket
 	 */
 	public boolean delete() throws IOException {
@@ -315,8 +309,7 @@ public class PwsS3Storage implements PwsStorage {
 	 * Tries to delete the bucket, but throws an exception if there is any data,
 	 * including a password safe, stored in it.
 	 *
-	 * @return true on successful deletion
-	 * @return false if nothing was deleted
+	 * @return true on successful deletion, false if nothing was deleted
 	 * @throws IOException if data is in the store
 	 */
 	public boolean deleteBucket() throws IOException {

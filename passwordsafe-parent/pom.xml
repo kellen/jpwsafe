@@ -23,6 +23,14 @@
     <url>https://sourceforge.net/p/jpwsafe/bugs/</url>
   </issueManagement>
 
+  <licenses>
+    <license>
+      <name>Artistic License 2.0</name>
+      <url>https://opensource.org/licenses/Artistic-2.0</url>
+      <distribution>manual</distribution>
+    </license>
+  </licenses>
+
   <properties>
     <swt.version>4.6.1</swt.version>
     <swt.groupId>org.eclipse.swt</swt.groupId>
@@ -84,13 +92,17 @@
         </plugin>
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>2.6</version>
+          <version>3.0.2</version>
           <configuration>
             <archive>
+              <index>true</index>
               <manifest>
                 <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                 <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
               </manifest>
+              <manifestEntries>
+                <Sealed>true</Sealed>
+              </manifestEntries>
             </archive>
           </configuration>
         </plugin>

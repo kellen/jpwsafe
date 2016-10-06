@@ -8,16 +8,29 @@
  */
 package org.pwsafe.lib.file;
 
+import java.net.URL;
 import java.util.Iterator;
 
 import junit.framework.TestCase;
 
+import org.junit.Before;
 import org.pwsafe.lib.exception.PasswordSafeException;
 
 public class PwsFileV2Test extends TestCase {
 
 	private final static String testV2Filename = "password_file_2.dat";
 	private final static String groupName = "bank.online";
+
+	private String testV2FilePath;
+
+	@Before
+	@Override
+	public void setUp() {
+		URL testFile = getClass().getClassLoader().getResource(testV2Filename);
+		if (testFile != null) {
+			testV2FilePath = testFile.getPath();
+		}
+	}
 
 	public void testFile() throws PasswordSafeException {
 		PwsFileV2 file;
@@ -54,7 +67,7 @@ public class PwsFileV2Test extends TestCase {
 	}
 
 	public void testFileStorage() throws Exception {
-		final PwsFileStorage pfs = new PwsFileStorage(testV2Filename);
+		final PwsFileStorage pfs = new PwsFileStorage(testV2FilePath);
 		final byte[] data = pfs.load();
 		assertNotNull(data);
 		assertTrue(data.length > 0);
