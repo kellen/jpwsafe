@@ -31,8 +31,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.opencsv.CSVReader;
-import com.opencsv.CSVWriter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.jface.action.IAction;
@@ -43,7 +41,12 @@ import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.JFacePreferences;
 import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.jface.viewers.*;
+import org.eclipse.jface.viewers.ColumnViewer;
+import org.eclipse.jface.viewers.IElementComparer;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -121,6 +124,7 @@ import org.pwsafe.passwordsafeswt.model.PasswordTableLabelProvider;
 import org.pwsafe.passwordsafeswt.model.PasswordTableSorter;
 import org.pwsafe.passwordsafeswt.model.PasswordTreeContentProvider;
 import org.pwsafe.passwordsafeswt.model.PasswordTreeLabelProvider;
+import org.pwsafe.passwordsafeswt.model.comparator.EqualsIgnoreCasecomparator;
 import org.pwsafe.passwordsafeswt.preference.JpwPreferenceConstants;
 import org.pwsafe.passwordsafeswt.preference.WidgetPreferences;
 import org.pwsafe.passwordsafeswt.state.LockState;
@@ -128,11 +132,14 @@ import org.pwsafe.passwordsafeswt.util.IOUtils;
 import org.pwsafe.passwordsafeswt.util.UserPreferences;
 import org.pwsafe.passwordsafeswt.xml.XMLDataParser;
 
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+
 
 /**
  * A port of PasswordSafe to JFace. This is the main class that is launched from
  * the commandline.
- * 
+ *
  * @author Glen Smith
  */
 public class PasswordSafeJFace extends ApplicationWindow {
@@ -268,7 +275,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	/**
 	 * Returns a singleton handle to the app for making business logic calls.
-	 * 
+	 *
 	 * @return a handle to a singleton of this class
 	 */
 	public static PasswordSafeJFace getApp() {
@@ -435,7 +442,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	/**
 	 * Creates the popup (right click) menu for the given control.
-	 * 
+	 *
 	 * @param ctl the control to add the popup to
 	 * @return the created menu
 	 */
@@ -511,7 +518,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	/**
 	 * Main program entry point.
-	 * 
+	 *
 	 * @param args commandline args that are passed in
 	 */
 	public static void main(final String args[]) {
@@ -566,7 +573,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	/**
 	 * Create a brand new empty safe.
-	 * 
+	 *
 	 * @param password the password for the new safe
 	 */
 	public void newFile(final StringBuilder password) {
@@ -582,7 +589,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	/**
 	 * Opens a password safe from the file system. Readonly status stays
 	 * unchanged.
-	 * 
+	 *
 	 * @param fileName
 	 * @param password
 	 * @throws Exception if bad things happen during open
@@ -594,7 +601,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	/**
 	 * Opens a password safe from the file system.
-	 * 
+	 *
 	 * @param fileName
 	 * @param password
 	 * @param forReadOnly
@@ -613,7 +620,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	/**
 	 * Save the current safe.
-	 * 
+	 *
 	 * @throws IOException if bad things happen during save
 	 * @throws NoSuchAlgorithmException if SHA-1 implementation not found
 	 */
@@ -628,7 +635,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	/**
 	 * Saves the current safe under a new filename.
-	 * 
+	 *
 	 * @param newFilename the new name to save the file as
 	 * @throws IOException if something went wrong while trying to save the file
 	 * @throws NoSuchAlgorithmException if SHA-1 implementation not found
@@ -643,7 +650,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	/**
 	 * Copy field to clipboard.
-	 * 
+	 *
 	 * @param cb handle to the clipboard
 	 * @param valueToCopy the value to copy to clipboard
 	 */
@@ -660,7 +667,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	/**
 	 * Update the access time of an entry. This method should be moved to
 	 * PwsDatastore in V0.9.
-	 * 
+	 *
 	 * @param anEntry to update the access time, may be sparse
 	 */
 	public void updateAccessTime(PwsEntryBean anEntry) {
@@ -679,7 +686,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	/**
 	 * Locates the selected record in the underlying tree or table control.
-	 * 
+	 *
 	 * @return the selected record
 	 */
 	public PwsEntryBean getSelectedRecord() {
@@ -712,7 +719,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	/**
 	 * Updates an existing record.
-	 * 
+	 *
 	 * @param newEntry the entry's new values
 	 */
 	public void updateRecord(final PwsEntryBean newEntry) {
@@ -729,7 +736,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	/**
 	 * Adds a new record to the safe in a new dialog.
-	 * 
+	 *
 	 * @param newEntry the entry to add
 	 */
 	public void addRecord(final PwsEntryBean newEntry) {
@@ -749,7 +756,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	/**
 	 * If the user has set "Save on Update or Edit", we save the file
 	 * immediately.
-	 * 
+	 *
 	 */
 	private void saveOnUpdateOrEditCheck() {
 		final IPreferenceStore thePrefs = JFacePreferences.getPreferenceStore();
@@ -762,7 +769,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	/**
 	 * Prompts the user to save the current file, if it has been modified.
-	 * 
+	 *
 	 * @return <code>true</code> if the user cancels the action which triggered
 	 *         the call to this method, <code>false</code> if the save was
 	 *         successful or ignored.
@@ -796,7 +803,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	/**
 	 * Deletes the selected record in the tree or table.
-	 * 
+	 *
 	 */
 	public void deleteRecord() {
 		final PwsEntryBean selectedRec = getSelectedRecord();
@@ -807,7 +814,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	/**
 	 * Has the current safe been modified.
-	 * 
+	 *
 	 * @return true if the safe has been modified
 	 */
 	public boolean isDirty() {
@@ -819,7 +826,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	/**
 	 * Is the Application in locked mode.
-	 * 
+	 *
 	 * @return true if the application has been locked
 	 */
 	public boolean isLocked() {
@@ -828,7 +835,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	/**
 	 * Sets the Application in locked mode.
-	 * 
+	 *
 	 * @param isLocked sets the locked mode
 	 */
 	public void setLocked(final boolean isLocked) {
@@ -841,7 +848,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	/**
 	 * Is the Application in read only mode.
-	 * 
+	 *
 	 * @return true if the safe is opened read only
 	 */
 	public boolean isReadOnly() {
@@ -850,7 +857,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	/**
 	 * Sets the Application in read only mode.
-	 * 
+	 *
 	 * @param isReadOnly sets the read only mode testtesttest@
 	 */
 	public void setReadOnly(final boolean isReadOnly) {
@@ -865,7 +872,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	/**
 	 * Returns the currently loaded pwsafe file.
-	 * 
+	 *
 	 * @return Returns the pwsFile.
 	 */
 	public PwsFile getPwsFile() {
@@ -874,7 +881,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	/**
 	 * Returns the currently loaded pwsafe file.
-	 * 
+	 *
 	 * @return Returns the pwsFile.
 	 */
 	public PwsEntryStore getPwsDataStore() {
@@ -883,7 +890,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	/**
 	 * Sets the currently loaded pws entry store.
-	 * 
+	 *
 	 * @param pwsEntryStore The pwsEntryStore to set.
 	 */
 	private void setPwsEntryStore(final PwsEntryStore pwsEntryStore) {
@@ -894,7 +901,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	/**
 	 * Clears the currently loaded store.
-	 * 
+	 *
 	 */
 	public void clearPwsStore() {
 		this.pwsFile = null;
@@ -905,7 +912,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	/**
 	 * Perform necessary shutdown operations, regardless of how the user exited
 	 * the application.
-	 * 
+	 *
 	 */
 	private void tidyUpOnExit() {
 		final IPreferenceStore thePrefs = JFacePreferences.getPreferenceStore();
@@ -924,7 +931,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	/**
 	 * Exit the app.
-	 * 
+	 *
 	 */
 	public void exitApplication() {
 		tidyUpOnExit();
@@ -1018,7 +1025,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		treeViewer = new TreeViewer(aComposite, SWT.BORDER);
 		treeViewer.setLabelProvider(new PasswordTreeLabelProvider());
 		treeViewer.setContentProvider(new PasswordTreeContentProvider());
-		treeViewer.setComparator(new ViewerComparator());
+		treeViewer.setComparator(new ViewerComparator(new EqualsIgnoreCasecomparator()));
 		treeViewer.addDoubleClickListener(new ViewerDoubleClickListener());
 		final int operations = DND.DROP_COPY| DND.DROP_MOVE;
 		final Transfer[] transferTypes = new Transfer[]
@@ -1060,7 +1067,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 			addTreeColumn(column, "PasswordSafeJFace.Column.Notes", "tree/notes");//$NON-NLS-1$
 		}
 
-		for (TreeColumn treeColumn : tree.getColumns()) {
+		for (final TreeColumn treeColumn : tree.getColumns()) {
 			// ps.getDefaultInt("bla");
 			// columns[i].setWidth(100);
 			treeColumn.setMoveable(true);
@@ -1082,7 +1089,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	/**
 	 * Returns whether the treeview is the active view.
-	 * 
+	 *
 	 * @return true if the treeview is showing, false otherwise
 	 */
 	public boolean isTreeViewShowing() {
@@ -1115,7 +1122,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 			final String parent = ((PasswordTreeContentProvider) treeViewer
 					.getContentProvider()).getParent(entry);
-			final List<TreeItem> allItemsList = new ArrayList<>();
+			final List<TreeItem> allItemsList = new ArrayList<TreeItem>();
 			allItemsList.addAll(Arrays.asList(tree.getItems()));
 
 			for (final String group : parent.split("\\.")) {
@@ -1154,7 +1161,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	/**
 	 * Refresh the tree and table.
-	 * 
+	 *
 	 */
 	public void updateViewers() {
 		if (isTreeViewShowing()) {
@@ -1171,7 +1178,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	/**
 	 * Turns on or off the edit record menus (add/edit/delete) and save/as
 	 * menus.
-	 * 
+	 *
 	 * @param enabled true to enable the menus, false otherwise
 	 */
 	private void setEditMenusEnabled(final boolean enabled) {
@@ -1191,7 +1198,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	/**
 	 * TODO: Refactor this to one or several external Listeners. The URL copy
 	 * action should only be enabled when an URL is available.
-	 * 
+	 *
 	 * @param enabled
 	 */
 	public void setUrlCopyEnabled(final boolean enabled) {
@@ -1201,7 +1208,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	/**
 	 * Exports the contents of the password safe to tab separated file. TODO:
 	 * write unit test, then get rid of pwsrecord
-	 * 
+	 *
 	 * @param filename full path to output file
 	 */
 	public void exportToText(final String filename) {
@@ -1212,7 +1219,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 			final CSVWriter csvWriter = new CSVWriter(fw, '\t');
 			while (iter.hasNext()) {
 				final PwsRecord nextRecord = iter.next();
-				final List<String> nextEntry = new ArrayList<>();
+				final List<String> nextEntry = new ArrayList<String>();
 
 				if (nextRecord instanceof PwsRecordV1) {
 					nextEntry.add(V1_GROUP_PLACEHOLDER);
@@ -1302,7 +1309,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	/**
 	 * Import an XML file into the current passwordsafe.
-	 * 
+	 *
 	 * @param filename the name of the file
 	 * @throws PasswordSafeException
 	 */
@@ -1360,7 +1367,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	/**
 	 * Export the current safe to the name file in XML format.
-	 * 
+	 *
 	 * @param filename the filename to export to
 	 * @throws IOException if there was a problem with the export to the XML
 	 *         file
@@ -1370,7 +1377,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		final PwsFile pwsFile = getPwsFile();
 		if (pwsFile != null) {
 			final List<PwsEntryBean> sparseEntries = dataStore.getSparseEntries();
-			final List<PwsEntryBean> entryList = new ArrayList<>(sparseEntries.size());
+			final List<PwsEntryBean> entryList = new ArrayList<PwsEntryBean>(sparseEntries.size());
 			for (final PwsEntryBean sparseEntry : sparseEntries) {
 				final PwsEntryBean nextDTO = dataStore.getEntry(sparseEntry.getStoreIndex());
 				entryList.add(nextDTO);
@@ -1396,7 +1403,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	/**
 	 * Display error dialog and log error.
-	 * 
+	 *
 	 * @param title the title of the dialog
 	 * @param message the message to display
 	 * @param e the exception that caused the problem.
@@ -1419,7 +1426,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	 * method <code>handleShellCloseEvent</code> when the shell is closed.
 	 * Subclasses may extend or reimplement.
 	 * </p>
-	 * 
+	 *
 	 * @return a shell listener
 	 */
 	@Override
@@ -1454,7 +1461,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 			/**
 			 * Sent when a shell becomes the active window. The default behavior
 			 * is to do nothing.
-			 * 
+			 *
 			 * @param e an event containing information about the activation
 			 */
 
@@ -1491,7 +1498,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 			/**
 			 * Sent when a shell stops being the active window. The default
 			 * behavior is to do nothing.
-			 * 
+			 *
 			 * @param e an event containing information about the deactivation
 			 */
 			@Override
@@ -1506,7 +1513,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 			 * In <em>theory</em>, sent when a shell is un-minimized. On windows
 			 * sent when the shell is set visible. Do <strong>not</strong> call
 			 * setVisible(true) within this method, danger of endless loop.
-			 * 
+			 *
 			 * @param e an event containing information about the
 			 *        un-minimization
 			 */
@@ -1546,7 +1553,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 			 * password dialogue when reactivating from Systray. The second time
 			 * it is not called. Still no good, therefore Systray on Mac is
 			 * blocked - see PasswordSafeMacOSX.main.
-			 * 
+			 *
 			 * @param e an event containing information about the minimization
 			 */
 			@Override
@@ -1622,7 +1629,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	public Comparator getSorter() {
 		return new Comparator() {
 			public int compare(final Object o1, final Object o2) {
-				return viewer.getSorter().compare(viewer, o1, o2);
+				return viewer.getComparator().compare(viewer, o1, o2);
 			}
 		};
 	}

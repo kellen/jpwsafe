@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2008-2014 David Muller <roxon@users.sourceforge.net>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
@@ -25,11 +25,12 @@ import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Dialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.pwsafe.passwordsafeswt.util.ShellHelpers;
 
 /**
  * A dialog to choose a Date from a calendar. Designed similar to
  * org.eclipse.swt.widgets.ColorDialog.
- * 
+ *
  * @author David Müller
  */
 public class DateDialog extends Dialog {
@@ -38,11 +39,11 @@ public class DateDialog extends Dialog {
 
 	private Calendar cal = Calendar.getInstance();
 
-	public DateDialog(Shell shell) {
+	public DateDialog(final Shell shell) {
 		super(shell, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 	}
 
-	public DateDialog(Shell shell, int i) {
+	public DateDialog(final Shell shell, final int i) {
 		super(shell, i);
 	}
 
@@ -55,8 +56,9 @@ public class DateDialog extends Dialog {
 		shell.setText(getText());
 		createContents(shell);
 		shell.pack();
+		ShellHelpers.centreShell(getParent(), shell);
 		shell.open();
-		Display display = getParent().getDisplay();
+		final Display display = getParent().getDisplay();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
@@ -69,22 +71,22 @@ public class DateDialog extends Dialog {
 		shell.setLayout(new GridLayout(2, true));
 
 		final DateTime calendar = new DateTime(shell, SWT.CALENDAR | SWT.BORDER);
-		GridData data = new GridData();
+		final GridData data = new GridData();
 		data.horizontalSpan = 2;
 		calendar.setLayoutData(data);
 		calendar.setDay(cal.get(Calendar.DAY_OF_MONTH));
 		calendar.setMonth(cal.get(Calendar.MONTH));
 		calendar.setYear(cal.get(Calendar.YEAR));
 
-		Button ok = new Button(shell, SWT.PUSH);
+		final Button ok = new Button(shell, SWT.PUSH);
 		ok.setText(Messages.getString("DateDialog.OkButton")); //$NON-NLS-1$
 		ok.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
 		ok.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(final SelectionEvent e) {
 				// if (log.isDebugEnabled())
 				log.debug(NLS.bind(
-						Messages.getString("DateDialog.Log.DateSelected"), new Integer[] { calendar.getMonth() + 1, calendar.getDay(), calendar.getYear() })); //$NON-NLS-1$ 
+						Messages.getString("DateDialog.Log.DateSelected"), new Integer[] { calendar.getMonth() + 1, calendar.getDay(), calendar.getYear() })); //$NON-NLS-1$
 				cal.set(Calendar.DAY_OF_MONTH, calendar.getDay());
 				cal.set(Calendar.MONTH, calendar.getMonth());
 				cal.set(Calendar.YEAR, calendar.getYear());
@@ -93,12 +95,12 @@ public class DateDialog extends Dialog {
 		});
 		shell.setDefaultButton(ok);
 
-		Button cancel = new Button(shell, SWT.PUSH);
+		final Button cancel = new Button(shell, SWT.PUSH);
 		cancel.setText(Messages.getString("DateDialog.CancelButton")); //$NON-NLS-1$
 		cancel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
 		cancel.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(final SelectionEvent e) {
 				log.debug(NLS.bind(
 						Messages.getString("DateDialog.Log.DateSelected"), new Integer[] { 0, 0, 0 })); //$NON-NLS-1$
 				cal = null;
@@ -108,7 +110,7 @@ public class DateDialog extends Dialog {
 
 	}
 
-	public void setDate(Date aDate) {
+	public void setDate(final Date aDate) {
 		if (cal == null)
 			cal = Calendar.getInstance();
 		if (aDate != null)

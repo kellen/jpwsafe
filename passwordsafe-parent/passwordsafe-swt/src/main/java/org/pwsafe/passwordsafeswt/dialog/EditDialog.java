@@ -51,7 +51,7 @@ import org.pwsafe.util.PassphraseUtils;
 
 /**
  * The Dialog that allows a user to edit password entries.
- * 
+ *
  * @author Glen Smith
  */
 public class EditDialog extends Dialog implements Observer {
@@ -89,9 +89,9 @@ public class EditDialog extends Dialog implements Observer {
 
 	public Object open() {
 		createContents();
-		ShellHelpers.centreShell(getParent(), shell);
 		shell.layout();
 		shell.pack();
+		ShellHelpers.centreShell(getParent(), shell);
 		shell.open();
 		final Display display = getParent().getDisplay();
 		while (!shell.isDisposed()) {
@@ -103,7 +103,7 @@ public class EditDialog extends Dialog implements Observer {
 
 	/**
 	 * Returns whether the data in the dialog has been updated by the user.
-	 * 
+	 *
 	 * @return true if the data has been updated, false otherwise
 	 */
 	public boolean isDirty() {
@@ -112,7 +112,7 @@ public class EditDialog extends Dialog implements Observer {
 
 	/**
 	 * Marks the dialog as having data that needs to be updated.
-	 * 
+	 *
 	 * @param dirty true if the dialog data needs saving, false otherwise.
 	 */
 	public void setDirty(final boolean dirty) {
@@ -148,16 +148,17 @@ public class EditDialog extends Dialog implements Observer {
 
 		};
 
+		final int widthHint = 550;
 		final Composite compositeLabel = new Composite(shell, SWT.NONE);
 		final GridData gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
-		gridData.widthHint = 550;
+		gridData.widthHint = widthHint;
 		compositeLabel.setLayoutData(gridData);
 		compositeLabel.setLayout(new GridLayout());
 
 		final Label labelInfo = new Label(compositeLabel, SWT.WRAP);
 		final GridData gridData_1 = new GridData(GridData.HORIZONTAL_ALIGN_FILL
 				| GridData.VERTICAL_ALIGN_FILL);
-		gridData_1.widthHint = 550;
+		gridData_1.widthHint = widthHint;
 
 		labelInfo.setLayoutData(gridData_1);
 		labelInfo.setText(Messages.getString("EditDialog.Info")); //$NON-NLS-1$
@@ -165,7 +166,7 @@ public class EditDialog extends Dialog implements Observer {
 		final Composite compositeFields = new Composite(shell, SWT.NONE);
 		compositeFields.setLayout(new FormLayout());
 		final GridData gridData_c = new GridData(SWT.FILL, SWT.FILL, true, true);
-		gridData_c.widthHint = 550;
+		gridData_c.widthHint = widthHint;
 		compositeFields.setLayoutData(gridData_c);
 
 		final Label lblGroup = new Label(compositeFields, SWT.NONE);
@@ -279,7 +280,7 @@ public class EditDialog extends Dialog implements Observer {
 		txtNotes = new Text(compositeFields, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.WRAP);
 		final FormData formData_10 = new FormData(SWT.DEFAULT, 100);
 		txtNotes.setSize(100, 100);
-		formData_10.bottom = new FormAttachment(100, -112);
+		formData_10.bottom = new FormAttachment(100, -130);
 		formData_10.top = new FormAttachment(txtPassword, 5, SWT.BOTTOM);
 		formData_10.right = new FormAttachment(btnShowPassword, 0, SWT.RIGHT);
 		formData_10.left = new FormAttachment(txtPassword, 0, SWT.LEFT);
@@ -399,7 +400,7 @@ public class EditDialog extends Dialog implements Observer {
 
 	/**
 	 * Creates the controlling buttons on the dialog
-	 * 
+	 *
 	 * @param compositeFields
 	 * @param btnShowPassword return the default button
 	 */
@@ -489,7 +490,7 @@ public class EditDialog extends Dialog implements Observer {
 		// formData_14.left = new FormAttachment(txtNotes, 10, SWT.RIGHT);
 		formData_14.left = new FormAttachment(100, -160);
 		// formData_14.left = new FormAttachment(PERCENT_NOTES_WIDTH + 2, 0);
-		formData_14.top = new FormAttachment(btnShowPassword, 5, SWT.TOP);
+		formData_14.top = new FormAttachment(btnShowPassword, -10, SWT.TOP);
 		formData_14.right = new FormAttachment(100, -10);
 		group.setLayoutData(formData_14);
 
@@ -514,7 +515,7 @@ public class EditDialog extends Dialog implements Observer {
 
 	/**
 	 * Creates a line showing change information about the record.
-	 * 
+	 *
 	 * @param aShell to Add the Composite to
 	 */
 	private void createTimesComposite(final Shell aShell) {
@@ -609,7 +610,7 @@ public class EditDialog extends Dialog implements Observer {
 			pwSet.append(BASE_SYMBOLS);
 		}
 
-		final StringBuffer sb = new StringBuffer();
+		final StringBuilder sb = new StringBuilder();
 		if (pwSet.length() > 0) {
 			final SecureRandom rand = new SecureRandom();
 			rand.setSeed(System.currentTimeMillis());
@@ -651,7 +652,7 @@ public class EditDialog extends Dialog implements Observer {
 
 	/**
 	 * This method is called whenever the lock state of the application changes.
-	 * 
+	 *
 	 * @param o the observable LockState object.
 	 * @param arg the Boolean value that the lock state has been set to.
 	 */

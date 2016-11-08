@@ -14,24 +14,28 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.JFacePreferences;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
-import org.eclipse.jface.viewers.ViewerSorter;
 import org.pwsafe.lib.datastore.PwsEntryBean;
+import org.pwsafe.passwordsafeswt.model.comparator.EqualsIgnoreCasecomparator;
 import org.pwsafe.passwordsafeswt.preference.JpwPreferenceConstants;
 
 /**
  * Implements the sorting logic for the table. Most of this was lifted straight
  * from "Definitive Guide to SWT & JFace" - a very cool SWT book.
- * 
+ *
  * @author Glen Smith
- * 
+ *
  */
-public class PasswordTableSorter extends ViewerComparator{
+public class PasswordTableSorter extends ViewerComparator {
 
 	public int ASCENDING = 0;
 	public int DESCENDING = 1;
 
 	private int column;
 	private int direction;
+
+	public PasswordTableSorter() {
+		super (new EqualsIgnoreCasecomparator());
+	}
 
 	public void sortOnColumn(final int columnNumber) {
 		if (columnNumber == column) {
