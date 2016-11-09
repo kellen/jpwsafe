@@ -7,6 +7,8 @@
  */
 package org.pwsafe.lib;
 
+import org.junit.Ignore;
+
 import junit.framework.TestCase;
 
 public class UtilTest extends TestCase {
@@ -178,11 +180,22 @@ public class UtilTest extends TestCase {
 	/**
 	 * Unit test for {@link Util#bytesToString(byte[])}.
 	 */
-	public final void testBytesToString() {
+	public void testBytesToString() {
 		final byte b[] = new byte[] { 1, 127, -128, -1 };
 
 		assertEquals(Util.bytesToString(b), "{ 1, 127, -128, -1 }");
 	}
+
+	//@Ignore
+	public void testEncodeDecode() {
+		final String test = "urü §";
+		final StringBuilder input = new StringBuilder(test);
+
+		final byte[] output = Util.encodeString(input);
+		final StringBuilder result = Util.decodeBytes(output);
+		assertEquals(test, result.toString());
+	}
+
 
 	public void testMillisAndByteArray() {
 		final byte[] longBuf = new byte[4];
@@ -206,7 +219,7 @@ public class UtilTest extends TestCase {
 
 	}
 
-	private long millisRoundtrip(long input, byte[] buffer) {
+	private long millisRoundtrip(final long input, final byte[] buffer) {
 		Util.putMillisToByteArray(buffer, input, 0);
 		return Util.getMillisFromByteArray(buffer, 0);
 	}

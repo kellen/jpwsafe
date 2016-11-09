@@ -9,6 +9,9 @@
  */
 package org.pwsafe.lib;
 
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.*;
 import java.security.SecureRandom;
 import java.util.Arrays;
 
@@ -172,7 +175,7 @@ public final class Util {
 					+ bytesToString(b));
 		}
 
-		StringBuffer sb;
+		StringBuilder sb;
 		String result;
 
 		if (length < 0) {
@@ -182,7 +185,7 @@ public final class Util {
 			throw new IllegalArgumentException("Lengh must be not be negative.");
 		}
 
-		sb = new StringBuffer(length << 1);
+		sb = new StringBuilder(length << 1);
 
 		for (int ii = offset; ii < (offset + length); ++ii) {
 			sb.append(byteToHex(b[ii]));
@@ -196,16 +199,16 @@ public final class Util {
 	}
 
 	/**
-	 * Produces a string prepresentation of the byte array.
+	 * Produces a string representation of the byte array.
 	 *
 	 * @param b the array to be processed.
 	 *
 	 * @return A string representation of the byte array.
 	 */
 	public static String bytesToString(final byte[] b) {
-		StringBuffer sb;
+		StringBuilder sb;
 
-		sb = new StringBuffer();
+		sb = new StringBuilder();
 
 		sb.append("{ ");
 		for (int ii = 0; ii < b.length; ++ii) {
@@ -218,6 +221,44 @@ public final class Util {
 
 		return sb.toString();
 	}
+
+	public static byte[] encodeString(final StringBuilder input) {
+		final CharsetEncoder encoder = StandardCharsets.UTF_8.newEncoder();
+		ByteBuffer out;
+		try {
+			out = encoder.encode(CharBuffer.wrap(input));
+		} catch (final CharacterCodingException e) {
+			out = ByteBuffer.wrap(new byte[]{});
+		}
+		byte[] array;
+		int arrayLen = out.limit();
+		if (arrayLen == out.capacity()) {
+			array = out.array();
+		} else {
+			// This will place two copies of the byte sequence in memory,
+			// until byteBuffer gets garbage-collected (which should happen
+			// pretty quickly once the reference to it is null'd).
+			array = new byte[arrayLen];
+			out.get(array);
+		}
+		return array;
+	}
+
+	public static StringBuilder decodeBytes(final byte[] input) {
+		final CharsetDecoder decoder = StandardCharsets.UTF_8.newDecoder();
+
+		CharBuffer out;
+
+		try {
+			out = decoder.decode(ByteBuffer.wrap(input));
+		} catch (final CharacterCodingException e) {
+			e.printStackTrace();
+			out = CharBuffer.wrap(new StringBuilder());
+		}
+		return new StringBuilder().append(out);
+		//		return new StringBuilder().append(Charset.forName("UTF-8").decode(ByteBuffer.wrap(input)));
+	}
+
 
 	/**
 	 * Converts an array from the native big-endian order to the little-endian

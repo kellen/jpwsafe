@@ -227,10 +227,10 @@ public class PwsFileHeaderV3 implements Serializable {
 	 * 
 	 * @param aPassphrase the passphrase to be used to encrypt the database.
 	 */
-	private void update(String aPassphrase, PwsFileV3 file) {
+	private void update(StringBuilder aPassphrase, PwsFileV3 file) {
 		LOG.enterMethod("PwsFileHeaderV3.update");
 
-		final byte[] stretchedPassword = Util.stretchPassphrase(aPassphrase.getBytes(), salt, iter);
+		final byte[] stretchedPassword = Util.stretchPassphrase(Util.encodeString(aPassphrase), salt, iter);
 		final SHA256Pws hasher = new SHA256Pws();
 		password = hasher.digest(stretchedPassword);
 

@@ -9,7 +9,7 @@
  */
 package org.pwsafe.lib.file;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author Kevin Preece
@@ -18,34 +18,31 @@ public class PwsStringUnicodeField extends PwsField {
 	private static final long serialVersionUID = -4530429748953931053L;
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 * 
 	 * @param type the field's type.
 	 * @param value the field's value.
-	 * @throws UnsupportedEncodingException
 	 */
-	public PwsStringUnicodeField(int type, byte[] value) throws UnsupportedEncodingException {
+	public PwsStringUnicodeField(int type, byte[] value) {
 
-		super(type, new String(value, "UTF-8"));
+		super(type, new String(value, StandardCharsets.UTF_8));
 	}
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 * 
 	 * @param type the field's type.
 	 * @param value the field's value.
-	 * @throws UnsupportedEncodingException
 	 */
 	public PwsStringUnicodeField(int type, String value) {
 		super(type, value);
 	}
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 * 
 	 * @param type the field's type.
 	 * @param value the field's value.
-	 * @throws UnsupportedEncodingException
 	 */
 	public PwsStringUnicodeField(int type, StringBuilder value) {
 		// TODO: allow StringBuilder or CharSequence as value further up.
@@ -53,23 +50,20 @@ public class PwsStringUnicodeField extends PwsField {
 	}
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 * 
 	 * @param type the field's type.
 	 * @param value the field's value.
-	 * @throws UnsupportedEncodingException
 	 */
-	public PwsStringUnicodeField(PwsFieldType type, byte[] value)
-			throws UnsupportedEncodingException {
-		super(type, new String(value, "UTF-8"));
+	public PwsStringUnicodeField(PwsFieldType type, byte[] value) {
+		super(type, new String(value, StandardCharsets.UTF_8));
 	}
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 * 
 	 * @param type the field's type.
 	 * @param value the field's value.
-	 * @throws UnsupportedEncodingException
 	 */
 	public PwsStringUnicodeField(PwsFieldType type, String value) {
 		super(type, value);
@@ -84,11 +78,7 @@ public class PwsStringUnicodeField extends PwsField {
 	 */
 	@Override
 	public byte[] getBytes() {
-		try {
-			return ((String) super.getValue()).getBytes("UTF-8");
-		} catch (final UnsupportedEncodingException e) {
-			throw new RuntimeException(e);
-		}
+		return ((String) super.getValue()).getBytes(StandardCharsets.UTF_8);
 	}
 
 	/**
@@ -103,6 +93,7 @@ public class PwsStringUnicodeField extends PwsField {
 	 *         <code>that</code>, zero if they're equal and greater than zero if
 	 *         <code>this</code> is "greater than" <code>that</code>.
 	 */
+	@Override
 	public int compareTo(Object that) {
 		return ((String) getValue()).compareTo((String) ((PwsStringUnicodeField) that).getValue());
 	}

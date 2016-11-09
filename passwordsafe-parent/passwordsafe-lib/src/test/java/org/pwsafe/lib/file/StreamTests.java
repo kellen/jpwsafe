@@ -13,9 +13,8 @@ import java.io.FileOutputStream;
 
 import junit.framework.TestCase;
 
+import org.bouncycastle.util.encoders.Base64;
 import org.pwsafe.lib.Util;
-
-import com.amazonaws.crypto.Base64;
 
 public class StreamTests extends TestCase {
 	public void testCryptoStreams() throws Exception {
@@ -62,7 +61,7 @@ public class StreamTests extends TestCase {
 
 	public void testSignedBytes() throws Exception {
 		final String test = "Y8QcrYP/OGZT/8tdcobZRoGB";
-		final byte[] data = Base64.decodeData(test);
+		final byte[] data = Base64.decode(test);
 		runSingleTest(data);
 	}
 }

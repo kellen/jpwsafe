@@ -63,7 +63,7 @@ public class PwsFileV3Test extends TestCase {
 
 	public void testPassphrase() throws EndOfFileException, IOException,
 	UnsupportedFileVersionException, NoSuchAlgorithmException {
-		final String myPassphrase = "new Passphrase";
+		final StringBuilder myPassphrase = new StringBuilder("new Passphrase");
 
 		assertEquals(0, pwsFile.getRecordCount());
 		log.info("New file records: " + pwsFile.getRecordCount());
@@ -75,7 +75,7 @@ public class PwsFileV3Test extends TestCase {
 
 		PwsFileStorage storage2 = new PwsFileStorage(filename);
 		PwsFileV3 pwsFile2 = new PwsFileV3(storage2, new StringBuilder(myPassphrase));
-		assertEquals(myPassphrase, pwsFile2.getPassphrase());
+		assertEquals(myPassphrase.toString(), pwsFile2.getPassphrase().toString());
 		pwsFile2.close();
 
 		// should fail with old passphrase:

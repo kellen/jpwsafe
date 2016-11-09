@@ -140,22 +140,21 @@ public class PwsFileFactoryTest extends TestCase {
 	public void testConcurrentMod() throws Exception {
 		final PwsFile pwsFile = PwsFileFactory.loadFile(testV2FilePath, new StringBuilder(
 				PASSPHRASE));
-
 		final File file = new File(testV2FilePath);
-		file.setLastModified(System.currentTimeMillis() + 1000);
-		pwsFile.setModified();
-		try {
-			pwsFile.save();
-			fail("save concurrently modified file without exception");
-		} catch (final ConcurrentModificationException e) {
-			// ok
-		}
-		// and after save:
 		file.setLastModified(System.currentTimeMillis() + 2000);
 		pwsFile.setModified();
 		try {
 			pwsFile.save();
-			fail("save concurrently modified file without exception");
+			fail("save concurrently modified file without exception 1");
+		} catch (final ConcurrentModificationException e) {
+			// ok
+		}
+		// and after save:
+		file.setLastModified(System.currentTimeMillis() + 3000);
+		pwsFile.setModified();
+		try {
+			pwsFile.save();
+			fail("save concurrently modified file without exception 2");
 		} catch (final ConcurrentModificationException e) {
 			// ok
 		}

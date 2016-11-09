@@ -164,12 +164,6 @@ public abstract class PwsFile {
 		LOG.leaveMethod("PwsFile.PwsFile( String )");
 	}
 
-	@Deprecated
-	protected PwsFile(final PwsStorage aStorage, final String aPassphrase) throws EndOfFileException,
-	IOException, UnsupportedFileVersionException, NoSuchAlgorithmException {
-		this (aStorage, new StringBuilder(aPassphrase));
-	}
-
 	/**
 	 * Adds a record to the file.
 	 *
@@ -359,10 +353,9 @@ public abstract class PwsFile {
 	 *
 	 * @return The file's passphrase.
 	 */
-	public String getPassphrase() {
+	public StringBuilder getPassphrase() {
 		try {
-			// TODO: avoid String creation
-			return passphrase == null ? null : passphrase.getObject(getCipher(false)).toString();
+			return passphrase == null ? null : ((StringBuilder) passphrase.getObject(getCipher(false)));
 		} catch (final IllegalBlockSizeException e) {
 			throw new RuntimeCryptoException(e.getMessage());
 		} catch (final BadPaddingException e) {

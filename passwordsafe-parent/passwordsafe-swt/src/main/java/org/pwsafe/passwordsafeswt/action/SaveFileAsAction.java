@@ -21,7 +21,7 @@ import org.pwsafe.passwordsafeswt.dialog.S3CredentialsDialog;
 
 /**
  * SaveAs command.
- * 
+ *
  * @author Glen Smith
  */
 public class SaveFileAsAction extends Action {
@@ -44,8 +44,8 @@ public class SaveFileAsAction extends Action {
 	 */
 	@Override
 	public void run() {
-		PasswordSafeJFace app = PasswordSafeJFace.getApp();
-		FileDialog fw = new FileDialog(app.getShell(), SWT.SAVE);
+		final PasswordSafeJFace app = PasswordSafeJFace.getApp();
+		final FileDialog fw = new FileDialog(app.getShell(), SWT.SAVE);
 		fw.setFilterExtensions(fileExtensions);
 		fw.setFilterNames(extensionNames);
 		fw.setFileName(Messages.getString("SaveFileAsAction.NewSafeName")); //$NON-NLS-1$
@@ -55,26 +55,27 @@ public class SaveFileAsAction extends Action {
 			return;
 
 		try {
-			String extension = fileExtensions[fw.getFilterIndex()].substring(1);
+			final String extension = fileExtensions[fw.getFilterIndex()].substring(1);
 
 			if (!newFilename.endsWith(extension) && (!newFilename.contains("."))) { // allow
-																					// other
-																					// extensions
+				// other
+				// extensions
 				newFilename += extension;
 			}
 			if (!newFilename.endsWith(PwsS3Storage.FILE_EXTENSION)) {
 				app.saveFileAs(newFilename);
 
 			} else {
-				S3CredentialsDialog sc = new S3CredentialsDialog(app);
-				AccountDetails ad = sc.getAccountDetails();
+				final S3CredentialsDialog sc = new S3CredentialsDialog(app);
+				final AccountDetails ad = sc.getAccountDetails();
 				if (ad == null) {
 					return;
 				}
 
-				PwsFile pwsFile = app.getPwsFile();
+				final PwsFile pwsFile = app.getPwsFile();
 
-				pwsFile.setStorage(new PwsS3Storage(newFilename, ad, pwsFile.getPassphrase()));
+				//Todo: remove new StringBuilder once Storage returns StringBUilder
+				pwsFile.setStorage(new PwsS3Storage(newFilename, ad, new StringBuilder(pwsFile.getPassphrase())));
 				app.saveFile();
 			}
 			// SaveSafeSelectionWizard newSafeWizard = new
@@ -84,10 +85,10 @@ public class SaveFileAsAction extends Action {
 			// int rc = dlg.open();
 			// if (rc != 1) {
 
-		} catch (IOException e1) {
+		} catch (final IOException e1) {
 			app.displayErrorDialog(
 					Messages.getString("SaveFileAsAction.ErrorDialog.Title"), e1.getMessage(), e1); //$NON-NLS-1$
-		} catch (NoSuchAlgorithmException e) {
+		} catch (final NoSuchAlgorithmException e) {
 			app.displayErrorDialog(
 					Messages.getString("SaveFileAsAction.ErrorDialog.Title"), e.getMessage(), e); //$NON-NLS-1$
 		}

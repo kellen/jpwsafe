@@ -169,13 +169,6 @@ public class PwsFileStorage implements PwsStorage {
 		return filename;
 	}
 
-	public void setPassphrase(String passphrase) {
-		/*
-		 * Do nothing since there is no additional encrypted information
-		 * associated with this storage mechanism
-		 */
-	}
-
 	public String getIdentifier() {
 		return filename;
 	}
