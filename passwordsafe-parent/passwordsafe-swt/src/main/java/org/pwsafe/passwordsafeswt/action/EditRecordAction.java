@@ -48,7 +48,7 @@ public class EditRecordAction extends Action {
 			app.getLockStatus().addObserver(dialogue);
 			final PwsEntryBean changedEntry;
 			try {
-				changedEntry = (PwsEntryBean) dialogue.open();
+				changedEntry = dialogue.open();
 			} finally {
 				app.getLockStatus().deleteObserver(dialogue);
 			}

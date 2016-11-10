@@ -351,7 +351,7 @@ public abstract class PwsFile {
 	/**
 	 * Returns the passphrase used to open the file.
 	 *
-	 * @return The file's passphrase.
+	 * @return The file's passphrase in a new StringBuilder instance.
 	 */
 	public StringBuilder getPassphrase() {
 		try {
@@ -365,6 +365,23 @@ public abstract class PwsFile {
 		} catch (final ClassNotFoundException e) {
 			throw new RuntimeCryptoException(e.getMessage());
 		}
+	}
+
+
+	/**
+	 * Checks if the given passphrase matches with the passphrase with the actual
+	 * password store.
+	 *
+	 * @param aPassphrase
+	 * @return true if the given passphrase matches
+	 */
+	public boolean checkPassphraseAndClear (StringBuilder aPassphrase) {
+		StringBuilder myPassphrase = getPassphrase();
+		final boolean isPassphraseOk = Util.equals(myPassphrase, aPassphrase);
+
+		Util.clear(myPassphrase);
+		Util.clear(aPassphrase);
+		return isPassphraseOk;
 	}
 
 	/**

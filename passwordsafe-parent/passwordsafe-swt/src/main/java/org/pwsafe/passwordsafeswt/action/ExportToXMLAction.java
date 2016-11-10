@@ -15,6 +15,8 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.pwsafe.passwordsafeswt.PasswordSafeJFace;
 import org.pwsafe.passwordsafeswt.dialog.PasswordDialog;
 
+import java.io.File;
+
 /**
  * Exports the current file to XML.
  * 
@@ -39,10 +41,14 @@ public class ExportToXMLAction extends Action {
 		StringBuilder password = pw.open();
 		if (password == null)
 			return;
-		// TODO: change pwsFile passphrase access to StringBuilder & use a
-		// correct equals
-		if (password.toString().equals(app.getPwsFile().getPassphrase())) {
+		if (app.getPwsFile().checkPassphraseAndClear(password)) {
 			FileDialog fw = new FileDialog(app.getShell(), SWT.SAVE);
+			fw.setFilterExtensions(new String[]{"*.xml", "*"});
+			if (app.getPwsFile().getStorage() != null) {
+				String defaultName = new File(app.getPwsFile().getStorage().getIdentifier()).getName();
+				defaultName = defaultName.substring(0, defaultName.lastIndexOf('.'));
+				fw.setFileName(defaultName);
+			}
 			String newFilename = fw.open();
 			if (newFilename != null) {
 				try {

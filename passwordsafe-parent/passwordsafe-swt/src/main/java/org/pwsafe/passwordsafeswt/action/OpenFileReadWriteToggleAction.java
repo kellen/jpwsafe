@@ -11,6 +11,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
+import org.pwsafe.lib.exception.InvalidPassphraseException;
 import org.pwsafe.passwordsafeswt.PasswordSafeJFace;
 import org.pwsafe.passwordsafeswt.dialog.PasswordDialog;
 
@@ -42,10 +43,14 @@ public class OpenFileReadWriteToggleAction extends Action {
 			FileDialog fod = new FileDialog(app.getShell(), SWT.OPEN);
 			// TODO get the file extension from some enum as soon as
 			// passwordsafelib is changed to Java 5
-			fod.setFilterExtensions(new String[] { "*.psafe3", "*.pws3", "*.dat", "*.*" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			fod.setFilterExtensions(new String[] { "*.psafe3", "*.pws3", "*.dat", "*" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			fod.setFilterNames(new String[] {
 					Messages.getString("OpenFileAction.FilterLabel.V3Files"), Messages.getString("OpenFileAction.FilterLabel.S3Files"), Messages.getString("OpenFileAction.FilterLabel.V2Files"), Messages.getString("OpenFileAction.FilterLabel.AllFiles") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-			String fileName = fod.open();
+            if (app.getPwsFile() != null && app.getPwsFile().getStorage() != null) {
+                String storageName = app.getPwsFile().getStorage().getIdentifier();
+                fod.setFileName(storageName);
+            }
+            String fileName = fod.open();
 			if (fileName != null) {
 				PasswordDialog pd = new PasswordDialog(app.getShell());
 				pd.setVerified(false);
@@ -55,6 +60,9 @@ public class OpenFileReadWriteToggleAction extends Action {
 					try {
 						// open the safe with inverted read-write mode
 						app.openFile(fileName, password, !app.isReadOnly());
+					} catch (InvalidPassphraseException e) {
+						app.displayErrorDialog(
+								Messages.getString("OpenFileAction.ErrorDialog.Label"), Messages.getString("OpenFileAction.ErrorDialog.WrongPassphrase"), e); //$NON-NLS-1$ //$NON-NLS-2$
 					} catch (Exception e) {
 						app.displayErrorDialog(
 								Messages.getString("OpenFileAction.ErrorDialog.Label"), Messages.getString("OpenFileAction.ErrorDialog.Message"), e); //$NON-NLS-1$ //$NON-NLS-2$

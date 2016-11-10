@@ -17,6 +17,7 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.pwsafe.lib.UUID;
+import org.pwsafe.lib.Util;
 import org.pwsafe.lib.file.PwsField;
 import org.pwsafe.lib.file.PwsFieldType;
 import org.pwsafe.lib.file.PwsFieldTypeV1;
@@ -158,22 +159,13 @@ public class PwsEntryBean implements Cloneable {
 	}
 
 	/**
-	 * @param password The password to set.
-	 */
-	public void setPassword(final StringBuilder password) {
-		this.password = password;
-	}
-
-	/**
-	 * For backward compatibility.
+	 * Sets a new password and clears the old one.
 	 *
-	 * @param password The password to set.
-	 *
-	 * @deprecated don't pass around passwords as String!
+	 * @param aPassword The password to set.
 	 */
-	@Deprecated
-	public void setPassword(final String password) {
-		this.password = new StringBuilder(password);
+	public void setPassword(final StringBuilder aPassword) {
+		Util.clear(this.password);
+		this.password = aPassword;
 	}
 
 	/**

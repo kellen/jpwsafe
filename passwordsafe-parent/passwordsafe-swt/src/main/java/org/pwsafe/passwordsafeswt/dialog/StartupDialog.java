@@ -176,7 +176,7 @@ public class StartupDialog extends Dialog {
 				result = StartupDialog.OPEN_OTHER;
 				selectedFile = cboFilename.getText();
 				selectedPassword.setLength(0);
-				selectedPassword.append(txtPassword.getText());
+				selectedPassword.append(txtPassword.getTextChars());
 				shell.dispose();
 			}
 		});
@@ -200,7 +200,7 @@ public class StartupDialog extends Dialog {
 				}
 
 				selectedPassword.setLength(0);
-				selectedPassword.append(txtPassword.getText());
+				selectedPassword.append(txtPassword.getTextChars());
 				result = StartupDialog.OPEN_FILE;
 				shell.dispose();
 			}

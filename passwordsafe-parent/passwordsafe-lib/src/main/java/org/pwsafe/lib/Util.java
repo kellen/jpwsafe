@@ -259,6 +259,26 @@ public final class Util {
 		//		return new StringBuilder().append(Charset.forName("UTF-8").decode(ByteBuffer.wrap(input)));
 	}
 
+	/**
+	 * Nullsafe equals for StringBuilder.
+	 *
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	public static boolean equals (StringBuilder a, StringBuilder b) {
+		if (a == null && b == null)
+			return true;
+		if ((a == null && b != null) || (a != null && b == null) || (a.length() != b.length()))
+			return false;
+
+		char[] aChars = new char[a.length()];
+		char[] bChars = new char[b.length()];
+
+		a.getChars(0,a.length(), aChars,0);
+		b.getChars(0,b.length(), bChars,0);
+		return Arrays.equals(aChars,bChars);
+	}
 
 	/**
 	 * Converts an array from the native big-endian order to the little-endian
@@ -313,6 +333,9 @@ public final class Util {
 	 * @param someChars
 	 */
 	public static void clear(final StringBuilder someChars) {
+		if (someChars == null) {
+			return;
+		}
 		final char[] filler = new char[someChars.length()];
 		Arrays.fill(filler, '0');
 		someChars.setLength(0);

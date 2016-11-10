@@ -359,8 +359,9 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
         List<String> mruFiles = UserPreferences.getInstance().getMRUFiles();
         if (! mruFiles.isEmpty()) {
+			int i = 0;
             for (String fileName : mruFiles) {
-                String menuItem = "&" + (fileName + 1) + " " + new File(fileName).getName(); //$NON-NLS-1$ //$NON-NLS-2$
+                String menuItem = "&" + (++i) + " " + new File(fileName).getName(); //$NON-NLS-1$ //$NON-NLS-2$
                 IAction nextMRUAction = new MRUFileAction(fileName, menuItem);
                 menuManagerFile.add(nextMRUAction);
             }

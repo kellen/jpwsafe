@@ -30,6 +30,7 @@ public class ImportFromXMLAction extends Action {
 	public void run() {
 		PasswordSafeJFace app = PasswordSafeJFace.getApp();
 		FileDialog fod = new FileDialog(app.getShell(), SWT.OPEN);
+		fod.setFilterExtensions(new String[]{"*.xml", "*"});
 		String fileName = fod.open();
 		if (fileName != null) {
 

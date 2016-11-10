@@ -150,7 +150,7 @@ public class S3InformationComposite extends org.eclipse.swt.widgets.Composite {
 	}
 
 	public char[] getAccessSecret() {
-		return txtSecret.getText().toCharArray();
+		return txtSecret.getTextChars();
 	}
 
 }

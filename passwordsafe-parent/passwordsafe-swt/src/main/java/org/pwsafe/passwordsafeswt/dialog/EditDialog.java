@@ -10,10 +10,7 @@ package org.pwsafe.passwordsafeswt.dialog;
 import java.security.SecureRandom;
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -41,6 +38,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.pwsafe.lib.Util;
 import org.pwsafe.lib.datastore.PwsEntryBean;
 import org.pwsafe.passwordsafeswt.PasswordSafeJFace;
 import org.pwsafe.passwordsafeswt.preference.JpwPreferenceConstants;
@@ -74,7 +72,7 @@ public class EditDialog extends Dialog implements Observer {
 	private CLabel createTime;
 	private Text txtPasswordExpire;
 	private volatile boolean dirty;
-	protected Object result;
+	protected PwsEntryBean result;
 	protected Shell shell;
 	private final PwsEntryBean entryToEdit;
 
@@ -87,7 +85,7 @@ public class EditDialog extends Dialog implements Observer {
 		this(parent, SWT.NONE, entryToEdit);
 	}
 
-	public Object open() {
+	public PwsEntryBean open() {
 		createContents();
 		shell.layout();
 		shell.pack();
@@ -280,7 +278,7 @@ public class EditDialog extends Dialog implements Observer {
 		txtNotes = new Text(compositeFields, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.WRAP);
 		final FormData formData_10 = new FormData(SWT.DEFAULT, 100);
 		txtNotes.setSize(100, 100);
-		formData_10.bottom = new FormAttachment(100, -130);
+		formData_10.bottom = new FormAttachment(100, -130); // IMPORTANT: here you influence the overall dialogue height
 		formData_10.top = new FormAttachment(txtPassword, 5, SWT.BOTTOM);
 		formData_10.right = new FormAttachment(btnShowPassword, 0, SWT.RIGHT);
 		formData_10.left = new FormAttachment(txtPassword, 0, SWT.LEFT);
@@ -416,8 +414,9 @@ public class EditDialog extends Dialog implements Observer {
 					entryToEdit.setGroup(txtGroup.getText());
 					entryToEdit.setTitle(txtTitle.getText());
 					entryToEdit.setUsername(txtUsername.getText());
-					if (!txtPassword.getText().equals(entryToEdit.getPassword().toString())) {
-						entryToEdit.setPassword(new StringBuilder(txtPassword.getText()));
+					StringBuilder changedpassword = new StringBuilder().append(txtPassword.getTextChars());
+					if (!Util.equals(changedpassword, entryToEdit.getPassword())) {
+						entryToEdit.setPassword(changedpassword);
 						entryToEdit.setLastPwChange(now);
 					}
 					entryToEdit.setNotes(txtNotes.getText());

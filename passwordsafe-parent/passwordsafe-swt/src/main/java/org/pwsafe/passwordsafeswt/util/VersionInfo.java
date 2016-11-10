@@ -13,7 +13,7 @@ import org.apache.commons.logging.LogFactory;
 /**
  * 
  * Convenience class for access build version numbers for display in the ui.
- * Depends on a build.version properties file in the classpath.
+ * Depends on a package implementation version in META-INF.
  * 
  * @author Glen Smith
  */

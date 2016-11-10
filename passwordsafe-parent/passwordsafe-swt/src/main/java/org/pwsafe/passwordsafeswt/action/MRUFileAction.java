@@ -29,6 +29,7 @@ public class MRUFileAction extends Action {
 
 	public MRUFileAction(String fileName, String menuDetails) {
 		super(menuDetails);
+		setToolTipText(fileName);
 		this.fileName = fileName;
 	}
 

@@ -202,6 +202,8 @@ public class PwsFileFactory {
 
 		readRecords(file);
 
+		Util.clear(aPassphrase);
+
 		LOG.debug1("File contains " + file.getRecordCount() + " records.");
 		LOG.leaveMethod("PwsFileFactory.loadFile");
 		return file;
@@ -309,6 +311,8 @@ public class PwsFileFactory {
 
 		entryStore = readRecords(file);
 
+		Util.clear(aPassphrase);
+
 		LOG.debug1("File contains " + file.getRecordCount() + " records.");
 		LOG.leaveMethod("PwsFileFactory.loadStore");
 
@@ -362,6 +366,8 @@ public class PwsFileFactory {
 		final PwsFile file = getPwsFile(filename, aPassphrase);
 
 		entryStore = readRecords(file, sparseFields);
+
+		Util.clear(aPassphrase);
 
 		LOG.debug1("File contains " + file.getRecordCount() + " records.");
 		LOG.leaveMethod("PwsFileFactory.loadStore");

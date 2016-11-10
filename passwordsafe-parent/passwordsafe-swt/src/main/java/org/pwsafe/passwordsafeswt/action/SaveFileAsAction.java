@@ -74,8 +74,7 @@ public class SaveFileAsAction extends Action {
 
 				final PwsFile pwsFile = app.getPwsFile();
 
-				//Todo: remove new StringBuilder once Storage returns StringBUilder
-				pwsFile.setStorage(new PwsS3Storage(newFilename, ad, new StringBuilder(pwsFile.getPassphrase())));
+				pwsFile.setStorage(new PwsS3Storage(newFilename, ad, pwsFile.getPassphrase()));
 				app.saveFile();
 			}
 			// SaveSafeSelectionWizard newSafeWizard = new

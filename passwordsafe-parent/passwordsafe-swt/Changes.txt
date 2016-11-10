@@ -1,5 +1,13 @@
 Changes:
 
+changes in swt 0.9.0  beta 2 (10.11.2016, svn commit 543)
+- fixed sorting and search (beta 1 regression)
+- added clear recently used files to file menu (provided by timmydog)
+- correct sizing and centering of edit and calender dialogues (beta 1 regression)
+- clear pwsafe passphrase from memory (use StringBuilder instead of String, overwrite after use)
+- add file type filter and default file name to export dialogues
+- set linux start script to executable (beta 1 regression)
+
 changes in swt 0.9.0  beta 1 (05.10.2016)
 - upgrade to SWT 4.6.1
 - fixed Mac OS X Java version and icon problems (provided by Noa Resare)
@@ -9,7 +17,7 @@ changes in swt 0.9.0  beta 1 (05.10.2016)
 changes in swt 0.8.1 (13.03.2014)
 - Added Drag and Drop of Password Records (Trac Ticket 1)
 - Added a find function (Feature 14)
-- Speed up for password database loading 
+- Speed up password database loading
 
 changes in swt 0.8 final (24.03.2011)
 - Changed system tray icon preference default to false because of possible problems on Ubuntu Netbook Edition

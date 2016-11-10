@@ -8,6 +8,7 @@
 package org.pwsafe.passwordsafeswt.dialog;
 
 import java.io.File;
+import java.util.Arrays;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -26,6 +27,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.pwsafe.lib.Util;
 import org.pwsafe.passwordsafeswt.PasswordSafeJFace;
 import org.pwsafe.passwordsafeswt.util.ShellHelpers;
 
@@ -58,9 +60,9 @@ public class PasswordDialog extends Dialog {
 
 	public StringBuilder open() {
 		createContents();
-		ShellHelpers.centreShell(getParent(), shell);
 		shell.layout();
 		shell.pack();
+		ShellHelpers.centreShell(getParent(), shell);
 		shell.open();
 		shell.forceActive();// try to make sure this is drawn on top
 		Display display = getParent().getDisplay();
@@ -148,10 +150,15 @@ public class PasswordDialog extends Dialog {
 			btnOk.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					if (txtCombination.getText().equals(txtVerify.getText())) {
-						result = new StringBuilder(txtCombination.getText());
+					StringBuilder pass = new StringBuilder().append(txtCombination.getTextChars());
+					StringBuilder verify = new StringBuilder().append(txtVerify.getTextChars());
+					if (Util.equals(pass, verify)) {
+						result = pass;
+						Util.clear(verify);
 						shell.dispose();
 					} else {
+						Util.clear(pass);
+						Util.clear(verify);
 						MessageBox mb = new MessageBox(shell, SWT.ICON_ERROR | SWT.OK);
 						mb.setText(Messages
 								.getString("PasswordDialog.PasswordMismatchMessage.Title")); //$NON-NLS-1$
@@ -167,7 +174,7 @@ public class PasswordDialog extends Dialog {
 			btnOk.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					result = new StringBuilder(txtCombination.getText());
+					result = new StringBuilder().append(txtCombination.getTextChars());
 					shell.dispose();
 				}
 			});

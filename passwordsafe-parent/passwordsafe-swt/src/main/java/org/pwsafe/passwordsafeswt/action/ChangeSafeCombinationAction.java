@@ -40,7 +40,7 @@ public class ChangeSafeCombinationAction extends Action {
 				pd.setFileName(pfs.getIdentifier());
 			}
 			StringBuilder newPassword = pd.open();
-			if (newPassword != null) {
+			if (newPassword != null && newPassword.length() > 0) {
 				pf.setPassphrase(newPassword);
 				new SaveFileAction().run();
 			}

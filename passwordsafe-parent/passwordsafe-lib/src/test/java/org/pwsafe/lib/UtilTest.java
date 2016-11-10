@@ -186,7 +186,6 @@ public class UtilTest extends TestCase {
 		assertEquals(Util.bytesToString(b), "{ 1, 127, -128, -1 }");
 	}
 
-	//@Ignore
 	public void testEncodeDecode() {
 		final String test = "urü §";
 		final StringBuilder input = new StringBuilder(test);
@@ -196,6 +195,15 @@ public class UtilTest extends TestCase {
 		assertEquals(test, result.toString());
 	}
 
+	public void testStringBuilderEquals() {
+		final String test = "urü §";
+		StringBuilder a = new StringBuilder(test);
+		StringBuilder b = new StringBuilder(test);
+
+		assertTrue(Util.equals(a,b));
+		b.append('g');
+		assertFalse(Util.equals(a,b));
+	}
 
 	public void testMillisAndByteArray() {
 		final byte[] longBuf = new byte[4];
