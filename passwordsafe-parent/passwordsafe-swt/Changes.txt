@@ -1,6 +1,6 @@
 Changes:
 
-changes in swt 0.9.0  beta 2 (10.11.2016, svn commit 543)
+changes in swt 0.9.0  beta 2 (10.11.2016, svn commit 545)
 - fixed sorting and search (beta 1 regression)
 - added clear recently used files to file menu (provided by timmydog)
 - correct sizing and centering of edit and calender dialogues (beta 1 regression)
