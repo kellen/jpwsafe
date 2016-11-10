@@ -33,11 +33,7 @@ import java.util.TimerTask;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.action.StatusLineManager;
-import org.eclipse.jface.action.ToolBarManager;
+import org.eclipse.jface.action.*;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.JFacePreferences;
 import org.eclipse.jface.resource.JFaceResources;
@@ -84,35 +80,7 @@ import org.pwsafe.lib.file.PwsFileStorage;
 import org.pwsafe.lib.file.PwsRecord;
 import org.pwsafe.lib.file.PwsRecordV1;
 import org.pwsafe.lib.file.PwsRecordV2;
-import org.pwsafe.passwordsafeswt.action.AboutAction;
-import org.pwsafe.passwordsafeswt.action.AddRecordAction;
-import org.pwsafe.passwordsafeswt.action.ChangeSafeCombinationAction;
-import org.pwsafe.passwordsafeswt.action.ClearClipboardAction;
-import org.pwsafe.passwordsafeswt.action.CopyPasswordAction;
-import org.pwsafe.passwordsafeswt.action.CopyURLAction;
-import org.pwsafe.passwordsafeswt.action.CopyUsernameAction;
-import org.pwsafe.passwordsafeswt.action.DeleteRecordAction;
-import org.pwsafe.passwordsafeswt.action.EditRecordAction;
-import org.pwsafe.passwordsafeswt.action.ExitAppAction;
-import org.pwsafe.passwordsafeswt.action.ExportToTextAction;
-import org.pwsafe.passwordsafeswt.action.ExportToXMLAction;
-import org.pwsafe.passwordsafeswt.action.FindRecordAction;
-import org.pwsafe.passwordsafeswt.action.HelpAction;
-import org.pwsafe.passwordsafeswt.action.ImportFromTextAction;
-import org.pwsafe.passwordsafeswt.action.ImportFromXMLAction;
-import org.pwsafe.passwordsafeswt.action.LockDbAction;
-import org.pwsafe.passwordsafeswt.action.MRUFileAction;
-import org.pwsafe.passwordsafeswt.action.NewFileAction;
-import org.pwsafe.passwordsafeswt.action.OpenFileAction;
-import org.pwsafe.passwordsafeswt.action.OpenFileReadWriteToggleAction;
-import org.pwsafe.passwordsafeswt.action.OpenUrlAction;
-import org.pwsafe.passwordsafeswt.action.OptionsAction;
-import org.pwsafe.passwordsafeswt.action.SaveFileAction;
-import org.pwsafe.passwordsafeswt.action.SaveFileAsAction;
-import org.pwsafe.passwordsafeswt.action.UnlockDbAction;
-import org.pwsafe.passwordsafeswt.action.ViewAsListAction;
-import org.pwsafe.passwordsafeswt.action.ViewAsTreeAction;
-import org.pwsafe.passwordsafeswt.action.VisitPasswordSafeWebsiteAction;
+import org.pwsafe.passwordsafeswt.action.*;
 import org.pwsafe.passwordsafeswt.dialog.StartupDialog;
 import org.pwsafe.passwordsafeswt.dnd.PwsEntryBeanTransfer;
 import org.pwsafe.passwordsafeswt.dnd.TreeDragListener;
@@ -170,6 +138,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	private FindRecordAction findRecordAction;
 	private AddRecordAction addRecordAction;
 	private ClearClipboardAction clearClipboardAction;
+    private ClearMruFilesAction clearMruFilesAction;
 	private CopyPasswordAction copyPasswordAction;
 	private CopyUsernameAction copyUsernameAction;
 	private CopyURLAction copyURLAction;
@@ -197,6 +166,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 
 	public static final String APP_NAME = "PasswordSafeSWT"; //$NON-NLS-1$
 	public static final String JPW_ICON = "jpwIcon";
+    private static final String FILE_MENU = "FileMenu";
 
 	private static PasswordSafeJFace app;
 
@@ -329,6 +299,7 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		copyPasswordAction = new CopyPasswordAction();
 		copyURLAction = new CopyURLAction();
 		clearClipboardAction = new ClearClipboardAction();
+        clearMruFilesAction = new ClearMruFilesAction();
 		addRecordAction = new AddRecordAction();
 		editRecordAction = new EditRecordAction();
 		findRecordAction = new FindRecordAction();
@@ -351,94 +322,125 @@ public class PasswordSafeJFace extends ApplicationWindow {
 	 * @see org.eclipse.jface.window.ApplicationWindow#createMenuManager()
 	 */
 	@Override
-	protected MenuManager createMenuManager() {
-		final MenuManager result = new MenuManager(
-				Messages.getString("PasswordSafeJFace.Menu.Menu")); //$NON-NLS-1$
+    protected MenuManager createMenuManager() {
+        final MenuManager result = new MenuManager(
+                Messages.getString("PasswordSafeJFace.Menu.Menu")); //$NON-NLS-1$
 
-		final MenuManager menuManagerFile = new MenuManager(
-				Messages.getString("PasswordSafeJFace.Menu.File")); //$NON-NLS-1$
-		result.add(menuManagerFile);
+        result.add(createFileMenuManager());
+        result.add(createEditMenuManager());
+        result.add(createViewMenuManager());
+        result.add(createManageMenuManager());
+        result.add(createHelpMenuManager());
 
-		menuManagerFile.add(newFileAction);
-		menuManagerFile.add(openFileAction);
-		menuManagerFile.add(openFileReadWriteToggleAction);
-		menuManagerFile.add(new Separator());
+        return result;
+    }
 
-		final List<String> mruFiles = UserPreferences.getInstance().getMRUFiles();
+    public void updateFileMenu() {
+        IContributionItem findMenu = getMenuBarManager().find(FILE_MENU);
+        ((IMenuManager) findMenu).removeAll();
+        populateFileMenu((IMenuManager) findMenu);
+    }
 
-		if (mruFiles != null && mruFiles.size() > 0) {
-			for (int i = 0; i < mruFiles.size(); i++) {
-				final String fileName = mruFiles.get(i);
-				final String menuItem = "&" + (i + 1) + " " + new File(fileName).getName(); //$NON-NLS-1$ //$NON-NLS-2$
-				final IAction nextMRUAction = new MRUFileAction(fileName, menuItem);
-				menuManagerFile.add(nextMRUAction);
-			}
-			menuManagerFile.add(new Separator());
-		}
+    private IMenuManager createFileMenuManager() {
+        final MenuManager menuManagerFile = new MenuManager(
+                Messages.getString("PasswordSafeJFace.Menu.File"), FILE_MENU); //$NON-NLS-1$
 
-		menuManagerFile.add(saveFileAction);
-		menuManagerFile.add(saveFileAsAction);
-		menuManagerFile.add(new Separator());
+        populateFileMenu(menuManagerFile);
 
-		final MenuManager menuManagerExportTo = new MenuManager(
-				Messages.getString("PasswordSafeJFace.Menu.ExportTo")); //$NON-NLS-1$
-		menuManagerFile.add(menuManagerExportTo);
+        return menuManagerFile;
+    }
 
-		menuManagerExportTo.add(exportToTextAction);
-		menuManagerExportTo.add(exportToXMLAction);
+    private void populateFileMenu(IMenuManager menuManagerFile) {
 
-		final MenuManager menuManagerImportFrom = new MenuManager(
-				Messages.getString("PasswordSafeJFace.Menu.ImportFrom")); //$NON-NLS-1$
-		menuManagerFile.add(menuManagerImportFrom);
+        menuManagerFile.add(newFileAction);
+        menuManagerFile.add(openFileAction);
+        menuManagerFile.add(openFileReadWriteToggleAction);
+        menuManagerFile.add(new Separator());
 
-		menuManagerImportFrom.add(importFromTextAction);
-		menuManagerImportFrom.add(importFromXMLAction);
+        List<String> mruFiles = UserPreferences.getInstance().getMRUFiles();
+        if (! mruFiles.isEmpty()) {
+            for (String fileName : mruFiles) {
+                String menuItem = "&" + (fileName + 1) + " " + new File(fileName).getName(); //$NON-NLS-1$ //$NON-NLS-2$
+                IAction nextMRUAction = new MRUFileAction(fileName, menuItem);
+                menuManagerFile.add(nextMRUAction);
+            }
+            menuManagerFile.add(new Separator());
+            menuManagerFile.add(clearMruFilesAction);
+            menuManagerFile.add(new Separator());
+        }
 
-		menuManagerFile.add(new Separator());
-		menuManagerFile.add(exitAppAction);
 
-		final MenuManager menuManagerEdit = new MenuManager(
-				Messages.getString("PasswordSafeJFace.Menu.Edit")); //$NON-NLS-1$
-		result.add(menuManagerEdit);
+        menuManagerFile.add(saveFileAction);
+        menuManagerFile.add(saveFileAsAction);
+        menuManagerFile.add(new Separator());
 
-		menuManagerEdit.add(addRecordAction);
-		menuManagerEdit.add(editRecordAction);
-		menuManagerEdit.add(findRecordAction);
-		menuManagerEdit.add(deleteRecordAction);
-		menuManagerEdit.add(new Separator());
-		menuManagerEdit.add(copyPasswordAction);
-		menuManagerEdit.add(copyUsernameAction);
-		menuManagerEdit.add(copyURLAction);
-		menuManagerEdit.add(openUrlAction);
-		menuManagerEdit.add(clearClipboardAction);
+        final MenuManager menuManagerExportTo = new MenuManager(
+                Messages.getString("PasswordSafeJFace.Menu.ExportTo")); //$NON-NLS-1$
+        menuManagerFile.add(menuManagerExportTo);
 
-		final MenuManager menuManagerView = new MenuManager(
-				Messages.getString("PasswordSafeJFace.Menu.View")); //$NON-NLS-1$
-		result.add(menuManagerView);
+        menuManagerExportTo.add(exportToTextAction);
+        menuManagerExportTo.add(exportToXMLAction);
 
-		menuManagerView.add(viewAsListAction);
-		menuManagerView.add(viewAsTreeAction);
+        final MenuManager menuManagerImportFrom = new MenuManager(
+                Messages.getString("PasswordSafeJFace.Menu.ImportFrom")); //$NON-NLS-1$
+        menuManagerFile.add(menuManagerImportFrom);
 
-		final MenuManager menuManagerManage = new MenuManager(
-				Messages.getString("PasswordSafeJFace.Menu.Manage")); //$NON-NLS-1$
-		result.add(menuManagerManage);
+        menuManagerImportFrom.add(importFromTextAction);
+        menuManagerImportFrom.add(importFromXMLAction);
 
-		menuManagerManage.add(changeSafeCombinationAction);
-		menuManagerManage.add(new Separator());
-		menuManagerManage.add(optionsAction);
+        menuManagerFile.add(new Separator());
+        menuManagerFile.add(exitAppAction);
+    }
 
-		final MenuManager menuManagerHelp = new MenuManager(
-				Messages.getString("PasswordSafeJFace.Menu.Help")); //$NON-NLS-1$
-		result.add(menuManagerHelp);
+    private IMenuManager createEditMenuManager() {
+        final MenuManager menuManagerEdit = new MenuManager(
+                Messages.getString("PasswordSafeJFace.Menu.Edit")); //$NON-NLS-1$
 
-		menuManagerHelp.add(helpAction);
-		menuManagerHelp.add(new Separator());
-		menuManagerHelp.add(visitPasswordSafeWebsiteAction);
-		menuManagerHelp.add(new Separator());
-		menuManagerHelp.add(aboutAction);
+        menuManagerEdit.add(addRecordAction);
+        menuManagerEdit.add(editRecordAction);
+        menuManagerEdit.add(findRecordAction);
+        menuManagerEdit.add(deleteRecordAction);
+        menuManagerEdit.add(new Separator());
+        menuManagerEdit.add(copyPasswordAction);
+        menuManagerEdit.add(copyUsernameAction);
+        menuManagerEdit.add(copyURLAction);
+        menuManagerEdit.add(openUrlAction);
+        menuManagerEdit.add(clearClipboardAction);
+        return menuManagerEdit;
+    }
 
-		return result;
-	}
+    private IMenuManager createViewMenuManager() {
+        final MenuManager menuManagerView = new MenuManager(
+                Messages.getString("PasswordSafeJFace.Menu.View")); //$NON-NLS-1$
+
+        menuManagerView.add(viewAsListAction);
+        menuManagerView.add(viewAsTreeAction);
+        return menuManagerView;
+    }
+
+    private IMenuManager createManageMenuManager() {
+        final MenuManager menuManagerManage = new MenuManager(
+                Messages.getString("PasswordSafeJFace.Menu.Manage")); //$NON-NLS-1$
+
+        menuManagerManage.add(changeSafeCombinationAction);
+        menuManagerManage.add(new Separator());
+        menuManagerManage.add(optionsAction);
+
+        return menuManagerManage;
+    }
+
+    private IMenuManager createHelpMenuManager() {
+        final MenuManager menuManagerHelp = new MenuManager(
+                Messages.getString("PasswordSafeJFace.Menu.Help")); //$NON-NLS-1$
+
+        menuManagerHelp.add(helpAction);
+        menuManagerHelp.add(new Separator());
+        menuManagerHelp.add(visitPasswordSafeWebsiteAction);
+        menuManagerHelp.add(new Separator());
+        menuManagerHelp.add(aboutAction);
+
+        return menuManagerHelp;
+    }
 
 	/**
 	 * Creates the popup (right click) menu for the given control.
@@ -614,8 +616,10 @@ public class PasswordSafeJFace extends ApplicationWindow {
 		getShell().setText(PasswordSafeJFace.APP_NAME + " - " + fileName); //$NON-NLS-1$
 		setPwsEntryStore(file);
 		setReadOnly(forReadOnly);
-		if (true) // TODO (!openedFromMRU)
-			UserPreferences.getInstance().setMostRecentFilename(fileName);
+		if (true) {// TODO (!openedFromMRU)
+            UserPreferences.getInstance().setMostRecentFilename(fileName);
+        }
+        updateFileMenu();
 	}
 
 	/**

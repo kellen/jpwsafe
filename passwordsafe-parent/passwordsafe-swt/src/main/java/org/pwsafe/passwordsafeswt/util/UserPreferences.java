@@ -117,6 +117,19 @@ public class UserPreferences {
 		}
 	}
 
+	public void clearMRUFiles() {
+		for (int i = 0; i <= MAX_MRU; i++) {
+			// un-intuitively, default is "not present"
+			prefStore.setToDefault(MRU + i);
+		}
+
+		try {
+			savePreferences();
+		} catch (IOException e) {
+			log.error("Unable to save preferences file", e);
+		}
+	}
+
 	/**
 	 * Sets the name of the most recently opened file.
 	 * 
@@ -161,9 +174,9 @@ public class UserPreferences {
 	}
 
 	/**
-	 * Returns an array of recently opened filename (most recent to oldest).
+	 * Returns a list of recently opened filename (most recent to oldest).
 	 * 
-	 * @return an array of recently opened filename, not null
+	 * @return a List of recently opened filename, not null
 	 */
 	public List<String> getMRUFiles() {
 
