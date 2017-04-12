@@ -1,5 +1,10 @@
 Changes:
 
+changes in swt 0.9.0 
+- fixed some UI glitches in Password and Startup dialogues
+- default generated password length increased to 12
+- fixed licence display (beta 1 regression)
+
 changes in swt 0.9.0  beta 2 (10.11.2016, svn commit 545)
 - fixed sorting and search (beta 1 regression)
 - added clear recently used files to file menu (provided by timmydog)
@@ -16,7 +21,7 @@ changes in swt 0.9.0  beta 1 (05.10.2016)
 
 changes in swt 0.8.1 (13.03.2014)
 - Added Drag and Drop of Password Records (Trac Ticket 1)
-- Added a find function (Feature 14)
+- Added a find function (Feature 14, provided by timmydog)
 - Speed up password database loading
 
 changes in swt 0.8 final (24.03.2011)

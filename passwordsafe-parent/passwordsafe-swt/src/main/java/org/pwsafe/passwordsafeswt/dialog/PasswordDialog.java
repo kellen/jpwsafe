@@ -8,7 +8,6 @@
 package org.pwsafe.passwordsafeswt.dialog;
 
 import java.io.File;
-import java.util.Arrays;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -80,16 +79,20 @@ public class PasswordDialog extends Dialog {
 	protected void createContents() {
 		shell = new Shell(getParent(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		shell.setImage(JFaceResources.getImage(PasswordSafeJFace.JPW_ICON));
-		shell.setLayout(new FormLayout());
+		
+		int margin = 5;
+		FormLayout layout = new FormLayout();
+		layout.marginBottom = margin;
+		shell.setLayout(layout);
 
 		int heigth = verified ? 230 : 170;
 		shell.setSize(380, heigth);
 		shell.setText(windowTitle);
 		final Label label = new Label(shell, SWT.WRAP);
 		final FormData formData = new FormData();
-		formData.top = new FormAttachment(0, 5);
+		formData.top = new FormAttachment(0, margin);
 		formData.right = new FormAttachment(100, -5);
-		formData.left = new FormAttachment(0, 5);
+		formData.left = new FormAttachment(0, margin);
 		formData.width = 360;
 		label.setLayoutData(formData);
 		label.setText(purposeText + " " + shortFileName); //$NON-NLS-1$;
@@ -138,7 +141,6 @@ public class PasswordDialog extends Dialog {
 		final FormData formData_7 = new FormData();
 		formData_7.width = 80;
 		formData_7.top = new FormAttachment(buttonOrientation, 20);
-		formData_7.bottom = new FormAttachment(100, -10);
 		formData_7.left = new FormAttachment(50, -5);
 		btnCancel.setLayoutData(formData_7);
 		btnCancel.setText(Messages.getString("PasswordDialog.CancelButton")); //$NON-NLS-1$

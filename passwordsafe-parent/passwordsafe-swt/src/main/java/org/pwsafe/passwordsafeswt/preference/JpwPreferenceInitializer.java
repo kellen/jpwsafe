@@ -71,7 +71,7 @@ public class JpwPreferenceInitializer extends AbstractPreferenceInitializer {
 		theStore.setDefault(TABLE_COLUMN_SIZE, 150);
 
 		// Password Policy
-		theStore.setDefault(DEFAULT_PASSWORD_LENGTH, 8);
+		theStore.setDefault(DEFAULT_PASSWORD_LENGTH, 12);
 		theStore.setDefault(USE_LOWERCASE_LETTERS, true);
 		theStore.setDefault(USE_UPPERCASE_LETTERS, true);
 		theStore.setDefault(USE_DIGITS, true);

@@ -116,6 +116,9 @@ public class LicenseDialog extends TitleAreaDialog {
 		if (address == null) {
 			address = getClass().getResource(licenceFileName);
 		}
+		if (address == null) {
+			address = getClass().getResource("/" + licenceFileName);//$NON-NLS-1$
+		}
 		InputStream in = null;
 		try {
 			if (address == null) {

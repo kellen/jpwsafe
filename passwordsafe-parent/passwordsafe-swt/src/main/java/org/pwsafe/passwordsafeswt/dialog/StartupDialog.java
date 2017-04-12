@@ -90,7 +90,7 @@ public class StartupDialog extends Dialog {
 		shell.setLayout(new FormLayout());
 		shell.setImage(IOUtils.getImage(StartupDialog.class,
 				"/org/pwsafe/passwordsafeswt/images/clogo.gif")); //$NON-NLS-1$
-		shell.setSize(550, 368);
+		shell.setSize(550, 348);
 		shell.setText(Messages.getString("StartupDialog.Title")); //$NON-NLS-1$
 
 		final Label lblTextLogo = new Label(shell, SWT.NONE);
@@ -103,10 +103,11 @@ public class StartupDialog extends Dialog {
 		lblTextLogo.setLayoutData(formData_10);
 
 		final Label lblPleaseEnter = new Label(shell, SWT.NONE);
+//		lblPleaseEnter.getFont().
 		final FormData formData = new FormData();
 		// formData.top = new FormAttachment(0, 55);
 		formData.top = new FormAttachment(lblTextLogo, 15);
-		formData.left = new FormAttachment(0, 55);
+		formData.left = new FormAttachment(0, 15);
 		lblPleaseEnter.setLayoutData(formData);
 		lblPleaseEnter.setText(Messages.getString("StartupDialog.Info")); //$NON-NLS-1$
 
@@ -114,29 +115,30 @@ public class StartupDialog extends Dialog {
 		lblFilename.setText(Messages.getString("StartupDialog.Filename")); //$NON-NLS-1$
 		final FormData formData_1 = new FormData();
 		formData_1.top = new FormAttachment(lblPleaseEnter, 15, SWT.BOTTOM);
-		formData_1.left = new FormAttachment(lblPleaseEnter, 15, SWT.LEFT);
+		formData_1.left = new FormAttachment(lblPleaseEnter, 0, SWT.LEFT);
 		lblFilename.setLayoutData(formData_1);
-
-		cboFilename = new Combo(shell, SWT.READ_ONLY);
-		final FormData formData_1b = new FormData();
-		formData_1b.top = new FormAttachment(lblFilename, 0, SWT.TOP);
-		formData_1b.left = new FormAttachment(lblFilename, 15, SWT.RIGHT);
-		formData_1b.right = new FormAttachment(100, -170);
-		cboFilename.setLayoutData(formData_1b);
 
 		final Label lblSafeCombination = new Label(shell, SWT.NONE);
 		final FormData formData_2 = new FormData();
 		formData_2.top = new FormAttachment(lblFilename, 20);
-		formData_2.right = new FormAttachment(lblFilename, 0, SWT.RIGHT);
+		formData_2.left = new FormAttachment(lblFilename, 0, SWT.LEFT);
 		lblSafeCombination.setLayoutData(formData_2);
 		lblSafeCombination.setText(Messages.getString("StartupDialog.SafeCombination")); //$NON-NLS-1$
+
+		cboFilename = new Combo(shell, SWT.READ_ONLY);
+		final FormData formData_1b = new FormData();
+		formData_1b.top = new FormAttachment(lblFilename, 0, SWT.TOP);
+		formData_1b.left = new FormAttachment(lblSafeCombination, 15, SWT.RIGHT);
+		formData_1b.right = new FormAttachment(100, -160);
+		cboFilename.setLayoutData(formData_1b);
 
 		txtPassword = new Text(shell, SWT.BORDER);
 		txtPassword.setEchoChar('*');
 		final FormData formData_3 = new FormData();
 		formData_3.top = new FormAttachment(lblSafeCombination, 0, SWT.TOP);
-		formData_3.left = new FormAttachment(cboFilename, 0, SWT.LEFT);
-		formData_3.right = new FormAttachment(cboFilename, 0, SWT.RIGHT);
+		formData_3.left = new FormAttachment(lblSafeCombination, 15, SWT.RIGHT);
+		formData_3.right = new FormAttachment(100, -160);
+		
 		txtPassword.setLayoutData(formData_3);
 
 		final Button btnReadOnly = new Button(shell, SWT.CHECK);
@@ -165,7 +167,7 @@ public class StartupDialog extends Dialog {
 		});
 		final FormData formData_5 = new FormData();
 		formData_5.top = new FormAttachment(cboFilename, 0, SWT.TOP);
-		formData_5.right = new FormAttachment(100, -5);
+		formData_5.right = new FormAttachment(100, -20);
 		btnCreate.setLayoutData(formData_5);
 		btnCreate.setText(Messages.getString("StartupDialog.CreateNewButton")); //$NON-NLS-1$
 
@@ -181,7 +183,7 @@ public class StartupDialog extends Dialog {
 			}
 		});
 		final FormData formData_6 = new FormData();
-		formData_6.top = new FormAttachment(btnCreate, 10);
+		formData_6.top = new FormAttachment(txtPassword, 0, SWT.TOP);
 		formData_6.left = new FormAttachment(btnCreate, 0, SWT.LEFT);
 		formData_6.right = new FormAttachment(btnCreate, 0, SWT.RIGHT);
 		btnOpen.setLayoutData(formData_6);
@@ -207,7 +209,7 @@ public class StartupDialog extends Dialog {
 		});
 		final FormData formData_7 = new FormData();
 		formData_7.width = 80;
-		formData_7.left = new FormAttachment(50, -80);
+		formData_7.left = new FormAttachment(lblSafeCombination, 15, SWT.RIGHT);
 		formData_7.bottom = new FormAttachment(100, -10);
 		btnOk.setLayoutData(formData_7);
 		btnOk.setText(Messages.getString("StartupDialog.OkButton")); //$NON-NLS-1$
@@ -239,10 +241,12 @@ public class StartupDialog extends Dialog {
 		final Label lblVersion = new Label(shell, SWT.NONE);
 		final FormData formData_11 = new FormData();
 		formData_11.top = new FormAttachment(btnReadOnly, 0, SWT.TOP);
-		formData_11.left = new FormAttachment(btnOpen, 0, SWT.LEFT);
+		formData_11.left = new FormAttachment(btnOpen, 2, SWT.LEFT);
 		lblVersion.setLayoutData(formData_11);
-		lblVersion.setText(NLS.bind(
-				Messages.getString("StartupDialog.Version"), VersionInfo.getVersion())); //$NON-NLS-1$
+		String versionText = NLS.bind(
+				Messages.getString("StartupDialog.Version"), VersionInfo.getVersion()); //$NON-NLS-1$
+		lblVersion.setText("V: " + VersionInfo.getVersion());//$NON-NLS-1$
+		lblVersion.setToolTipText(versionText);
 	}
 
 	/**
