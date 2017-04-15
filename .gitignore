@@ -1,0 +1,9 @@
+.idea
+*.iml
+*.ipr
+.DS_Store
+passwordsafe-lib/doc/api/
+target/
+*.dat
+*.dat~
+*.psafe3~
